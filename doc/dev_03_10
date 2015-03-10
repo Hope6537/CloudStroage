@@ -1,0 +1,27 @@
+工程初始化
+JiChuang CloudStroage
+使用Hadoop的HDFS作为管理
+
+基础模型两个
+User
+ -> id
+ -> username
+ -> password
+ -> status
+Item
+ -> id
+ -> folder
+ -> path
+ -> status
+关系映射多对多
+附加模型
+Userinfo 1 : 1 User
+ItemType 1 : n  Item
+UserRole m : n User
+ItemVersion 1 : n Item
+
+框架使用MyBatis + Spring + SpringMVC
+搜索使用Lucene
+缓存使用encache
+数据库使用mysql
+存储使用HDFS

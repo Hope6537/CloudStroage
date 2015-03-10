@@ -1,0 +1,24 @@
+package org.hope6537.cloudstroage.basic.service;
+
+import org.hope6537.cloudstroage.basic.dao.BasicDao;
+
+import java.util.List;
+
+/**
+ * Created by Hope6537 on 2015/3/10.
+ */
+public interface BasicService<T, DaoType extends BasicDao<T>> {
+
+    boolean addEntry(T t);
+
+    boolean updateEntry(T t);
+
+    boolean disableEntry(T t);
+
+    boolean deleteEntry(T t);
+
+    T getEntryById(Integer id);
+
+    List<T> getEntryListByEntry(T t);
+
+}
