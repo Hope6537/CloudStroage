@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+  ~ Copyright (c) 2015. Hope6537 The Founder of Lab.JiChuang ,ChangChun University,
+  ~ JiLin Province,China
+  ~ JiChuang CloudStroage is a maven webapp using Hadoop Distributed File System for storage ' s Cloud Stroage System
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD iBatis Mapper 3.0 //EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.hope6537.cloudstroage.item.dao.ItemDao">
+
+    <insert id="addEntry">
+        INSERT INTO iteminfo (fileName,absolutePath,path,folder,parentId,status) VALUES
+        (#{fileName},#{absolutePath},#{path},#{folder},#{parentId},#{status})
+        <selectKey resultType="integer" keyProperty="itemId">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+    <update id="updateEntry">
+        UPDATE iteminfo
+        SET fileName = #{fileName},
+        absolutePath = #{absolutePath}, path = #{path},
+        folder = #{folder}, parentId = #{parentId}, status = #{status}
+        WHERE itemId = #{itemId}
+    </update>
+    <update id="disableEntry">
+        UPDATE iteminfo
+        SET status = '不可用'
+        WHERE itemId = #{itemId}
+    </update>
+    <delete id="deleteEntry">
+        DELETE FROM iteminfo
+        WHERE itemId = #{itemId}
+    </delete>
+
+    <select id="getEntryById" resultType="org.hope6537.cloudstroage.item.model.ItemInfo">
+        SELECT *
+        FROM iteminfo
+        WHERE itemId = #{itemId}
+    </select>
+
+    <select id="getEntryListByEntry" resultType="org.hope6537.cloudstroage.item.model.ItemInfo">
+        SELECT * FROM iteminfo
+        WHERE 1=1
+        <if test="itemId!=null and itemId !=''">
+            and itemId = #{itemId}
+        </if>
+        <if test="fileName!=null and fileName !=''">
+            and fileName = #{fileName}
+        </if>
+        <if test="absolutePath!=null and absolutePath !=''">
+            and absolutePath = #{absolutePath}
+        </if>
+        <if test="path!=null and path!=''">
+            and path = #{path}
+        </if>
+        <if test="folder!=null and folder!=''">
+            and folder = #{folder}
+        </if>
+        <if test="parentId!=null and parentId!=''">
+            and parentId = #{parentId}
+        </if>
+        <if test="status!=null and status!=''">
+            and status = #{status}
+        </if>
+    </select>
+
+</mapper>

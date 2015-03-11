@@ -18,7 +18,7 @@
     </update>
     <update id="disableEntry">
         UPDATE member
-        SET status = #{status}
+        SET status = '不可用'
         WHERE memberId = #{memberId}
     </update>
     <delete id="deleteEntry">

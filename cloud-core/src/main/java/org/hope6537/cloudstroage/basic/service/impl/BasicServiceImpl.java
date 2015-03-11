@@ -5,7 +5,6 @@ import org.hope6537.cloudstroage.basic.service.BasicService;
 import org.hope6537.context.ApplicationConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
@@ -13,12 +12,17 @@ import java.util.List;
 /**
  * Created by Hope6537 on 2015/3/10.
  */
-public class BasicServiceImpl<T, DaoType extends BasicDao<T>> implements BasicService<T, DaoType> {
+public abstract class BasicServiceImpl<T, DaoType extends BasicDao<T>> implements BasicService<T, DaoType> {
 
     protected Logger logger = LoggerFactory.getLogger(((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1].getClass());
 
-    @Autowired
+    protected final String daoType = String.valueOf(((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1]);
+
     protected DaoType dao;
+
+    public void setDao(DaoType dao) {
+        this.dao = dao;
+    }
 
     @Override
     public boolean addEntry(T t) {

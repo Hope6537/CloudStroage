@@ -1,7 +1,7 @@
 package org.hope6537.cloudstroage.member.service;
 
+import org.hope6537.cloudstroage.basic.context.ApplicationConstant;
 import org.hope6537.cloudstroage.member.model.Member;
-import org.hope6537.context.ApplicationConstant;
 import org.hope6537.spring.SpringTestHelper;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +69,6 @@ public class MemberServiceTest extends SpringTestHelper {
         memberService.addEntry(member);
         int id = member.getMemberId();
         Member queryMember = memberService.getEntryById(id);
-        queryMember.setStatus(ApplicationConstant.STATUS_DIE);
         memberService.disableEntry(queryMember);
         assertEquals(ApplicationConstant.STATUS_DIE, memberService.getEntryById(id).getStatus());
     }

@@ -4,6 +4,8 @@ import org.hope6537.cloudstroage.basic.service.impl.BasicServiceImpl;
 import org.hope6537.cloudstroage.member.dao.MemberDao;
 import org.hope6537.cloudstroage.member.model.Member;
 import org.hope6537.cloudstroage.member.service.MemberService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 /**
@@ -11,6 +13,13 @@ import org.springframework.stereotype.Service;
  */
 @Service("memberService")
 public class MemberServiceImpl extends BasicServiceImpl<Member, MemberDao> implements MemberService {
+
+    @Autowired
+    @Qualifier(value = "memberDao")
+    @Override
+    public void setDao(MemberDao dao) {
+        super.setDao(dao);
+    }
 
     @Override
     public Member getMemberByUsername(String username) {

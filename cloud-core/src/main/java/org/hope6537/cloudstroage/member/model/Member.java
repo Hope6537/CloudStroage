@@ -1,19 +1,25 @@
+/*
+ * Copyright (c) 2015. Hope6537 The Founder of Lab.JiChuang ,ChangChun University,
+ * JiLin Province,China
+ * JiChuang CloudStroage is a maven webapp using Hadoop Distributed File System for storage 's Cloud Stroage System
+ */
+
 package org.hope6537.cloudstroage.member.model;
 
+import org.hope6537.cloudstroage.basic.model.BasicModel;
 import org.hope6537.context.ApplicationConstant;
-
-import java.io.Serializable;
 
 /**
  * Created by Hope6537 on 2015/3/10.
  */
-public class Member implements Serializable {
+public class Member extends BasicModel {
 
+    private static final long serialVersionUID = -1176042631816013694L;
     private Integer memberId;
     private String name;
     private String username;
     private String password;
-    private String status;
+
 
     public Integer getMemberId() {
         return memberId;
@@ -45,14 +51,6 @@ public class Member implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public Member() {
