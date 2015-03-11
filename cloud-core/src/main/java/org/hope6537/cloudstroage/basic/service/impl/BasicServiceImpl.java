@@ -49,7 +49,7 @@ public abstract class BasicServiceImpl<T, DaoType extends BasicDao<T>> implement
     }
 
     @Override
-    public T getEntryById(Integer id) {
+    public T getEntryById(String id) {
         logger.debug("基本服务——根据ID获取对象");
         return dao.getEntryById(id);
     }

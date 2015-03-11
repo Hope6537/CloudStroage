@@ -9,7 +9,7 @@
 <mapper namespace="org.hope6537.cloudstroage.item.dao.ItemDao">
 
     <insert id="addEntry">
-        INSERT INTO iteminfo (fileName,absolutePath,serverPath,folder,parentId,status,sha1,updateDate,itemTypeId) VALUES
+        INSERT INTO hander (fileName,absolutePath,serverPath,folder,parentId,status,sha1,updateDate,itemTypeId) VALUES
         (#{fileName},#{absolutePath},#{serverPath},#{folder},#{parentId},#{status},#{sha1},#{updateDate},#{itemTypeId})
         <selectKey resultType="string" keyProperty="itemId">
             SELECT LAST_INSERT_ID()

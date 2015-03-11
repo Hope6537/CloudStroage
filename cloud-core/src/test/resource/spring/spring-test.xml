@@ -99,7 +99,5 @@
 
     <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver"/>
 
-    <context:property-placeholder ignore-resource-not-found="true" location="classpath*:/config.properties"/>
-
 
 </beans>

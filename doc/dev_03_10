@@ -11,7 +11,7 @@ User
 Item
  -> id
  -> folder
- -> path
+ -> serverPath
  -> status
 关系映射多对多
 附加模型

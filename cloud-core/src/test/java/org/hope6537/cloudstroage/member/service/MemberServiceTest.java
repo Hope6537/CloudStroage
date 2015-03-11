@@ -35,19 +35,19 @@ public class MemberServiceTest extends SpringTestHelper {
     public void testGetByList() {
         Member member = memberAppend();
         memberService.addEntry(member);
-        int id = member.getMemberId();
+        String id = member.getMemberId();
         Member queryMember = new Member();
         queryMember.setName("_test");
         List<Member> memberList = memberService.getEntryListByEntry(queryMember);
         assertTrue(memberList.size() == 1);
-        assertEquals(Integer.valueOf(id), memberList.get(0).getMemberId());
+        assertEquals(id, memberList.get(0).getMemberId());
     }
 
     @Test
     public void testGetById() {
         Member member = memberAppend();
         memberService.addEntry(member);
-        int id = member.getMemberId();
+        String id = member.getMemberId();
         Member queryMember = memberService.getEntryById(id);
         assertEquals(member.getName(), queryMember.getName());
     }
@@ -56,7 +56,7 @@ public class MemberServiceTest extends SpringTestHelper {
     public void testUpdate() {
         Member member = memberAppend();
         memberService.addEntry(member);
-        int id = member.getMemberId();
+        String id = member.getMemberId();
         Member queryMember = memberService.getEntryById(id);
         queryMember.setName("_after");
         memberService.updateEntry(queryMember);
@@ -67,7 +67,7 @@ public class MemberServiceTest extends SpringTestHelper {
     public void testDisable() {
         Member member = memberAppend();
         memberService.addEntry(member);
-        int id = member.getMemberId();
+        String id = member.getMemberId();
         Member queryMember = memberService.getEntryById(id);
         memberService.disableEntry(queryMember);
         assertEquals(ApplicationConstant.STATUS_DIE, memberService.getEntryById(id).getStatus());
@@ -77,7 +77,7 @@ public class MemberServiceTest extends SpringTestHelper {
     public void testDelete() {
         Member member = memberAppend();
         memberService.addEntry(member);
-        int id = member.getMemberId();
+        String id = member.getMemberId();
         Member deleteMember = new Member();
         deleteMember.setMemberId(id);
         memberService.deleteEntry(deleteMember);

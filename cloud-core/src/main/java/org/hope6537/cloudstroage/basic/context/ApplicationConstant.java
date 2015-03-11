@@ -11,8 +11,8 @@ package org.hope6537.cloudstroage.basic.context;
  */
 public class ApplicationConstant extends org.hope6537.context.ApplicationConstant {
 
-    private static final String FOLDER = "文件夹";
-    private static final String FILE = "文件";
+    public static final String FOLDER = "文件夹";
+    public static final String FILE = "文件";
 
 }
 

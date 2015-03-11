@@ -40,7 +40,7 @@ public class ItemServiceTest extends SpringTestHelper {
     public void testGet() {
         ItemInfo itemInfo = itemAppend();
         itemService.addEntry(itemInfo);
-        int id = itemInfo.getItemId();
+        String id = itemInfo.getItemId();
         ItemInfo queryItem = itemService.getEntryById(id);
         assertEquals(queryItem.getFileName(), itemInfo.getFileName());
     }
@@ -59,7 +59,7 @@ public class ItemServiceTest extends SpringTestHelper {
     public void testUpdate() {
         ItemInfo itemInfo = itemAppend();
         itemService.addEntry(itemInfo);
-        int id = itemInfo.getItemId();
+        String id = itemInfo.getItemId();
         ItemInfo queryItem = itemService.getEntryById(id);
         queryItem.setAbsolutePath("/after");
         itemService.updateEntry(queryItem);
@@ -70,7 +70,7 @@ public class ItemServiceTest extends SpringTestHelper {
     public void testDelete() {
         ItemInfo itemInfo = itemAppend();
         itemService.addEntry(itemInfo);
-        int id = itemInfo.getItemId();
+        String id = itemInfo.getItemId();
         itemService.deleteEntry(itemInfo);
         assertTrue(ApplicationConstant.isNull(itemService.getEntryById(id)));
     }
@@ -79,7 +79,7 @@ public class ItemServiceTest extends SpringTestHelper {
     public void testDisable() {
         ItemInfo itemInfo = itemAppend();
         itemService.addEntry(itemInfo);
-        int id = itemInfo.getItemId();
+        String id = itemInfo.getItemId();
         ItemInfo query = itemService.getEntryById(id);
         itemService.disableEntry(query);
         assertEquals(ApplicationConstant.STATUS_DIE, itemService.getEntryById(id).getStatus());

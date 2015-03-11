@@ -9,16 +9,16 @@ public class ItemType extends BasicModel {
 
     private static final long serialVersionUID = -2980673066684276250L;
 
-    private Integer typeId;
+    private String typeId;
 
     private String typeName;
 
 
-    public Integer getTypeId() {
+    public String getTypeId() {
         return typeId;
     }
 
-    public void setTypeId(Integer typeId) {
+    public void setTypeId(String typeId) {
         this.typeId = typeId;
     }
 

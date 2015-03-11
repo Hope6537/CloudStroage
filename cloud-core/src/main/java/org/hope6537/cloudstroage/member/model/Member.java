@@ -15,17 +15,17 @@ import org.hope6537.context.ApplicationConstant;
 public class Member extends BasicModel {
 
     private static final long serialVersionUID = -1176042631816013694L;
-    private Integer memberId;
+    private String memberId;
     private String name;
     private String username;
     private String password;
 
 
-    public Integer getMemberId() {
+    public String getMemberId() {
         return memberId;
     }
 
-    public void setMemberId(Integer memberId) {
+    public void setMemberId(String memberId) {
         this.memberId = memberId;
     }
 

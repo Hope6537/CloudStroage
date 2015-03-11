@@ -18,7 +18,7 @@
 
         <!-- 可让每天产生一个日志文件，最多 10 个，自动回滚 -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>%HOME%/log/Unmi-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>log/Unmi-%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>10</maxHistory>
         </rollingPolicy>
 
@@ -26,7 +26,7 @@
         <file>~/log/Unmi.log</file>
 
         <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-            <fileNamePattern>%HOME%/log/Unmi.%i.log.zip</fileNamePattern>
+            <fileNamePattern>log/Unmi.%i.log.zip</fileNamePattern>
             <minIndex>1</minIndex>
             <maxIndex>10</maxIndex>
         </rollingPolicy>
@@ -53,6 +53,7 @@
     <logger name="org.springframework" level="DEBUG"/>
     <logger name="com.opensymphony" level="DEBUG"/>
     <logger name="org.apache" level="DEBUG"/>
+    <logger name="org.hope6537" level="DEBUG"/>
 
     <!-- show parameters for hibernate sql 专为 Hibernate 定制 -->
     <!--<logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE"/>

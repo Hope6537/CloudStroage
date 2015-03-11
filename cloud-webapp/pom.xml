@@ -16,10 +16,6 @@
             <artifactId>cloud-core</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.hope6537</groupId>
-            <artifactId>hope-web-utils</artifactId>
-        </dependency>
     </dependencies>
     <build>
         <finalName>cloud-webapp</finalName>

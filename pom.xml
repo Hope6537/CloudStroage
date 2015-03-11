@@ -11,20 +11,25 @@
     </modules>
     <name>JiChuang CloudStroage</name>
     <url>http://maven.apache.org</url>
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.hope6537</groupId>
-                <artifactId>hope-basic-utils</artifactId>
-                <version>1.2-RELEASE</version>
-            </dependency>
-            <dependency>
-                <groupId>org.hope6537</groupId>
-                <artifactId>hope-web-utils</artifactId>
-                <version>1.2-RELEASE</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.hope6537</groupId>
+            <artifactId>hope-basic-utils</artifactId>
+            <version>1.2-RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hope6537</groupId>
+            <artifactId>hope-web-utils</artifactId>
+            <version>1.2-RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>log4j-over-slf4j</artifactId>
+            <version>1.7.6</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
     <build>
         <resources>
             <resource>

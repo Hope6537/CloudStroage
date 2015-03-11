@@ -7,24 +7,28 @@
 package org.hope6537.cloudstroage.item.service.impl;
 
 import org.hope6537.cloudstroage.basic.service.impl.BasicServiceImpl;
-import org.hope6537.cloudstroage.item.dao.ItemDao;
-import org.hope6537.cloudstroage.item.model.ItemInfo;
-import org.hope6537.cloudstroage.item.service.ItemService;
+import org.hope6537.cloudstroage.item.dao.ItemTypeDao;
+import org.hope6537.cloudstroage.item.model.ItemType;
+import org.hope6537.cloudstroage.item.service.ItemTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 /**
- * Created by Hope6537 on 2015/3/10.
+ * Created by Hope6537 on 2015/3/11.
  */
-@Service("itemService")
-public class ItemServiceImpl extends BasicServiceImpl<ItemInfo, ItemDao> implements ItemService {
+@Service("itemTypeService")
+public class ItemTypeServiceImpl extends BasicServiceImpl<ItemType, ItemTypeDao> implements ItemTypeService {
 
     @Autowired
-    @Qualifier("itemDao")
+    @Qualifier("itemTypeDao")
     @Override
-    public void setDao(ItemDao dao) {
+    public void setDao(ItemTypeDao dao) {
         super.setDao(dao);
     }
 
+    @Override
+    public ItemType getTypeByName(String name) {
+        return null;
+    }
 }

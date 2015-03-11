@@ -15,7 +15,7 @@ public interface BasicDao<T> {
 
     int deleteEntry(T t);
 
-    T getEntryById(Integer id);
+    T getEntryById(String id);
 
     List<T> getEntryListByEntry(T t);
 

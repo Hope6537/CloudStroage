@@ -1,7 +1,8 @@
 package org.hope6537.cloudstroage.item.model;
 
+import org.hope6537.cloudstroage.basic.context.ApplicationConstant;
 import org.hope6537.cloudstroage.basic.model.BasicModel;
-import org.hope6537.context.ApplicationConstant;
+import org.hope6537.date.DateFormatCalculate;
 
 import java.io.File;
 
@@ -11,19 +12,22 @@ import java.io.File;
 public class ItemInfo extends BasicModel {
 
     private static final long serialVersionUID = -9212078382954330289L;
-    private Integer itemId;
 
-    private String fileName;
+    private String itemId;
 
     private String absolutePath;
 
-    private String path;
+    private String serverPath;
 
     private String folder;
 
-    private Integer parentId;
+    private String parentId;
 
-    private Integer itemTypeId;
+    private String itemTypeId;
+
+    private String sha1;
+
+    private String updateDate;
 
     private File file;
 
@@ -32,25 +36,54 @@ public class ItemInfo extends BasicModel {
     }
 
     public static ItemInfo getInstanceOfTest() {
-        return new ItemInfo("_testFileName", "_/cloudstroage/user/hope6537/test.dat", "_/test.dat", "folder", -1, ApplicationConstant.STATUS_NORMAL, -1);
+        return new ItemInfo(
+                "_root",
+                "N/A",
+                "_/",
+                ApplicationConstant.FOLDER,
+                "-1",
+                ApplicationConstant.STATUS_NORMAL,
+                "-1",
+                "_sha111111",
+                DateFormatCalculate.createNowTime());
     }
 
 
-    public ItemInfo(String fileName, String absolutePath, String path, String folder, Integer parentId, String status, Integer itemTypeId) {
+    public static ItemInfo getInstanceFileOfTest() {
+        return new ItemInfo(
+                "_test.txt",
+                "N/A",
+                "_/",
+                ApplicationConstant.FILE,
+                "-1",
+                ApplicationConstant.STATUS_NORMAL,
+                "-1",
+                "_sha23333",
+                DateFormatCalculate.createNowTime());
+    }
+
+
+    public ItemInfo(String fileName, String absolutePath, String serverPath, String folder, String parentId, String status, String itemTypeId, String sha1, String updateDate) {
         this.fileName = fileName;
         this.absolutePath = absolutePath;
-        this.path = path;
+        this.serverPath = serverPath;
+        this.status = status;
         this.folder = folder;
         this.parentId = parentId;
-        this.status = status;
         this.itemTypeId = itemTypeId;
+        this.sha1 = sha1;
+        this.updateDate = updateDate;
     }
 
-    public Integer getItemId() {
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public String getItemId() {
         return itemId;
     }
 
-    public void setItemId(Integer itemId) {
+    public void setItemId(String itemId) {
         this.itemId = itemId;
     }
 
@@ -62,7 +95,6 @@ public class ItemInfo extends BasicModel {
         this.fileName = fileName;
     }
 
-
     public String getAbsolutePath() {
         return absolutePath;
     }
@@ -71,12 +103,12 @@ public class ItemInfo extends BasicModel {
         this.absolutePath = absolutePath;
     }
 
-    public String getPath() {
-        return path;
+    public String getServerPath() {
+        return serverPath;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setServerPath(String serverPath) {
+        this.serverPath = serverPath;
     }
 
     public String getFolder() {
@@ -87,21 +119,36 @@ public class ItemInfo extends BasicModel {
         this.folder = folder;
     }
 
-    public Integer getParentId() {
+    public String getParentId() {
         return parentId;
     }
 
-    public void setParentId(Integer parentId) {
+    public void setParentId(String parentId) {
         this.parentId = parentId;
     }
 
-
-    public Integer getItemTypeId() {
+    public String getItemTypeId() {
         return itemTypeId;
     }
 
-    public void setItemTypeId(Integer itemTypeId) {
+    public void setItemTypeId(String itemTypeId) {
         this.itemTypeId = itemTypeId;
+    }
+
+    public String getSha1() {
+        return sha1;
+    }
+
+    public void setSha1(String sha1) {
+        this.sha1 = sha1;
+    }
+
+    public String getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(String updateDate) {
+        this.updateDate = updateDate;
     }
 
     public File getFile() {
@@ -110,5 +157,15 @@ public class ItemInfo extends BasicModel {
 
     public void setFile(File file) {
         this.file = file;
+    }
+
+    @Override
+    public void setStatus(String status) {
+        super.setStatus(status);
+    }
+
+    @Override
+    public String getStatus() {
+        return super.getStatus();
     }
 }

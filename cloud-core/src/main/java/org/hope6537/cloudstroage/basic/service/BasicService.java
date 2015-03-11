@@ -17,7 +17,7 @@ public interface BasicService<T, DaoType extends BasicDao<T>> {
 
     boolean deleteEntry(T t);
 
-    T getEntryById(Integer id);
+    T getEntryById(String id);
 
     List<T> getEntryListByEntry(T t);
 

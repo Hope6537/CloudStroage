@@ -1,0 +1,63 @@
+遇到了一个小问题
+
+当有一个文件a.txt被用户A上传
+Sha1值为1234
+
+A(io = 1)把a.txt 放在了/(root)下
+那么在数据库中
+iteminfo
+
+id path(double)                                         folder  sha1
+1   (none)                                              folder  (none)
+2   /userfile/upload/2015-03-11/sawd-dwdqd-qwdqwa.txt   file     1234
+
+在member_item中
+
+memberId itemId fileName parentId status
+1        1      root         -1       根节点
+1        2      a.txt         1       (对应放置位置)
+
+那么有另外一个用户B，创造了usr文件夹
+同时一个sha1也为1234的b.txt 但是sha1和a.txt相同
+是一个文件，为了实现秒传业务
+
+
+iteminfo
+
+3 (none) folder (none)
+
+member_item
+
+1 3 usr     1 (对应的是/usr)
+1 2 b.txt   3 (对应的是/usr/b.txt)
+
+添加没啥问题
+那么接下来就是查询了
+
+select i.* from member m , itemInfo i , member_item mi where m.memberId = mi.memberId and i.itemId = mi.itemId
+and parentId = #{我们的目标ID,默认是1 就是根节点}
+
+当我点进id=3的usr文件夹的时候
+select i.* from member m , itemInfo i , member_item mi where m.memberId = mi.memberId and i.itemId = mi.itemId
+and parentId = 3(既然有3，肯定能获取的到)
+
+那么就能查出来了
+
+但是我们如何获得全路径呢?
+所以现在
+handle类应该有的
+memberId,itemId,parentId,status,fileName,fullPath
+====================================================================================================================
+第二个，那就是上传的时候应该怎么上传法？
+根据当前我用的最顺手的api
+public static boolean readWriteFile(MultipartFile multipartFile, String fileName, String uploadPath)
+这个文件上传，而在HDFS文件上传中
+put(String local, String remote)
+使用的是当前文件的本地地址，所谓的本地地址就是服务器的地址
+那么就要求，需要服务器具有这个文件才能调用put上传。
+
+
+但是hdfs有没有使用流式上传的方法呢？
+应该是有的！那么在正式开发webapp模块之前，我们先不考虑具体文件的细节。
+而是使用虚拟文件，即数据库列来进行文件的业务逻辑处理
+恩，就这样愉快的决定了。所以itemInfo还是两个path
