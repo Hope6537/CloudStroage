@@ -1,0 +1,27 @@
+{
+  "name": "cloud",
+  "version": "0.2",
+  "private": true,
+  "dependencies": {
+    "respond": "1.1.0",
+    "jquery": "1.11.0",
+    "jquery-migrate": "1.2.1",
+    "jquery-ui": "1.10.3",
+    "jquery-slimscroll": "1.3.2",
+    "jquery-validation": "1.12.0",
+    "jquery-backstretch": "2.0.4",
+    "DataTables": "1.10.3",
+    "ztree_v3": "3.5.16",
+    "bootstrap": "~3.2.0",
+    "bootstrap-switch": "3.0.0",
+    "bootstrap-hover-dropdown": "2.0.11",
+    "toastr": "2.0.1",
+    "select2": "3.4.6",
+    "simple-line-icons": "0.0.1",
+    "jquery-file-upload": "9.8.0",
+    "smalot-bootstrap-datetimepicker": "2.3.1",
+    "ckeditor": "#full/4.4.5",
+    "fontawesome": "4.1.0",
+    "echarts": "2.2.1"
+  }
+}

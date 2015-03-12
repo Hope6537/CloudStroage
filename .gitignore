@@ -11,11 +11,13 @@
 *.iml
 *.patch
 .idea/
-bison-webapp/src/main/webapp/js/bower_components/
+bison-webapp/
 
 # Others
 META-INF/
 target/
 logs/
-webapp/admin_assets/img/upload
-webapp/frontend_assets/img/upload
+
+src/main/cloud-webapp/static/common/img/upload
+src/main/cloud-webapp/static/common/img/upload
+src/main/cloud-webapp/static/common/bower_plugins/

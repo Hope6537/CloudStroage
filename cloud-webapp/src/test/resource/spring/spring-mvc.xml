@@ -14,7 +14,6 @@
     <context:property-placeholder location="classpath:config.properties"/>
     <!-- 自动扫描controller包下的所有类，使其认为spring mvc的控制器 -->
     <context:component-scan base-package="org.hope6537.cloudstroage.*.controller"/>
-    <context:component-scan base-package="org.hope6537.cloudstroage.*.filter"/>
     <!-- 定义aspectj -->
     <aop:aspectj-autoproxy proxy-target-class="true"/>
     <mvc:annotation-driven>
@@ -61,14 +60,6 @@
                   value="org.springframework.web.servlet.view.JstlView"/>
         <property name="prefix" value="/WEB-INF/jsp/"/>
         <property name="suffix" value=".jsp"/>
-    </bean>
-
-    <bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping">
-        <property name="interceptors">
-            <list>
-                <ref bean="springLoginFilter"/>
-            </list>
-        </property>
     </bean>
 
     <!-- 启动Spring MVC的注解功能，完成请求和注解POJO的映射 -->
