@@ -1,6 +1,5 @@
 package org.hope6537.cloudstroage.member.service.impl;
 
-import org.hope6537.cloudstroage.basic.context.ApplicationConstant;
 import org.hope6537.cloudstroage.basic.service.impl.BasicServiceImpl;
 import org.hope6537.cloudstroage.item.model.ItemInfo;
 import org.hope6537.cloudstroage.member.dao.MemberDao;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,30 +43,9 @@ public class MemberServiceImpl extends BasicServiceImpl<Member, MemberDao> imple
     }
 
     @Override
-    public boolean mkDir(String memberId, ItemInfo folder) {
-        logger.debug("用户业务——创建文件夹");
-        folder.setFolder(ApplicationConstant.FOLDER);
-        ArrayList<ItemInfo> list = new ArrayList<>();
-        list.add(folder);
-        dao.putItem(memberId, list);
-        return false;
-    }
-
-    @Override
     public List<ItemInfo> getItemsByMember(String memberId) {
         logger.debug("用户业务——查看该用户下所有文件");
         return dao.getItemsByMember(memberId);
-    }
-
-    @Override
-    public List<ItemInfo> getItemsByPath(String memberId, ItemInfo parent) {
-        logger.debug("用户业务——查看该用户在当前路径下的所有文件");
-        if (!parent.getFolder().equals(ApplicationConstant.FILE)) {
-            logger.error("用户业务——查看该用户在当前路径下的所有文件");
-            logger.error("该路径为文件");
-            return null;
-        }
-        return dao.getItemsByPath(memberId, parent);
     }
 
 

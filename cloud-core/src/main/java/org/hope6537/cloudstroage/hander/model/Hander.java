@@ -6,12 +6,17 @@
 
 package org.hope6537.cloudstroage.hander.model;
 
+import org.hope6537.cloudstroage.basic.context.ApplicationConstant;
 import org.hope6537.cloudstroage.basic.model.BasicModel;
+
+import java.io.File;
 
 /**
  * Created by Hope6537 on 2015/3/11.
  */
 public class Hander extends BasicModel {
+
+    private String handerId;
 
     private String memberId;
 
@@ -21,20 +26,44 @@ public class Hander extends BasicModel {
 
     private String fileName;
 
+    private String folder;
+
     private String fullPath;
 
     public Hander() {
     }
 
-    public Hander(String memberId, String itemId, String parentId, String fileName, String fullPath, String status) {
+    public static Hander getInstanceFolderOfTest() {
+        return new Hander("-1", "1", "1", "usr", null, ApplicationConstant.STATUS_NORMAL, ApplicationConstant.FOLDER);
+    }
+
+    public static Hander getInstanceFileOfTest() {
+        return new Hander("-1", "1", null, "a.txt", null, ApplicationConstant.STATUS_NORMAL, ApplicationConstant.FOLDER);
+    }
+
+    public void resetHander(Hander hander) {
+        this.setParentId(hander.getHanderId());
+        this.setFullPath(hander.getFullPath() + File.separator + getFileName());
+    }
+
+
+    public Hander(String memberId, String itemId, String parentId, String fileName, String fullPath, String status, String folder) {
         this.memberId = memberId;
         this.itemId = itemId;
         this.parentId = parentId;
         this.fileName = fileName;
         this.fullPath = fullPath;
         this.status = status;
+        this.folder = folder;
     }
 
+    public String getHanderId() {
+        return handerId;
+    }
+
+    public void setHanderId(String handerId) {
+        this.handerId = handerId;
+    }
 
     @Override
     public String getStatus() {
@@ -84,5 +113,13 @@ public class Hander extends BasicModel {
 
     public void setFullPath(String fullPath) {
         this.fullPath = fullPath;
+    }
+
+    public String getFolder() {
+        return folder;
+    }
+
+    public void setFolder(String folder) {
+        this.folder = folder;
     }
 }

@@ -6,6 +6,8 @@
 
 package org.hope6537.cloudstroage.basic.model;
 
+import org.hope6537.cloudstroage.basic.context.ApplicationConstant;
+
 import java.io.Serializable;
 
 /**
@@ -58,4 +60,13 @@ public abstract class BasicModel implements Serializable {
     public void setThisIndex(Integer thisIndex) {
         this.thisIndex = thisIndex;
     }
+
+    public final void disable() {
+        this.setStatus(ApplicationConstant.STATUS_DIE);
+    }
+
+    public final void enable() {
+        this.setStatus(ApplicationConstant.STATUS_NORMAL);
+    }
+
 }

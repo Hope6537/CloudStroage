@@ -8,9 +8,11 @@ package org.hope6537.cloudstroage.hander.dao;
 
 import org.hope6537.cloudstroage.basic.dao.BasicDao;
 import org.hope6537.cloudstroage.hander.model.Hander;
+import org.hope6537.page.annotation.MybatisRepository;
 
 /**
  * Created by Hope6537 on 2015/3/11.
  */
+@MybatisRepository
 public interface HanderDao extends BasicDao<Hander> {
 }

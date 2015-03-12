@@ -42,7 +42,7 @@ public class ItemServiceTest extends SpringTestHelper {
         itemService.addEntry(itemInfo);
         String id = itemInfo.getItemId();
         ItemInfo queryItem = itemService.getEntryById(id);
-        assertEquals(queryItem.getFileName(), itemInfo.getFileName());
+        assertEquals(queryItem.getSha1(), itemInfo.getSha1());
     }
 
     @Test

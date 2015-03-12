@@ -9,17 +9,17 @@
 <mapper namespace="org.hope6537.cloudstroage.item.dao.ItemDao">
 
     <insert id="addEntry">
-        INSERT INTO iteminfo (fileName,absolutePath,serverPath,folder,parentId,status,sha1,updateDate,itemTypeId) VALUES
-        (#{fileName},#{absolutePath},#{serverPath},#{folder},#{parentId},#{status},#{sha1},#{updateDate},#{itemTypeId})
+        INSERT INTO iteminfo (absolutePath,serverPath,status,sha1,updateDate,itemTypeId) VALUES
+        (#{absolutePath},#{serverPath},#{status},#{sha1},#{updateDate},#{itemTypeId})
         <selectKey resultType="string" keyProperty="itemId">
             SELECT LAST_INSERT_ID()
         </selectKey>
     </insert>
     <update id="updateEntry">
         UPDATE iteminfo
-        SET fileName     = #{fileName},
+        SET
             absolutePath = #{absolutePath}, serverPath = #{serverPath},
-            folder       = #{folder}, parentId = #{parentId}, status = #{status},
+            status       = #{status},
             sha1         = #{sha1}, updateDate = #{updateDate}, itemTypeId = #{itemTypeId}
         WHERE itemId = #{itemId}
     </update>
@@ -45,20 +45,11 @@
         <if test="itemId!=null and itemId !=''">
             and itemId = #{itemId}
         </if>
-        <if test="fileName!=null and fileName !=''">
-            and fileName = #{fileName}
-        </if>
         <if test="absolutePath!=null and absolutePath !=''">
             and absolutePath = #{absolutePath}
         </if>
         <if test="serverPath!=null and serverPath!=''">
             and serverPath = #{serverPath}
-        </if>
-        <if test="folder!=null and folder!=''">
-            and folder = #{folder}
-        </if>
-        <if test="parentId!=null and parentId!=''">
-            and parentId = #{parentId}
         </if>
         <if test="status!=null and status!=''">
             and status = #{status}

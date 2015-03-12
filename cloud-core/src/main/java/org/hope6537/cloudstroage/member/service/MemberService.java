@@ -18,10 +18,7 @@ public interface MemberService extends BasicService<Member, MemberDao> {
 
     boolean deleteItem(String memberId, List<ItemInfo> itemInfo);
 
-    boolean mkDir(String memberId, ItemInfo folder);
-
     List<ItemInfo> getItemsByMember(String memberId);
 
-    List<ItemInfo> getItemsByPath(String memberId, ItemInfo parent);
 
 }

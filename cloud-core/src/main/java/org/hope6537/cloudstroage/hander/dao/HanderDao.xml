@@ -6,59 +6,74 @@
   -->
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD iBatis Mapper 3.0 //EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.hope6537.cloudstroage.item.dao.ItemDao">
+<mapper namespace="org.hope6537.cloudstroage.hander.dao.HanderDao">
 
     <insert id="addEntry">
-        INSERT INTO hander (fileName,absolutePath,serverPath,folder,parentId,status,sha1,updateDate,itemTypeId) VALUES
-        (#{fileName},#{absolutePath},#{serverPath},#{folder},#{parentId},#{status},#{sha1},#{updateDate},#{itemTypeId})
-        <selectKey resultType="string" keyProperty="itemId">
+        INSERT INTO hander (memberId, itemId, parentId, fileName, folder, fullPath, status) VALUES
+        (#{memberId}, #{itemId}, #{parentId}, #{fileName}, #{folder}, #{fullPath}, #{status})
+        <selectKey resultType="string" keyProperty="handerId">
             SELECT LAST_INSERT_ID()
         </selectKey>
     </insert>
     <update id="updateEntry">
-        UPDATE iteminfo
-        SET fileName     = #{fileName},
-            absolutePath = #{absolutePath}, serverPath = #{serverPath},
-            folder       = #{folder}, parentId = #{parentId}, status = #{status},
-            sha1         = #{sha1}, updateDate = #{updateDate}, itemTypeId = #{itemTypeId}
-        WHERE itemId = #{itemId}
+        UPDATE hander
+        SET memberId = #{memberId}, itemId = #{itemId},
+            parentId = #{parentId},
+            fileName = #{fileName}, folder = #{folder}, fullPath = #{fullPath},
+            status   = #{status}
+        WHERE handerId = #{handerId}
     </update>
     <update id="disableEntry">
-        UPDATE iteminfo
+        UPDATE hander
         SET status = '不可用'
-        WHERE itemId = #{itemId}
+        WHERE
+        <if test="handerId!=null and handerId!=''">
+            handerId = #{handerId}
+        </if>
+        <if test="handerId==null or handerId==''">
+            memberId = #{memberId} AND itemId = #{itemId}
+        </if>
     </update>
     <delete id="deleteEntry">
-        DELETE FROM iteminfo
-        WHERE itemId = #{itemId}
+        DELETE FROM hander
+        WHERE
+        <if test="handerId!=null and handerId!=''">
+            handerId = #{handerId}
+        </if>
+        <if test="handerId==null or handerId==''">
+            memberId = #{memberId} AND itemId = #{itemId}
+        </if>
     </delete>
 
-    <select id="getEntryById" resultType="org.hope6537.cloudstroage.item.model.ItemInfo">
+    <select id="getEntryById" resultType="org.hope6537.cloudstroage.hander.model.Hander">
         SELECT *
-        FROM iteminfo
-        WHERE itemId = #{itemId}
+        FROM hander
+        WHERE handerId = #{handerId}
     </select>
 
-    <select id="getEntryListByEntry" resultType="org.hope6537.cloudstroage.item.model.ItemInfo">
-        SELECT * FROM iteminfo
+    <select id="getEntryListByEntry" resultType="org.hope6537.cloudstroage.hander.model.Hander">
+        SELECT * FROM hander
         WHERE 1=1
+        <if test="handerId!=null and handerId!=''">
+            and handerId = #{handerId}
+        </if>
+        <if test="memberId!=null and memberId !=''">
+            and memberId = #{memberId}
+        </if>
         <if test="itemId!=null and itemId !=''">
             and itemId = #{itemId}
         </if>
-        <if test="fileName!=null and fileName !=''">
+        <if test="parentId!=null and parentId !=''">
+            and parentId = #{parentId}
+        </if>
+        <if test="fileName!=null and fileName!=''">
             and fileName = #{fileName}
-        </if>
-        <if test="absolutePath!=null and absolutePath !=''">
-            and absolutePath = #{absolutePath}
-        </if>
-        <if test="serverPath!=null and serverPath!=''">
-            and serverPath = #{serverPath}
         </if>
         <if test="folder!=null and folder!=''">
             and folder = #{folder}
         </if>
-        <if test="parentId!=null and parentId!=''">
-            and parentId = #{parentId}
+        <if test="fullPath!=null and fullPath!=''">
+            and fullPath = #{fullPath}
         </if>
         <if test="status!=null and status!=''">
             and status = #{status}

@@ -5,6 +5,7 @@ import org.hope6537.cloudstroage.basic.model.BasicModel;
 import org.hope6537.date.DateFormatCalculate;
 
 import java.io.File;
+import java.util.UUID;
 
 /**
  * Created by Hope6537 on 2015/3/10.
@@ -19,10 +20,6 @@ public class ItemInfo extends BasicModel {
 
     private String serverPath;
 
-    private String folder;
-
-    private String parentId;
-
     private String itemTypeId;
 
     private String sha1;
@@ -36,12 +33,10 @@ public class ItemInfo extends BasicModel {
     }
 
     public static ItemInfo getInstanceOfTest() {
+        String fileName = UUID.randomUUID().toString();
         return new ItemInfo(
-                "_root",
-                "N/A",
-                "_/",
-                ApplicationConstant.FOLDER,
-                "-1",
+                "hdfs://hadoop2master/user/" + DateFormatCalculate.createNowTime() + "/" + fileName,
+                "http://static.hope6537.org/upload/" + DateFormatCalculate.createNowTime() + "/" + fileName,
                 ApplicationConstant.STATUS_NORMAL,
                 "-1",
                 "_sha111111",
@@ -49,27 +44,10 @@ public class ItemInfo extends BasicModel {
     }
 
 
-    public static ItemInfo getInstanceFileOfTest() {
-        return new ItemInfo(
-                "_test.txt",
-                "N/A",
-                "_/",
-                ApplicationConstant.FILE,
-                "-1",
-                ApplicationConstant.STATUS_NORMAL,
-                "-1",
-                "_sha23333",
-                DateFormatCalculate.createNowTime());
-    }
-
-
-    public ItemInfo(String fileName, String absolutePath, String serverPath, String folder, String parentId, String status, String itemTypeId, String sha1, String updateDate) {
-        this.fileName = fileName;
+    public ItemInfo(String absolutePath, String serverPath, String status, String itemTypeId, String sha1, String updateDate) {
         this.absolutePath = absolutePath;
         this.serverPath = serverPath;
         this.status = status;
-        this.folder = folder;
-        this.parentId = parentId;
         this.itemTypeId = itemTypeId;
         this.sha1 = sha1;
         this.updateDate = updateDate;
@@ -87,14 +65,6 @@ public class ItemInfo extends BasicModel {
         this.itemId = itemId;
     }
 
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
     public String getAbsolutePath() {
         return absolutePath;
     }
@@ -109,22 +79,6 @@ public class ItemInfo extends BasicModel {
 
     public void setServerPath(String serverPath) {
         this.serverPath = serverPath;
-    }
-
-    public String getFolder() {
-        return folder;
-    }
-
-    public void setFolder(String folder) {
-        this.folder = folder;
-    }
-
-    public String getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(String parentId) {
-        this.parentId = parentId;
     }
 
     public String getItemTypeId() {
