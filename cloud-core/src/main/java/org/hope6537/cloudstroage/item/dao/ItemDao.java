@@ -1,5 +1,6 @@
 package org.hope6537.cloudstroage.item.dao;
 
+import org.apache.ibatis.annotations.Param;
 import org.hope6537.cloudstroage.basic.dao.BasicDao;
 import org.hope6537.cloudstroage.item.model.ItemInfo;
 import org.hope6537.page.annotation.MybatisRepository;
@@ -9,5 +10,7 @@ import org.hope6537.page.annotation.MybatisRepository;
  */
 @MybatisRepository
 public interface ItemDao extends BasicDao<ItemInfo> {
+
+    int getItemUsingCount(@Param("itemId") String itemId);
 
 }

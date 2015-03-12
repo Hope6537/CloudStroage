@@ -1,0 +1,70 @@
+可喜可贺~业务层终于是差不多了~
+基本服务
+BaseService的几个方法
+
+
+    boolean addEntry(T t); <- 添加实体
+
+    boolean updateEntry(T t); <- 更新实体
+
+    boolean disableEntry(T t); <- 无效化
+
+    boolean deleteEntry(T t); <- 删除
+
+    T getEntryById(String id); <- 根据ID获取对象
+
+    List<T> getEntryListByEntry(T t); <- 根据非空字段获取对象表
+
+用户服务 有三个没啥用的方法
+
+    添加/修改/查询/删除/条件查询 member
+
+因为原来想让ItemInfo充当全部文件的存放区的，后来划分出个Hander API就都重写了
+
+    Member getMemberByUsername(String username); <- 通过用户名获取对象 用于登录
+
+    @Deprecated
+    boolean putItem(String memberId, List<ItemInfo> itemInfo); 设计失误
+    @Deprecated
+    boolean deleteItem(String memberId, List<ItemInfo> itemInfo); 设计失误
+    @Deprecated
+    List<ItemInfo> getItemsByMember(String memberId);  设计失误
+
+文件服务 没有额外的方法
+
+    添加/修改/查询/删除/条件查询 item
+
+因为大部分情况下
+    用户添加新文件 -> 添加Item 获得ItemId ->和当前memberId一起 组件hander-> 添加hander
+    用户修改文件 ->当前item是否还有引用？
+                ->是 保留item
+                ->否 删除item
+                    ->因为所谓的修改就是他提交了个新的，不可能在线修改。
+                        ->所以重复步骤添加
+    用户删除文件 ->当前item是否还有引用？
+                           ->是 保留item
+                           ->否 删除item
+                                ->获得itemId memberId 找到对应hander 删除
+    所以没有需要添加的新方法，也就是一个计数了
+    Select count(*) from iteminfo i , hander h where h.itemId = i.itemId
+    一会补上[已补完]
+
+关系持有服务
+
+    添加/修改/查询/删除/条件查询 hander
+
+    public void getSonHanderIds(Hander hander, Set<String> list); <- 获得当前文件夹下的子文件的handerId
+
+    public boolean updateFolderName(Hander hander, String newName); <- 更新当前文件夹名称 同时更新下属hander的全路径
+
+    public boolean deleteFolder(Hander hander); <- 删除该文件夹 同时删除下属hander
+
+    public Hander getSonHanderToHander(Hander hander); <- 生成Hander的子List<Hander> 构建树形模型
+
+    public List<Hander> getHanderListByMemberId(String memberId); <- 根据用户ID获取Hander
+
+    public List<Hander> getHanderListByPath(String memberId, String fullPath); <- 根据路径获取该用户的hander
+
+    public List<Hander> getHanderListByParentHander(Hander hander); <- 根据父节点获取子节点hander hander内置memberId
+
+嘛，目前现在来看没啥要添加的了

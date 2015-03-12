@@ -14,10 +14,13 @@ public interface MemberService extends BasicService<Member, MemberDao> {
 
     Member getMemberByUsername(String username);
 
+    @Deprecated
     boolean putItem(String memberId, List<ItemInfo> itemInfo);
 
+    @Deprecated
     boolean deleteItem(String memberId, List<ItemInfo> itemInfo);
 
+    @Deprecated
     List<ItemInfo> getItemsByMember(String memberId);
 
 

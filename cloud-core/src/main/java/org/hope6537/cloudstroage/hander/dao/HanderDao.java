@@ -20,6 +20,8 @@ import java.util.Set;
 @MybatisRepository
 public interface HanderDao extends BasicDao<Hander> {
 
+    int deleteHanderByMemberAndItem(@Param("memberId") String memberId, @Param("itemId") String itemId);
+
     int deleteMultiHander(@Param("idSet") Set<String> idSet);
 
     List<Hander> getHanderListByPath(@Param("memberId") String memberId, @Param("fullPath") String fullPath);

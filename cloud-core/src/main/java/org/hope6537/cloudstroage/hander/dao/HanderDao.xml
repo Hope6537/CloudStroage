@@ -45,6 +45,12 @@
         </if>
     </delete>
 
+    <delete id="deleteHanderByMemberAndItem">
+        DELETE FROM hander
+        WHERE memberId = #{memberId} AND itemId = #{itemId}
+    </delete>
+
+
     <delete id="deleteMultiHander">
         DELETE FROM hander
         WHERE
