@@ -10,6 +10,7 @@ import org.hope6537.cloudstroage.basic.context.ApplicationConstant;
 import org.hope6537.cloudstroage.basic.model.BasicModel;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * Created by Hope6537 on 2015/3/11.
@@ -30,15 +31,22 @@ public class Hander extends BasicModel {
 
     private String fullPath;
 
+    private List<Hander> sonHanderList;
+
     public Hander() {
     }
+
+    public boolean isAFolder() {
+        return getFolder().equals(ApplicationConstant.FOLDER);
+    }
+
 
     public static Hander getInstanceFolderOfTest() {
         return new Hander("-1", "1", "1", "usr", null, ApplicationConstant.STATUS_NORMAL, ApplicationConstant.FOLDER);
     }
 
     public static Hander getInstanceFileOfTest() {
-        return new Hander("-1", "1", null, "a.txt", null, ApplicationConstant.STATUS_NORMAL, ApplicationConstant.FOLDER);
+        return new Hander("-1", "1", null, "a.txt", null, ApplicationConstant.STATUS_NORMAL, ApplicationConstant.FILE);
     }
 
     public void resetHander(Hander hander) {
@@ -121,5 +129,13 @@ public class Hander extends BasicModel {
 
     public void setFolder(String folder) {
         this.folder = folder;
+    }
+
+    public List<Hander> getSonHanderList() {
+        return sonHanderList;
+    }
+
+    public void setSonHanderList(List<Hander> sonHanderList) {
+        this.sonHanderList = sonHanderList;
     }
 }

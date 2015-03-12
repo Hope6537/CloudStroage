@@ -45,6 +45,14 @@
         </if>
     </delete>
 
+    <delete id="deleteMultiHander">
+        DELETE FROM hander
+        WHERE
+        <foreach collection="idSet" item="id" separator=" or ">
+            handerId = #{id}
+        </foreach>
+    </delete>
+
     <select id="getEntryById" resultType="org.hope6537.cloudstroage.hander.model.Hander">
         SELECT *
         FROM hander
@@ -73,11 +81,23 @@
             and folder = #{folder}
         </if>
         <if test="fullPath!=null and fullPath!=''">
-            and fullPath = #{fullPath}
+            and fullPath Like #{fullPath}
         </if>
         <if test="status!=null and status!=''">
             and status = #{status}
         </if>
+    </select>
+
+    <select id="getHanderListByPath" resultType="org.hope6537.cloudstroage.hander.model.Hander">
+        SELECT * FROM hander
+        WHERE 1=1
+        <if test="memberId!=null and memberId !=''">
+            and memberId = #{memberId}
+        </if>
+        <if test="fullPath!=null and fullPath!=''">
+            and fullPath Like CONCAT('%',#{fullPath},'%' ) and fullPath != #{fullPath}
+        </if>
+        and status = '正常'
     </select>
 
 </mapper>

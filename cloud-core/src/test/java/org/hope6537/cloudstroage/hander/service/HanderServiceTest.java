@@ -58,7 +58,7 @@ public class HanderServiceTest extends SpringTestHelper {
         wordItem.setSha1("12345");
         excelItem = ItemInfo.getInstanceOfTest();
         excelItem.setSha1("22345");
-        handerRoot = Hander.getInstanceFileOfTest();
+        handerRoot = Hander.getInstanceFolderOfTest();
         handerRoot.setFileName("root");
         handerRoot.setParentId("-1");
         handerRoot.setFullPath("");
@@ -111,6 +111,20 @@ public class HanderServiceTest extends SpringTestHelper {
     }
 
     @Test
+    public void testUpdateFolderName() {
+        assertTrue(handerService.addEntry(handerRoot));
+        handerFolder.resetHander(handerRoot);
+        assertTrue(handerService.addEntry(handerFolder));
+        handerFile.resetHander(handerFolder);
+        assertTrue(handerService.addEntry(handerFile));
+
+        assertTrue(handerService.updateFolderName(handerFolder, "tmp"));
+
+        assertEquals(File.separator + "tmp", handerService.getEntryById(handerFolder.getHanderId()).getFullPath());
+        assertEquals(File.separator + "tmp" + File.separator + "a.txt", handerService.getEntryById(handerFile.getHanderId()).getFullPath());
+    }
+
+    @Test
     public void testDisableEntry() {
         assertTrue(handerService.addEntry(handerRoot));
         handerFolder.resetHander(handerRoot);
@@ -120,6 +134,19 @@ public class HanderServiceTest extends SpringTestHelper {
         handerFile.disable();
         assertTrue(handerService.disableEntry(handerFile));
         assertEquals(ApplicationConstant.STATUS_DIE, handerService.getEntryById(handerFile.getHanderId()).getStatus());
+    }
+
+    @Test
+    public void testDeleteFolder() {
+        assertTrue(handerService.addEntry(handerRoot));
+        handerFolder.resetHander(handerRoot);
+        assertTrue(handerService.addEntry(handerFolder));
+        handerFile.resetHander(handerFolder);
+        assertTrue(handerService.addEntry(handerFile));
+        handerFile.disable();
+        assertTrue(handerService.disableEntry(handerFile));
+
+        assertTrue(handerService.deleteFolder(handerRoot));
     }
 
     @Test
@@ -134,6 +161,29 @@ public class HanderServiceTest extends SpringTestHelper {
         queryHander.setMemberId("-1");
         List<Hander> handerList = handerService.getEntryListByEntry(queryHander);
         assertTrue(handerList.size() == 3);
+
+        assertTrue(handerService.deleteEntry(handerFile));
+        handerRoot.setMemberId("-2");
+        handerFolder.setMemberId("-2");
+        assertTrue(handerService.updateEntry(handerRoot));
+        assertTrue(handerService.updateEntry(handerFolder));
+
+        List<Hander> handerList2 = handerService.getHanderListByMemberId("-2");
+        assertTrue(handerList2.size() == 2);
+
+
+    }
+
+    @Test
+    public void testGetEntryByPath() {
+        assertTrue(handerService.addEntry(handerRoot));
+        handerFolder.resetHander(handerRoot);
+        assertTrue(handerService.addEntry(handerFolder));
+        handerFile.resetHander(handerFolder);
+        assertTrue(handerService.addEntry(handerFile));
+
+        List<Hander> handers = handerService.getHanderListByPath("-1", File.separator + "usr");
+        assertEquals(1, handers.size());
     }
 
 
