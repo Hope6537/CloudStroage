@@ -44,6 +44,14 @@ public class MemberServiceTest extends SpringTestHelper {
     }
 
     @Test
+    public void testGetNormal() {
+        Member member = memberAppend();
+        memberService.addEntry(member);
+        assertTrue(memberService.getNormalMember().size() > 1);
+    }
+
+
+    @Test
     public void testGetById() {
         Member member = memberAppend();
         memberService.addEntry(member);

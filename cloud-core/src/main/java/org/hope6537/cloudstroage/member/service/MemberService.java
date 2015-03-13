@@ -14,6 +14,8 @@ public interface MemberService extends BasicService<Member, MemberDao> {
 
     Member getMemberByUsername(String username);
 
+    List<Member> getNormalMember();
+
     @Deprecated
     boolean putItem(String memberId, List<ItemInfo> itemInfo);
 

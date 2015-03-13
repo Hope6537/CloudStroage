@@ -12,6 +12,7 @@ import java.io.IOException;
 /**
  * Created by Hope6537 on 2015/3/12.
  */
+@Deprecated
 public class LoginFilter implements Filter {
 
     @Override

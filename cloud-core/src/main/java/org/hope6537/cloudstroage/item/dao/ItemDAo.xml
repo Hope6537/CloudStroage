@@ -39,6 +39,12 @@
         WHERE itemId = #{itemId}
     </select>
 
+    <select id="getItemUsingCount" resultType="integer">
+        SELECT count(*) AS count
+        FROM iteminfo i, hander h
+        WHERE i.itemId = h.itemId AND i.itemId = #{itemId}
+    </select>
+
     <select id="getEntryListByEntry" resultType="org.hope6537.cloudstroage.item.model.ItemInfo">
         SELECT * FROM iteminfo
         WHERE 1=1

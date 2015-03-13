@@ -63,13 +63,22 @@
         <property name="suffix" value=".jsp"/>
     </bean>
 
-    <bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping">
-        <property name="interceptors">
-            <list>
-                <ref bean="springLoginFilter"/>
-            </list>
-        </property>
-    </bean>
+    <mvc:interceptors>
+        <!-- session超时 -->
+        <mvc:interceptor>
+            <mvc:mapping path="/*/*"/>
+            <bean class="org.hope6537.cloudstroage.basic.filter.SpringLoginFilter">
+                <property name="allowUrls">
+                    <list>
+                        <!-- 如果请求中包含以下路径，则不进行拦截 -->
+                        <value>/static</value>
+                        <value>/login</value>
+                        <value>/page/toIndex</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
 
     <!-- 启动Spring MVC的注解功能，完成请求和注解POJO的映射 -->
     <bean

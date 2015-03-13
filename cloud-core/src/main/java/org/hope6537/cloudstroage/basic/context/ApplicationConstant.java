@@ -13,6 +13,8 @@ public class ApplicationConstant extends org.hope6537.context.ApplicationConstan
 
     public static final String FOLDER = "文件夹";
     public static final String FILE = "文件";
-    public static final String LOGINPATH = "";
+    public static final String APPLICATION_NAME = "CloudStroage";
+    public static final String ADMINPATH = "/admin/";
+    public static final String LOGINPATH = ADMINPATH + "/login";
 }
 

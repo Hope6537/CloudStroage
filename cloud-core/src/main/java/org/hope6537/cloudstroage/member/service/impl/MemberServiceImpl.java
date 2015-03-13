@@ -1,5 +1,6 @@
 package org.hope6537.cloudstroage.member.service.impl;
 
+import org.hope6537.cloudstroage.basic.context.ApplicationConstant;
 import org.hope6537.cloudstroage.basic.service.impl.BasicServiceImpl;
 import org.hope6537.cloudstroage.item.model.ItemInfo;
 import org.hope6537.cloudstroage.member.dao.MemberDao;
@@ -28,6 +29,14 @@ public class MemberServiceImpl extends BasicServiceImpl<Member, MemberDao> imple
     public Member getMemberByUsername(String username) {
         logger.debug("用户业务——根据账号获取用户对象");
         return dao.getMemberByUsername(username);
+    }
+
+    @Override
+    public List<Member> getNormalMember() {
+        Member query = new Member();
+        query.setStatus(ApplicationConstant.STATUS_NORMAL);
+        List<Member> list = this.getEntryListByEntry(query);
+        return list;
     }
 
     @Override
