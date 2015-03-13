@@ -74,6 +74,11 @@ public class Hander extends BasicModel {
     }
 
     @Override
+    public String commonId() {
+        return getHanderId();
+    }
+
+    @Override
     public String getStatus() {
         return super.getStatus();
     }

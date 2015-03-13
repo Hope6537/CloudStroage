@@ -30,4 +30,8 @@ public class ItemType extends BasicModel {
         this.typeName = typeName;
     }
 
+    @Override
+    public String commonId() {
+        return getTypeId();
+    }
 }

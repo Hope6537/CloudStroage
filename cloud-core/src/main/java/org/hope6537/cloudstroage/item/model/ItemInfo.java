@@ -119,6 +119,11 @@ public class ItemInfo extends BasicModel {
     }
 
     @Override
+    public String commonId() {
+        return getItemId();
+    }
+
+    @Override
     public String getStatus() {
         return super.getStatus();
     }

@@ -25,16 +25,23 @@ public abstract class BasicModel implements Serializable {
 
     protected String status;
 
+    public static <T extends BasicModel> T getInstance(Class<T> clz) {
+        try {
+            return clz.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public abstract String commonId();
+
     public String getStatus() {
         return status;
     }
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public static <T extends BasicModel> T getInstanceOfTest() {
-        return null;
     }
 
     public Integer getStart() {

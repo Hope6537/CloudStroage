@@ -65,7 +65,7 @@ public class MemberControllerTest extends SpringWebTestHelper {
                 get("/member").sessionAttr("loginMember", testMember))
                 .andExpect(status().is(200))
                 .andExpect(jsonPath("$.returnState").value("OK"))
-                //.andDo(print())
+                        //.andDo(print())
                 .andReturn();
     }
 
@@ -75,8 +75,8 @@ public class MemberControllerTest extends SpringWebTestHelper {
                 get("/member/" + testMember.getMemberId()).sessionAttr("loginMember", testMember))
                 .andExpect(status().is(200))
                 .andExpect(jsonPath("$.returnState").value("OK"))
-                .andExpect(jsonPath("$.returnData.member.memberId").value(testMember.getMemberId()))
-                //.andDo(print())
+                .andExpect(jsonPath("$.returnData.model.memberId").value(testMember.getMemberId()))
+                        //.andDo(print())
                 .andReturn();
 
     }
@@ -88,7 +88,7 @@ public class MemberControllerTest extends SpringWebTestHelper {
                 .contentType(MediaType.APPLICATION_JSON).content(request)
                 .accept(MediaType.APPLICATION_JSON)) //执行请求
                 .andExpect(jsonPath("$.returnState").value("OK"))
-                //.andDo(print())
+                        //.andDo(print())
                 .andReturn();
     }
 
@@ -100,14 +100,14 @@ public class MemberControllerTest extends SpringWebTestHelper {
                 .contentType(MediaType.APPLICATION_JSON).content(request)
                 .accept(MediaType.APPLICATION_JSON)) //执行请求
                 .andExpect(jsonPath("$.returnState").value("OK"))
-                //.andDo(print())
+                        //.andDo(print())
                 .andReturn();
         mockMvc.perform(
                 get("/member/" + testMember.getMemberId()).sessionAttr("loginMember", testMember))
                 .andExpect(status().is(200))
                 .andExpect(jsonPath("$.returnState").value("OK"))
-                .andExpect(jsonPath("$.returnData.member.name").value("_after"))
-                //.andDo(print())
+                .andExpect(jsonPath("$.returnData.model.name").value("_after"))
+                        //.andDo(print())
                 .andReturn();
     }
 
@@ -118,15 +118,16 @@ public class MemberControllerTest extends SpringWebTestHelper {
         mockMvc.perform(delete("/member/disable").sessionAttr("loginMember", testMember)
                 .contentType(MediaType.APPLICATION_JSON).content(request)
                 .accept(MediaType.APPLICATION_JSON)) //执行请求
-                .andExpect(jsonPath("$.returnState").value("OK"))
                 //.andDo(print())
+                .andExpect(jsonPath("$.returnState").value("OK"))
+
                 .andReturn();
         mockMvc.perform(
                 get("/member/" + testMember.getMemberId()).sessionAttr("loginMember", testMember))
                 .andExpect(status().is(200))
                 .andExpect(jsonPath("$.returnState").value("OK"))
-                .andExpect(jsonPath("$.returnData.member.status").value(ApplicationConstant.STATUS_DIE))
-                //.andDo(print())
+                .andExpect(jsonPath("$.returnData.model.status").value(ApplicationConstant.STATUS_DIE))
+                        //.andDo(print())
                 .andReturn();
     }
 
@@ -137,13 +138,13 @@ public class MemberControllerTest extends SpringWebTestHelper {
                 .contentType(MediaType.APPLICATION_JSON).content(request)
                 .accept(MediaType.APPLICATION_JSON)) //执行请求
                 .andExpect(jsonPath("$.returnState").value("OK"))
-                //.andDo(print())
+                        //.andDo(print())
                 .andReturn();
         mockMvc.perform(
                 get("/member/" + testMember.getMemberId()).sessionAttr("loginMember", testMember))
                 .andExpect(status().is(200))
                 .andExpect(jsonPath("$.returnState").value("ERROR"))
-                //.andDo(print())
+                        //.andDo(print())
                 .andReturn();
     }
 

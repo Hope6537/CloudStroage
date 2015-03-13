@@ -66,4 +66,9 @@ public class Member extends BasicModel {
     public static Member getInstanceOfTest() {
         return new Member("_test", "_testUsername", "_testPassword", ApplicationConstant.STATUS_NORMAL);
     }
+
+    @Override
+    public String commonId() {
+        return getMemberId();
+    }
 }
