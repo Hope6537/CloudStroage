@@ -71,9 +71,10 @@
                 <property name="allowUrls">
                     <list>
                         <!-- 如果请求中包含以下路径，则不进行拦截 -->
-                        <value>/static</value>
-                        <value>/login</value>
+                        <value>static</value>
                         <value>/page/toIndex</value>
+                        <value>/page/toLogin</value>
+                        <value>/page/login</value>
                     </list>
                 </property>
             </bean>
@@ -90,6 +91,8 @@
             </list>
         </property>
     </bean>
+
+    <mvc:resources mapping="/static/**" location="/static/"/>
 
     <!-- TODO:设置文件大小 -->
     <bean id="multipartResolver"

@@ -47,12 +47,17 @@ public class SpringLoginFilter extends HandlerInterceptorAdapter {
         HttpSession session = request.getSession();
         Member member = (Member) session.getAttribute("loginMember");
         if (ApplicationConstant.notNull(member)) {
+            /*Cookie[] cookies = request.getCookies();
+            for (Cookie cookie : cookies) {
+                if (cookie.getDomain().equals("cloud.hope6537.org") && cookie.getName().equals("CloudStroageLoginValidate")) {
+                    return cookie.getValue().equals(member.getPassword());
+                }
+            }*/
             return true;
         } else {
-            response.sendRedirect("/" + ApplicationConstant.APPLICATION_NAME + "/page/toIndex");
+            response.sendRedirect("/" + ApplicationConstant.APPLICATION_NAME + "/page/toLogin");
             return false;
         }
-
     }
 
 

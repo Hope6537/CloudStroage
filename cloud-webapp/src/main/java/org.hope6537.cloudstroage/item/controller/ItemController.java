@@ -12,13 +12,13 @@ import org.hope6537.cloudstroage.item.model.ItemInfo;
 import org.hope6537.cloudstroage.item.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Created by Hope6537 on 2015/3/13.
  */
-@RestController
+@Controller
 @RequestMapping("/item")
 public class ItemController extends BasicController<ItemInfo, ItemDao, ItemService> {
 

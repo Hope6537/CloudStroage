@@ -10,7 +10,6 @@ import org.hamcrest.CoreMatchers;
 import org.hope6537.cloudstroage.member.model.Member;
 import org.hope6537.cloudstroage.utils.SpringWebTestHelper;
 import org.junit.Assert;
-import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.test.web.servlet.MvcResult;
@@ -25,7 +24,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 public class PageControllerTest extends SpringWebTestHelper {
 
-    @Test
     public void testView() throws Exception {
         //mockMvc.perform 执行一个请求
         MvcResult result = mockMvc.perform(
@@ -40,7 +38,6 @@ public class PageControllerTest extends SpringWebTestHelper {
                 .andReturn();
     }
 
-    @Test
     public void testNormal() throws Exception {
         //测试普通控制器
         mockMvc.perform(get("/user/{id}", 1)) //执行请求
@@ -51,7 +48,6 @@ public class PageControllerTest extends SpringWebTestHelper {
                 .andDo(print()); //输出MvcResult到控制台
     }
 
-    @Test
     public void test404() throws Exception {
         //找不到控制器，404测试
         MvcResult result = mockMvc.perform(get("/user2/{id}", 1)) //执行请求
@@ -61,14 +57,12 @@ public class PageControllerTest extends SpringWebTestHelper {
         Assert.assertNull(result.getModelAndView()); //自定义断言
     }
 
-    @Test
     public void testValidation() throws Exception {
         MvcResult result = mockMvc.perform(get("/user/{id}", 1))//执行请求
                 .andReturn(); //返回MvcResult
         Assert.assertNotNull(result.getModelAndView().getModel().get("user")); //自定义断言
     }
 
-    @Test
     /**
      * 验证请求参数绑定到模型数据及Flash属性
      */
@@ -81,7 +75,6 @@ public class PageControllerTest extends SpringWebTestHelper {
                 .andExpect(view().name("redirect:/user")); //验证视图
     }
 
-    @Test
     public void testFileUpload() throws Exception {
         //文件上传
         byte[] bytes = new byte[]{1, 2};
@@ -90,7 +83,6 @@ public class PageControllerTest extends SpringWebTestHelper {
                 .andExpect(view().name("success")); //验证视图
     }
 
-    @Test
     public void testJson() throws Exception {
         String requestBody = "{\"id\":1, \"name\":\"zhang\"}";
         mockMvc.perform(post("/user")
@@ -109,7 +101,6 @@ public class PageControllerTest extends SpringWebTestHelper {
         Assert.assertTrue(HttpMessageNotReadableException.class.isAssignableFrom(result.getResolvedException().getClass()));//错误的请求内容体
     }
 
-    @Test
     public void testException() throws Exception {
         //异常处理
         MvcResult result = mockMvc.perform(get("/user/exception")) //执行请求
@@ -119,7 +110,6 @@ public class PageControllerTest extends SpringWebTestHelper {
         Assert.assertTrue(IllegalArgumentException.class.isAssignableFrom(result.getResolvedException().getClass()));
     }
 
-    @Test
     public void testStatic() throws Exception {
         //静态资源
         mockMvc.perform(get("/static/app.js")) //执行请求
@@ -130,7 +120,6 @@ public class PageControllerTest extends SpringWebTestHelper {
                 .andExpect(status().isNotFound());  //验证状态码404
     }
 
-    @Test
     /**
      * 此处注意request().asyncResult一定是在第一次请求发出；然后第二次通过asyncDispatch进行异步请求。
      */
@@ -158,7 +147,6 @@ public class PageControllerTest extends SpringWebTestHelper {
                 .andExpect(jsonPath("$.id").value(1));
     }
 
-    @Test
     public void testFilter() throws Exception {
         //mockMvc = webAppContextSetup(wac).addFilter(Filter, "/*").build();
         mockMvc.perform(get("/user/1"))

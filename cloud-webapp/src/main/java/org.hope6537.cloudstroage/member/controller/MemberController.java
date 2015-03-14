@@ -12,13 +12,13 @@ import org.hope6537.cloudstroage.member.model.Member;
 import org.hope6537.cloudstroage.member.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Created by Hope6537 on 2015/3/13.
  */
-@RestController
+@Controller
 @RequestMapping("/member")
 public class MemberController extends BasicController<Member, MemberDao, MemberService> {
 
@@ -31,7 +31,7 @@ public class MemberController extends BasicController<Member, MemberDao, MemberS
 
     @Override
     public String toPage() {
-        return BASEPATH + "/member/manage";
+        return BASEPATH + "member/manage";
     }
 
 }

@@ -3,18 +3,13 @@
   ~ JiLin Province,China
   ~ JiChuang CloudStroage is a maven webapp using Hadoop Distributed File System for storage ' s Cloud Stroage System
   --%>
-
-<%--
-  Created by IntelliJ IDEA.
-  User: Hope6537
-  Date: 2015/3/12
-  Time: 20:16
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
-    <title></title>
+    <title>登录</title>
+    <jsp:include page="template/template_head.jsp"/>
 </head>
 <body>
 CloudStroage 云盘 Version 0.2-SNAPSHOT<br/>
@@ -22,8 +17,15 @@ CloudStroage 云盘 Version 0.2-SNAPSHOT<br/>
 <div id="login">
     用户名:<input type="text" id="username"/><br/>
     密码:<input type="password" id="password"/><br/>
-    <button type="button" id="loginButton" value="登录"/>
+    <button type="button" id="loginButton">登录</button>
 </div>
-
+<jsp:include page="template/template_script.jsp"/>
+<script src="<c:url value="/static/admin/js/login.js"/>"></script>
+<script>
+    $(document).ready(function () {
+        Login.init();
+        console.log("init")
+    });
+</script>
 </body>
 </html>
