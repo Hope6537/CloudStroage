@@ -38,7 +38,7 @@ public class HanderServiceImpl extends BasicServiceImpl<Hander, HanderDao> imple
 
     @Override
     public boolean updateFolderName(Hander hander, String newName) {
-        if (!hander.isAFolder()) {
+        if (!hander.checkFolder()) {
             hander.setFileName(newName);
             return this.updateEntry(hander);
         }
@@ -58,7 +58,7 @@ public class HanderServiceImpl extends BasicServiceImpl<Hander, HanderDao> imple
 
     @Override
     public boolean deleteFolder(Hander hander) {
-        if (!hander.isAFolder()) {
+        if (!hander.checkFolder()) {
             return this.deleteEntry(hander);
         }
         Set<String> ids = new HashSet<>();
@@ -69,7 +69,7 @@ public class HanderServiceImpl extends BasicServiceImpl<Hander, HanderDao> imple
 
     @Override
     public Hander getSonHanderToHander(Hander hander) {
-        if (!hander.isAFolder()) {
+        if (!hander.checkFolder()) {
             return hander;
         }
         Hander queryHander = new Hander();
@@ -82,7 +82,7 @@ public class HanderServiceImpl extends BasicServiceImpl<Hander, HanderDao> imple
 
     @Override
     public List<Hander> getHanderListByParentHander(Hander hander) {
-        if (!hander.isAFolder()) {
+        if (!hander.checkFolder()) {
             return null;
         }
         Hander queryHander = new Hander();
@@ -93,7 +93,7 @@ public class HanderServiceImpl extends BasicServiceImpl<Hander, HanderDao> imple
 
     @Override
     public synchronized void getSonHanderIds(Hander hander, Set<String> set) {
-        if (!hander.isAFolder()) {
+        if (!hander.checkFolder()) {
             set.add(hander.getHanderId());
         }
         set.add(hander.getHanderId());

@@ -36,10 +36,17 @@ public class Hander extends BasicModel {
     public Hander() {
     }
 
-    public boolean isAFolder() {
+    public boolean checkFolder() {
         return getFolder().equals(ApplicationConstant.FOLDER);
     }
 
+    public static Hander getInstanceRootOfTest() {
+        Hander root =
+                new Hander("-1", "1", "-1", "/", "/", ApplicationConstant.STATUS_NORMAL, ApplicationConstant.FOLDER);
+        root.setHanderId("1");
+        return root;
+
+    }
 
     public static Hander getInstanceFolderOfTest() {
         return new Hander("-1", "1", "1", "usr", null, ApplicationConstant.STATUS_NORMAL, ApplicationConstant.FOLDER);

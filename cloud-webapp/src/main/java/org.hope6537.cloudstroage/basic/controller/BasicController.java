@@ -53,6 +53,14 @@ public abstract class BasicController<Model extends BasicModel, Dao extends Basi
         return AjaxResponse.getInstanceByResult(ApplicationConstant.notNull(list)).addAttribute("list", list);
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/model")
+    @ResponseBody
+    protected AjaxResponse getModelListByModel(@RequestBody Model model) {
+        logger.debug(typeClass.toString());
+        List<Model> list = service.getEntryListByEntry(model);
+        return AjaxResponse.getInstanceByResult(ApplicationConstant.notNull(list)).addAttribute("list", list);
+    }
+
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     @ResponseBody
     public AjaxResponse getSingleModel(@PathVariable String id) {

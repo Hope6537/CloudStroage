@@ -36,6 +36,10 @@ public class PageController {
         return ApplicationConstant.ADMINPATH + "login";
     }
 
+    @RequestMapping(value = "toTemplate")
+    public String toTemplate() {
+        return ApplicationConstant.ADMINPATH + "/template/template_page";
+    }
 
     @RequestMapping(value = "login", method = RequestMethod.POST)
     @ResponseBody
