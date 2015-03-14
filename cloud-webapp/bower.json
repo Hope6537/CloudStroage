@@ -22,6 +22,14 @@
     "smalot-bootstrap-datetimepicker": "2.3.1",
     "ckeditor": "#full/4.4.5",
     "fontawesome": "4.1.0",
-    "echarts": "2.2.1"
+    "echarts": "2.2.1",
+    "bootstrap-gtreetable": "v2.2.1-alpha",
+    "flot": "v0.8.3",
+    "jqvmap": "jqvmap_v1.1",
+    "fullcalendar": "v2.3.1",
+    "fancybox": "v2.1.5",
+    "blueimp-file-upload": "9.9.3",
+    "x-editable": "1.5.1",
+    "bootstrap3-wysihtml5-bower": "0.3.4-wip"
   }
 }
