@@ -4,12 +4,13 @@
  * JiChuang CloudStroage is a maven webapp using Hadoop Distributed File System for storage ' s Cloud Stroage System
  */
 
-package org.hope6537.cloudstroage.member.controller;
+package org.hope6537.cloudstroage.item.controller;
 
 import com.alibaba.fastjson.JSON;
 import org.hope6537.cloudstroage.basic.context.ApplicationConstant;
+import org.hope6537.cloudstroage.item.model.ItemInfo;
+import org.hope6537.cloudstroage.item.service.ItemService;
 import org.hope6537.cloudstroage.member.model.Member;
-import org.hope6537.cloudstroage.member.service.MemberService;
 import org.hope6537.cloudstroage.utils.SpringWebTestHelper;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,24 +28,26 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Created by Hope6537 on 2015/3/12.
  */
-public class MemberControllerTest extends SpringWebTestHelper {
+public class ItemControllerTest extends SpringWebTestHelper {
 
     @Autowired
-    private MemberService memberService;
+    private ItemService itemService;
 
-    private Member testMember;
+    private ItemInfo itemInfo;
+    private Member loginMember;
 
     @Before
     public void preData() {
-        testMember = Member.getInstanceOfTest();
-        assertTrue(memberService.addEntry(testMember));
+        loginMember = Member.getInstanceOfTest();
+        itemInfo = ItemInfo.getInstanceOfTest();
+        assertTrue(itemService.addEntry(itemInfo));
     }
 
     @Test
     public void testBlocked() throws Exception {
         MvcResult result = mockMvc.perform(
-                get("/member/toPage"))
-                //.andDo(print())
+                get("/item/toPage"))
+                .andDo(print())
                 .andReturn();
         assertEquals(result.getResponse().getRedirectedUrl(), ("/CloudStroage/page/toIndex"));
         assertEquals(result.getResponse().getStatus(), 302);
@@ -53,9 +56,9 @@ public class MemberControllerTest extends SpringWebTestHelper {
     @Test
     public void testPage() throws Exception {
         MvcResult result = mockMvc.perform(
-                get("/member/toPage")
-                        .sessionAttr("loginMember", testMember))
-                //.andDo(print())
+                get("/item/toPage")
+                        .sessionAttr("loginMember", loginMember))
+                .andDo(print())
                 .andReturn();
         assertTrue(result.getResponse().getStatus() == 200);
     }
@@ -63,101 +66,92 @@ public class MemberControllerTest extends SpringWebTestHelper {
     @Test
     public void testGetNormal() throws Exception {
         mockMvc.perform(
-                get("/member").sessionAttr("loginMember", testMember))
+                get("/item").sessionAttr("loginMember", loginMember))
                 .andExpect(status().is(200))
                 .andExpect(jsonPath("$.returnState").value("OK"))
-                        //.andDo(print())
-                .andReturn();
-    }
-
-    @Test
-    public void testGetModel() throws Exception {
-        String request = JSON.toJSONString(testMember);
-        mockMvc.perform(
-                get("/member/model").sessionAttr("loginMember", testMember)
-                        .contentType(MediaType.APPLICATION_JSON).content(request))
                 .andDo(print())
-                .andExpect(status().is(200))
-                .andExpect(jsonPath("$.returnState").value("OK"))
                 .andReturn();
     }
 
     @Test
     public void testGetSingle() throws Exception {
         mockMvc.perform(
-                get("/member/" + testMember.getMemberId()).sessionAttr("loginMember", testMember))
+                get("/item/" + itemInfo.getItemId())
+                        .sessionAttr("loginMember", loginMember))
                 .andExpect(status().is(200))
                 .andExpect(jsonPath("$.returnState").value("OK"))
-                .andExpect(jsonPath("$.returnData.model.memberId").value(testMember.getMemberId()))
-                        //.andDo(print())
+                .andExpect(jsonPath("$.returnData.model.itemId").value(itemInfo.getItemId()))
+                .andDo(print())
                 .andReturn();
 
     }
 
     @Test
     public void testAddMember() throws Exception {
-        String request = JSON.toJSONString(testMember);
-        mockMvc.perform(post("/member").sessionAttr("loginMember", testMember)
+        String request = JSON.toJSONString(itemInfo);
+        mockMvc.perform(post("/item").sessionAttr("loginMember", loginMember)
                 .contentType(MediaType.APPLICATION_JSON).content(request)
                 .accept(MediaType.APPLICATION_JSON)) //执行请求
                 .andExpect(jsonPath("$.returnState").value("OK"))
-                        //.andDo(print())
+                .andDo(print())
                 .andReturn();
     }
 
     @Test
     public void testUpdateMember() throws Exception {
-        testMember.setName("_after");
-        String request = JSON.toJSONString(testMember);
-        mockMvc.perform(put("/member").sessionAttr("loginMember", testMember)
+        itemInfo.setAbsolutePath("_after");
+        String request = JSON.toJSONString(itemInfo);
+        mockMvc.perform(put("/item").sessionAttr("loginMember", loginMember)
                 .contentType(MediaType.APPLICATION_JSON).content(request)
                 .accept(MediaType.APPLICATION_JSON)) //执行请求
                 .andExpect(jsonPath("$.returnState").value("OK"))
-                        //.andDo(print())
+                .andDo(print())
                 .andReturn();
         mockMvc.perform(
-                get("/member/" + testMember.getMemberId()).sessionAttr("loginMember", testMember))
+                get("/item/" + itemInfo.getItemId())
+                        .sessionAttr("loginMember", loginMember))
                 .andExpect(status().is(200))
                 .andExpect(jsonPath("$.returnState").value("OK"))
-                .andExpect(jsonPath("$.returnData.model.name").value("_after"))
-                        //.andDo(print())
+                .andExpect(jsonPath("$.returnData.model.absolutePath").value("_after"))
+                .andDo(print())
                 .andReturn();
     }
 
     @Test
     public void testDisableMember() throws Exception {
-        testMember.setName("_after");
-        String request = JSON.toJSONString(testMember);
-        mockMvc.perform(delete("/member/disable").sessionAttr("loginMember", testMember)
+        loginMember.setName("_after");
+        String request = JSON.toJSONString(itemInfo);
+        mockMvc.perform(delete("/item/disable").sessionAttr("loginMember", loginMember)
                 .contentType(MediaType.APPLICATION_JSON).content(request)
                 .accept(MediaType.APPLICATION_JSON)) //执行请求
-                //.andDo(print())
+                .andDo(print())
                 .andExpect(jsonPath("$.returnState").value("OK"))
-
                 .andReturn();
         mockMvc.perform(
-                get("/member/" + testMember.getMemberId()).sessionAttr("loginMember", testMember))
+                get("/item/" + itemInfo.getItemId())
+                        .sessionAttr("loginMember", loginMember))
                 .andExpect(status().is(200))
                 .andExpect(jsonPath("$.returnState").value("OK"))
                 .andExpect(jsonPath("$.returnData.model.status").value(ApplicationConstant.STATUS_DIE))
-                        //.andDo(print())
+                .andDo(print())
                 .andReturn();
     }
 
     @Test
     public void testDeleteMember() throws Exception {
-        String request = JSON.toJSONString(testMember);
-        mockMvc.perform(delete("/member/delete").sessionAttr("loginMember", testMember)
+        String request = JSON.toJSONString(itemInfo);
+        mockMvc.perform(delete("/item/delete").sessionAttr("loginMember", loginMember)
                 .contentType(MediaType.APPLICATION_JSON).content(request)
                 .accept(MediaType.APPLICATION_JSON)) //执行请求
                 .andExpect(jsonPath("$.returnState").value("OK"))
-                        //.andDo(print())
+                .andDo(print())
                 .andReturn();
         mockMvc.perform(
-                get("/member/" + testMember.getMemberId()).sessionAttr("loginMember", testMember))
+                get("/item/" + itemInfo.getItemId())
+                        .sessionAttr("loginMember", loginMember))
                 .andExpect(status().is(200))
                 .andExpect(jsonPath("$.returnState").value("ERROR"))
-                        //.andDo(print())
+                .andDo(print())
                 .andReturn();
     }
 

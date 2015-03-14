@@ -4,12 +4,13 @@
  * JiChuang CloudStroage is a maven webapp using Hadoop Distributed File System for storage ' s Cloud Stroage System
  */
 
-package org.hope6537.cloudstroage.member.controller;
+package org.hope6537.cloudstroage.hander.controller;
 
 import com.alibaba.fastjson.JSON;
 import org.hope6537.cloudstroage.basic.context.ApplicationConstant;
+import org.hope6537.cloudstroage.hander.model.Hander;
+import org.hope6537.cloudstroage.hander.service.HanderService;
 import org.hope6537.cloudstroage.member.model.Member;
-import org.hope6537.cloudstroage.member.service.MemberService;
 import org.hope6537.cloudstroage.utils.SpringWebTestHelper;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,24 +28,53 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Created by Hope6537 on 2015/3/12.
  */
-public class MemberControllerTest extends SpringWebTestHelper {
+public class HanderControllerTest extends SpringWebTestHelper {
 
     @Autowired
-    private MemberService memberService;
+    private HanderService handerService;
 
-    private Member testMember;
+    private Member loginMember;
+    private Hander hander;
+
+    private Hander root;
+    private Hander folder;
+    private Hander file1;
+    private Hander file2;
 
     @Before
     public void preData() {
-        testMember = Member.getInstanceOfTest();
-        assertTrue(memberService.addEntry(testMember));
+        loginMember = Member.getInstanceOfTest();
+        hander = Hander.getInstanceFileOfTest();
+        hander.resetHander(Hander.getInstanceRootOfTest());
+        assertTrue(handerService.addEntry(hander));
+    }
+
+
+    public void initHander() {
+        root = Hander.getInstanceFolderOfTest();
+        root.resetHander(Hander.getInstanceRootOfTest());
+        root.setFileName("_root");
+        root.setParentId("1");
+        assertTrue(handerService.addEntry(root));
+
+        folder = Hander.getInstanceFolderOfTest();
+        folder.resetHander(root);
+        assertTrue(handerService.addEntry(folder));
+
+        file1 = Hander.getInstanceFileOfTest();
+        file1.resetHander(folder);
+        assertTrue(handerService.addEntry(file1));
+
+        file2 = Hander.getInstanceFileOfTest();
+        file2.resetHander(folder);
+        assertTrue(handerService.addEntry(file2));
     }
 
     @Test
     public void testBlocked() throws Exception {
         MvcResult result = mockMvc.perform(
-                get("/member/toPage"))
-                //.andDo(print())
+                get("/hander/toPage"))
+                .andDo(print())
                 .andReturn();
         assertEquals(result.getResponse().getRedirectedUrl(), ("/CloudStroage/page/toIndex"));
         assertEquals(result.getResponse().getStatus(), 302);
@@ -53,9 +83,8 @@ public class MemberControllerTest extends SpringWebTestHelper {
     @Test
     public void testPage() throws Exception {
         MvcResult result = mockMvc.perform(
-                get("/member/toPage")
-                        .sessionAttr("loginMember", testMember))
-                //.andDo(print())
+                get("/hander/toPage").sessionAttr("loginMember", loginMember))
+                .andDo(print())
                 .andReturn();
         assertTrue(result.getResponse().getStatus() == 200);
     }
@@ -63,108 +92,99 @@ public class MemberControllerTest extends SpringWebTestHelper {
     @Test
     public void testGetNormal() throws Exception {
         mockMvc.perform(
-                get("/member").sessionAttr("loginMember", testMember))
+                get("/hander").sessionAttr("loginMember", loginMember))
                 .andExpect(status().is(200))
                 .andExpect(jsonPath("$.returnState").value("OK"))
-                        //.andDo(print())
-                .andReturn();
-    }
-
-    @Test
-    public void testGetModel() throws Exception {
-        String request = JSON.toJSONString(testMember);
-        mockMvc.perform(
-                get("/member/model").sessionAttr("loginMember", testMember)
-                        .contentType(MediaType.APPLICATION_JSON).content(request))
                 .andDo(print())
-                .andExpect(status().is(200))
-                .andExpect(jsonPath("$.returnState").value("OK"))
                 .andReturn();
     }
 
     @Test
     public void testGetSingle() throws Exception {
         mockMvc.perform(
-                get("/member/" + testMember.getMemberId()).sessionAttr("loginMember", testMember))
+                get("/hander/" + hander.getHanderId())
+                        .sessionAttr("loginMember", loginMember))
                 .andExpect(status().is(200))
                 .andExpect(jsonPath("$.returnState").value("OK"))
-                .andExpect(jsonPath("$.returnData.model.memberId").value(testMember.getMemberId()))
-                        //.andDo(print())
+                .andExpect(jsonPath("$.returnData.model.handerId").value(hander.getHanderId()))
+                .andDo(print())
                 .andReturn();
 
     }
 
     @Test
     public void testAddMember() throws Exception {
-        String request = JSON.toJSONString(testMember);
-        mockMvc.perform(post("/member").sessionAttr("loginMember", testMember)
+        String request = JSON.toJSONString(hander);
+        mockMvc.perform(post("/hander").sessionAttr("loginMember", loginMember)
                 .contentType(MediaType.APPLICATION_JSON).content(request)
                 .accept(MediaType.APPLICATION_JSON)) //执行请求
+                .andDo(print())
                 .andExpect(jsonPath("$.returnState").value("OK"))
-                        //.andDo(print())
                 .andReturn();
     }
 
     @Test
     public void testUpdateMember() throws Exception {
-        testMember.setName("_after");
-        String request = JSON.toJSONString(testMember);
-        mockMvc.perform(put("/member").sessionAttr("loginMember", testMember)
+        hander.setFileName("_after");
+        String request = JSON.toJSONString(hander);
+        mockMvc.perform(put("/hander").sessionAttr("loginMember", loginMember)
                 .contentType(MediaType.APPLICATION_JSON).content(request)
                 .accept(MediaType.APPLICATION_JSON)) //执行请求
+                .andDo(print())
                 .andExpect(jsonPath("$.returnState").value("OK"))
-                        //.andDo(print())
                 .andReturn();
         mockMvc.perform(
-                get("/member/" + testMember.getMemberId()).sessionAttr("loginMember", testMember))
+                get("/hander/" + hander.getHanderId())
+                        .sessionAttr("loginMember", loginMember))
+                .andDo(print())
                 .andExpect(status().is(200))
                 .andExpect(jsonPath("$.returnState").value("OK"))
-                .andExpect(jsonPath("$.returnData.model.name").value("_after"))
-                        //.andDo(print())
+                .andExpect(jsonPath("$.returnData.model.fileName").value("_after"))
                 .andReturn();
     }
 
     @Test
     public void testDisableMember() throws Exception {
-        testMember.setName("_after");
-        String request = JSON.toJSONString(testMember);
-        mockMvc.perform(delete("/member/disable").sessionAttr("loginMember", testMember)
+        String request = JSON.toJSONString(hander);
+        mockMvc.perform(delete("/hander/disable").sessionAttr("loginMember", loginMember)
                 .contentType(MediaType.APPLICATION_JSON).content(request)
                 .accept(MediaType.APPLICATION_JSON)) //执行请求
-                //.andDo(print())
+                .andDo(print())
                 .andExpect(jsonPath("$.returnState").value("OK"))
 
                 .andReturn();
         mockMvc.perform(
-                get("/member/" + testMember.getMemberId()).sessionAttr("loginMember", testMember))
+                get("/hander/" + hander.getHanderId())
+                        .sessionAttr("loginMember", loginMember))
                 .andExpect(status().is(200))
                 .andExpect(jsonPath("$.returnState").value("OK"))
                 .andExpect(jsonPath("$.returnData.model.status").value(ApplicationConstant.STATUS_DIE))
-                        //.andDo(print())
+                .andDo(print())
                 .andReturn();
     }
 
     @Test
     public void testDeleteMember() throws Exception {
-        String request = JSON.toJSONString(testMember);
-        mockMvc.perform(delete("/member/delete").sessionAttr("loginMember", testMember)
+        String request = JSON.toJSONString(hander);
+        mockMvc.perform(delete("/hander/delete").sessionAttr("loginMember", loginMember)
                 .contentType(MediaType.APPLICATION_JSON).content(request)
                 .accept(MediaType.APPLICATION_JSON)) //执行请求
                 .andExpect(jsonPath("$.returnState").value("OK"))
-                        //.andDo(print())
+                .andDo(print())
                 .andReturn();
         mockMvc.perform(
-                get("/member/" + testMember.getMemberId()).sessionAttr("loginMember", testMember))
+                get("/hander/" + hander.getHanderId())
+                        .sessionAttr("loginMember", loginMember))
                 .andExpect(status().is(200))
                 .andExpect(jsonPath("$.returnState").value("ERROR"))
-                        //.andDo(print())
+                .andDo(print())
                 .andReturn();
     }
 
    /* @Test
     public void testFilter() throws Exception {
         //mockMvc = webAppContextSetup(wac).addFilter(Filter, "*//*").build();
-        mockMvc.perform(get("/member/toPage"))
+        mockMvc.perform(get("/hander/toPage"))
                 .andExpect(request().attribute("filter", true));
     }*/
 }
