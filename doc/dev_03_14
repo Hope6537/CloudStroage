@@ -1,0 +1,80 @@
+终于到了一个最恶心的问题了
+
+那就是从客户端浏览器上传文件到服务端,然后再从服务端同步到集群中
+
+[笨方法1 采取同步的方法]
+    ->dropzone.js 来进行ajax文件上传
+    ->在一个文件上传成功之后，我们会对这个文件进行保存，即将其信息写入到iteminfo中去
+        ->但是用户在前面所显示的仅仅只是打了勾勾。我们这个时候还没有将这个文件和他进行关联，即hander类的操作。
+        ->所以在这个文件上传成功后，并且iteminfou也成功添加了，万事大成。
+        ->但是我们需要响应啊，不然dropzone插件怎么工作呢？
+        ->因此需要返回一个AjaxResponse，这个东西不简单啊，他将返回一个iteminfo的Id
+        ->也就是我们刚刚添加完成的id
+    ->这个时候我们把这个id放入到一个开的足够大的数组
+        ->或者我们干脆限制用户一次上传几个文件
+        ->这些id都在一个前端的全局array里保存，在js中，如果有必要的话甚至可以加密
+    ->全部上传完毕后，用户会点击模态窗口下的完成
+        ->这个时候，我们会根据item的Id和Member的Id来操作关系对象
+        ->他们的parentId就在页面上
+        ->status是上传到服务器
+        ->fileName就是原文件名
+        ->type是文件
+        ->fullPath是parent的fullPath+'/'+文件名
+        ->这样就大功告成了！
+    ->你以为这样就完事了么？太天真了！
+        ->在服务器启动的时候，在后台悄悄地开一个进程
+        ->这个进程里面会含有一个阻塞队列,BlockQuene<ItemInfo>
+        ->这个进程会TimeUnit.sleep(30分钟) <-测试时30秒
+        ->每隔一段时间来检查这个队列是否为空
+            ->如果为空，那么将会接着休眠
+            ->如果不为空，那么将会把itemInfo.getServerPath取出来
+            ->然后呢？
+            ->我的HdfsUtils就大放光彩啦~！
+            ->hdfsUtil.put(serverPath,hdfsPath);
+                ->如果返回值为true,那么踢出队列
+                    ->并会执行一个sql 把iteminfo的信息更新
+                ->否则，踢出队列后回到队尾重新排队
+
+[笨方法2 一边写到server中，一边写到hdfs里]
+    ->在之前上传完文件后，用户还没点确认的时候
+    ->大家请注意到这一行
+     multipartFile.getInputStream();
+    ->我们可以得到这个文件的输入流
+
+    再看hdfs部分源代码
+        涉及参数
+            FileSystem srcFS <- getLocal(conf)
+            FileSystem dstFS <- hdfsUtils.getFileSystem
+            Configuration conf <-configuration
+            Path src <- 文件源地址 <-[这个怎么拿？]
+            Path dst <- 目标地址 <-我们自己定义的
+            boolean overwrite <-是否覆盖 <-否，每个文件名都不一样
+
+        else {
+                //如果目标是文件
+                InputStream in = null;
+                OutputStream out = null;
+                try {
+                    //输入流
+                    in = srcFS.open(src);
+                    //输出流，同时是否覆盖
+                    out = dstFS.create(dst, overwrite);
+                    //然后获取输入，输出，配置文件,写入
+                    IOUtils.copyBytes(in, out, conf, true);
+                } catch (IOException e) {
+                    IOUtils.closeStream(out);
+                    IOUtils.closeStream(in);
+                    throw e;
+                }
+            }
+    ->所以我们知道得到要复制到的目标hdfs的path就可以了
+    ->但是有需要提供一个完整的文件的文件路径，所以服务器上还必须有这个的存储，那么实际上也就是上一个的变种
+    ->就是先存在服务器上，iteminfo写，然后通过这个服务的文件，获取二进制流，写入到hdfs
+    ->只不过这个是同步做的
+    ->虽然反应会慢一些，但是实现很简单
+        ->所以，当用户点击完成之前，文件已经在hdfs中保存了
+
+
+==================================
+到底怎么弄啊啊啊~
+
