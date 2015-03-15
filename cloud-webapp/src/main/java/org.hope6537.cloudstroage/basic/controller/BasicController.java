@@ -12,10 +12,12 @@ import org.hope6537.cloudstroage.basic.context.ApplicationConstant;
 import org.hope6537.cloudstroage.basic.dao.BasicDao;
 import org.hope6537.cloudstroage.basic.model.BasicModel;
 import org.hope6537.cloudstroage.basic.service.BasicService;
+import org.hope6537.cloudstroage.member.model.Member;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
@@ -34,6 +36,7 @@ public abstract class BasicController<Model extends BasicModel, Dao extends Basi
         this.service = service;
     }
 
+    @SuppressWarnings("unchecked")
     private final Class<Model> typeClass = (Class<Model>)
             ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 
@@ -73,7 +76,7 @@ public abstract class BasicController<Model extends BasicModel, Dao extends Basi
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public AjaxResponse addModel(@RequestBody(required = false) Model model) {
+    public AjaxResponse addModel(@RequestBody Model model) {
         if (ApplicationConstant.notNull(model)) {
             return AjaxResponse.getInstanceByResult(service.addEntry(model));
         }
@@ -105,6 +108,11 @@ public abstract class BasicController<Model extends BasicModel, Dao extends Basi
             return AjaxResponse.getInstanceByResult(service.deleteEntry(model));
         }
         return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN);
+    }
+
+
+    public Member getLoginMember(HttpServletRequest request) {
+        return (Member) request.getSession().getAttribute("loginMember");
     }
 
 }
