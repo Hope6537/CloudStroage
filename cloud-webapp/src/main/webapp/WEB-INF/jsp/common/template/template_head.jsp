@@ -17,20 +17,20 @@
 <link href="<c:url value="/static/common/bower_plugins/bootstrap-gtreetable/dist/bootstrap-gtreetable.min.css"/>" rel="stylesheet" type="text/css"/>
 <link href="<c:url value="/static/common/bower_plugins/simple-line-icons/css/simple-line-icons.css"/>" rel="stylesheet" type="text/css"/>
 <link href="<c:url value="/static/common/bower_plugins/bootstrap/dist/css/bootstrap.min.css"/>" rel="stylesheet" type="text/css"/>
-<link href="<c:url value="/static/common/global/plugins/uniform/css/uniform.default.min.css"/>" rel="stylesheet" type="text/css"/>
+<link href="<c:url value="/static/common/bower_plugins/hope6537-plugin/global/plugins/uniform/css/uniform.default.min.css"/>" rel="stylesheet" type="text/css"/>
 <link href="<c:url value="/static/common/bower_plugins/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css"/>" rel="stylesheet" type="text/css"/>
 <link href="<c:url value="/static/common/bower_plugins/select2/select2.css"/>" rel="stylesheet" type="text/css"/>
 <link href="<c:url value="/static/common/bower_plugins/toastr/toastr.min.css"/>" rel="stylesheet" type="text/css"/>
 <!-- END GLOBAL MANDATORY STYLES -->
 <!-- BEGIN THEME STYLES -->
-<link href="<c:url value="/static/common/global/css/components.css"/>" rel="stylesheet" type="text/css"/>
-<link href="<c:url value="/static/common/global/css/plugins.css"/>" rel="stylesheet" type="text/css"/>
-<link href="<c:url value="/static/common/global/css/global.css"/>" rel="stylesheet" type="text/css"/>
-<link href="<c:url value="/static/common/layout/css/layout.css"/>" rel="stylesheet" type="text/css"/>
-<link href="<c:url value="/static/common/layout/css/custom.css"/>" rel="stylesheet" type="text/css"/>
-<link href="<c:url value="/static/common/layout/css/themes/darkblue.css"/>" rel="stylesheet" type="text/css"/>
+<link href="<c:url value="/static/common/bower_plugins/hope6537-plugin/global/css/components.css"/>" rel="stylesheet" type="text/css"/>
+<link href="<c:url value="/static/common/bower_plugins/hope6537-plugin/global/css/plugins.css"/>" rel="stylesheet" type="text/css"/>
+<link href="<c:url value="/static/common/bower_plugins/hope6537-plugin/global/css/global.css"/>" rel="stylesheet" type="text/css"/>
+<link href="<c:url value="/static/common/bower_plugins/hope6537-plugin/layout/css/layout.css"/>" rel="stylesheet" type="text/css"/>
+<link href="<c:url value="/static/common/bower_plugins/hope6537-plugin/layout/css/custom.css"/>" rel="stylesheet" type="text/css"/>
+<link href="<c:url value="/static/common/bower_plugins/hope6537-plugin/layout/css/themes/darkblue.css"/>" rel="stylesheet" type="text/css"/>
 <!-- END THEME STYLES -->
-<link href="<c:url value="/static/common/global/plugins/autoComplete/autoComplete.css"/>" rel="stylesheet" type="text/css"/>
+<link href="<c:url value="/static/common/bower_plugins/hope6537-plugin/global/plugins/autoComplete/autoComplete.css"/>" rel="stylesheet" type="text/css"/>
 <%--<link rel="shortcut icon" href="favicon.ico"/>--%>
 <base href="<%=request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()%><c:url value="/"/>"/>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
