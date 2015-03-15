@@ -118,7 +118,8 @@ public class HanderServiceTest extends SpringTestHelper {
         handerFile.resetHander(handerFolder);
         assertTrue(handerService.addEntry(handerFile));
 
-        assertTrue(handerService.updateFolderName(handerFolder, "tmp"));
+        handerFolder.setFileName("tmp");
+        assertTrue(handerService.updateFolderName(handerFolder));
 
         assertEquals(File.separator + "tmp", handerService.getEntryById(handerFolder.getHanderId()).getFullPath());
         assertEquals(File.separator + "tmp" + File.separator + "a.txt", handerService.getEntryById(handerFile.getHanderId()).getFullPath());

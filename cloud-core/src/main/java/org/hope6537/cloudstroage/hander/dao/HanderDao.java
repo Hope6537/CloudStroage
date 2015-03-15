@@ -24,6 +24,8 @@ public interface HanderDao extends BasicDao<Hander> {
 
     int deleteMultiHander(@Param("idSet") Set<String> idSet);
 
+    int disableMultiHander(@Param("idSet") Set<String> idSet);
+
     List<Hander> getHanderListByPath(@Param("memberId") String memberId, @Param("fullPath") String fullPath);
 
 }

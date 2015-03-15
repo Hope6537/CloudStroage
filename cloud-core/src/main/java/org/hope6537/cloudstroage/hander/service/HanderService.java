@@ -21,9 +21,11 @@ public interface HanderService extends BasicService<Hander, HanderDao> {
 
     public void getSonHanderIds(Hander hander, Set<String> list);
 
-    public boolean updateFolderName(Hander hander, String newName);
+    public boolean updateFolderName(Hander hander);
 
     public boolean deleteFolder(Hander hander);
+
+    public boolean disableFolder(Hander hander);
 
     public Hander getSonHanderToHander(Hander hander);
 

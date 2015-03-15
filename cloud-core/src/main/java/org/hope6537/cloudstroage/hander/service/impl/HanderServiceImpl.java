@@ -37,16 +37,14 @@ public class HanderServiceImpl extends BasicServiceImpl<Hander, HanderDao> imple
 
 
     @Override
-    public boolean updateFolderName(Hander hander, String newName) {
+    public boolean updateFolderName(Hander hander) {
         if (!hander.checkFolder()) {
-            hander.setFileName(newName);
             return this.updateEntry(hander);
         }
         List<Hander> sonHanderList = getHanderListByParentHander(hander);
-        hander.setFileName(newName);
         hander.resetHander(this.getEntryById(hander.getParentId()));
         sonHanderList.forEach((sonHander) -> sonHander.resetHander(hander));
-        sonHanderList.forEach((sonHander) -> this.updateFolderName(sonHander, sonHander.getFileName()));
+        sonHanderList.forEach((sonHander) -> this.updateFolderName(sonHander));
         List<String> names = new ArrayList<>();
         List<String> words = sonHanderList
                 .stream()
@@ -68,6 +66,16 @@ public class HanderServiceImpl extends BasicServiceImpl<Hander, HanderDao> imple
     }
 
     @Override
+    public boolean disableFolder(Hander hander) {
+        if (!hander.checkFolder()) {
+            return this.disableEntry(hander);
+        }
+        Set<String> ids = new HashSet<>();
+        getSonHanderIds(hander, ids);
+        return dao.disableMultiHander(ids) == ids.size();
+    }
+
+    @Override
     public Hander getSonHanderToHander(Hander hander) {
         if (!hander.checkFolder()) {
             return hander;
@@ -82,7 +90,7 @@ public class HanderServiceImpl extends BasicServiceImpl<Hander, HanderDao> imple
 
     @Override
     public List<Hander> getHanderListByParentHander(Hander hander) {
-        if (!hander.checkFolder()) {
+        if (ApplicationConstant.notNull(hander.getFolder()) && !hander.checkFolder()) {
             return null;
         }
         Hander queryHander = new Hander();
@@ -115,6 +123,9 @@ public class HanderServiceImpl extends BasicServiceImpl<Hander, HanderDao> imple
 
     @Override
     public List<Hander> getHanderListByPath(String memberId, String fullPath) {
+        if (ApplicationConstant.isNull(fullPath)) {
+            fullPath = "root";
+        }
         return dao.getHanderListByPath(memberId, fullPath);
     }
 

@@ -40,6 +40,13 @@ public class Hander extends BasicModel {
         return getFolder().equals(ApplicationConstant.FOLDER);
     }
 
+    public static Hander getRootHander(String memberId) {
+        Hander hander = new Hander();
+        hander.setParentId("-1");
+        hander.setMemberId(memberId);
+        return hander;
+    }
+
     public static Hander getInstanceRootOfTest() {
         Hander root =
                 new Hander("-1", "1", "-1", "/", "/", ApplicationConstant.STATUS_NORMAL, ApplicationConstant.FOLDER);

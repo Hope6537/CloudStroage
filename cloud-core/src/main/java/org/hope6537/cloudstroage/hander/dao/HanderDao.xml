@@ -59,6 +59,14 @@
         </foreach>
     </delete>
 
+    <update id="disableMultiHander">
+        UPDATE hander SET status
+        ='不可用' WHERE
+        <foreach collection="idSet" item="id" separator=" or ">
+            handerId = #{id}
+        </foreach>
+    </update>
+
     <select id="getEntryById" resultType="org.hope6537.cloudstroage.hander.model.Hander">
         SELECT *
         FROM hander
