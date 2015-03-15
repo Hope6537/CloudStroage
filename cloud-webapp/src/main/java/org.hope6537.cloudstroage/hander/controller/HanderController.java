@@ -6,12 +6,14 @@
 
 package org.hope6537.cloudstroage.hander.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import org.hope6537.ajax.AjaxResponse;
 import org.hope6537.ajax.ReturnState;
 import org.hope6537.cloudstroage.basic.context.ApplicationConstant;
 import org.hope6537.cloudstroage.basic.controller.BasicController;
 import org.hope6537.cloudstroage.hander.dao.HanderDao;
 import org.hope6537.cloudstroage.hander.model.Hander;
+import org.hope6537.cloudstroage.hander.model.HanderWrapper;
 import org.hope6537.cloudstroage.hander.service.HanderService;
 import org.hope6537.cloudstroage.member.model.Member;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -91,16 +94,49 @@ public class HanderController extends BasicController<Hander, HanderDao, HanderS
     @ResponseBody
     public AjaxResponse getSonHanderByParent(@PathVariable String parentHanderId, HttpServletRequest request) {
         Member member = getLoginMember(request);
-        if (ApplicationConstant.notNull(parentHanderId) && ApplicationConstant.notNull(member)) {
+        if (ApplicationConstant.notNull(member)) {
+            if (ApplicationConstant.isNull(parentHanderId)) {
+                parentHanderId = "-1";
+            }
             Hander query = new Hander();
             query.setMemberId(member.getMemberId());
             query.setParentId(parentHanderId);
             query.setStatus(ApplicationConstant.STATUS_NORMAL);
-            List<Hander> list = service.getHanderListByParentHander(query);
-            return AjaxResponse.getInstanceByResult(ApplicationConstant.notNull(list)).addAttribute("list", list);
+            List<Hander> list = service.getEntryListByEntry(query);
+            if (ApplicationConstant.notNull(list)) {
+                return AjaxResponse.getInstanceByResult(true).addAttribute("list", list);
+            } else {
+                if (list != null && list.size() == 0) {
+                    return AjaxResponse.getInstanceByResult(true).addAttribute("empty", true).addReturnMsg("空文件夹");
+                }
+            }
+            return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN);
 
         }
         return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN);
+    }
+
+    @RequestMapping(value = "/{parentHanderId}/son/wrapper", method = RequestMethod.GET)
+    @ResponseBody
+    public String getSonHanderByParentWithWrapper(@PathVariable String parentHanderId, HttpServletRequest request) {
+        JSONObject object = new JSONObject();
+        List<HanderWrapper> wrappers = new ArrayList<>();
+        Member member = getLoginMember(request);
+        if (ApplicationConstant.notNull(member)) {
+            if (ApplicationConstant.isNull(parentHanderId)) {
+                parentHanderId = "-1";
+            }
+            Hander query = new Hander();
+            query.setMemberId(member.getMemberId());
+            query.setParentId(parentHanderId);
+            query.setStatus(ApplicationConstant.STATUS_NORMAL);
+            List<Hander> list = service.getEntryListByEntry(query);
+            if (ApplicationConstant.notNull(list)) {
+                list.forEach(hander -> wrappers.add(new HanderWrapper(hander)));
+            }
+        }
+        object.put("nodes", wrappers);
+        return object.toJSONString();
     }
 
     @RequestMapping(value = "/{fullPath}/path", method = RequestMethod.GET)

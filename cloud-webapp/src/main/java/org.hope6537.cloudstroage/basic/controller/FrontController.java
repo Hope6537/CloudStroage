@@ -6,6 +6,7 @@
 
 package org.hope6537.cloudstroage.basic.controller;
 
+import com.alibaba.fastjson.JSON;
 import org.hope6537.ajax.AjaxResponse;
 import org.hope6537.ajax.ReturnState;
 import org.hope6537.cloudstroage.basic.context.ApplicationConstant;
@@ -33,7 +34,11 @@ public class FrontController {
     private MemberService memberService;
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
-    public String index() {
+    public String index(HttpServletRequest request) {
+        Member member = getLoginMember(request);
+        if (ApplicationConstant.notNull(member)) {
+            request.setAttribute("member", JSON.toJSONString(member));
+        }
         return ApplicationConstant.FRONTPATH + "index";
     }
 
@@ -51,6 +56,8 @@ public class FrontController {
     @ResponseBody
     public AjaxResponse register(@RequestBody Member member) {
         if (ApplicationConstant.notNull(member)) {
+            String password = AESLocker.decrypt(member.getPassword());
+            member.setPassword(AESLocker.encrypt(password));
             member.setStatus(ApplicationConstant.STATUS_JUDGE);
             return AjaxResponse.getInstanceByResult(memberService.addEntry(member));
         }
@@ -63,17 +70,19 @@ public class FrontController {
     }
 
     @RequestMapping(value = "/validate", method = RequestMethod.POST)
+    @ResponseBody
     public AjaxResponse validate(@RequestBody Member member) {
         return AjaxResponse.getInstanceByResult(true);
     }
 
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @ResponseBody
     public AjaxResponse login(@RequestBody Member member, HttpServletRequest request, HttpServletResponse response) {
         if (ApplicationConstant.notNull(member)) {
             Member entry = memberService.getMemberByUsername(member.getUsername());
             if (ApplicationConstant.notNull(entry)) {
-                if (AESLocker.encrypt(member.getPassword()).equals(entry.getPassword())) {
+                if (AESLocker.encrypt(AESLocker.decrypt(member.getPassword())).equals(entry.getPassword())) {
                     HttpSession session = request.getSession();
                     session.setAttribute("loginMember", entry);
                     session.setAttribute("cookies", "enabled");
@@ -89,5 +98,8 @@ public class FrontController {
         return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN);
     }
 
+    public Member getLoginMember(HttpServletRequest request) {
+        return (Member) request.getSession().getAttribute("loginMember");
+    }
 
 }

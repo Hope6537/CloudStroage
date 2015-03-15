@@ -31,7 +31,9 @@
     "blueimp-file-upload": "9.9.3",
     "x-editable": "1.5.1",
     "pace": "1.0.2",
-    "dropzone": "v4.0.0"
+    "cryptojslib": "3.1.2",
+    "dropzone": "v4.0.0",
+    "bootstrap-contextmenu": "0.3.2"
   }
 }
 
