@@ -30,6 +30,8 @@
     "fancybox": "v2.1.5",
     "blueimp-file-upload": "9.9.3",
     "x-editable": "1.5.1",
-    "bootstrap3-wysihtml5-bower": "0.3.4-wip"
+    "pace": "1.0.2",
+    "dropzone": "v4.0.0"
   }
 }
+
