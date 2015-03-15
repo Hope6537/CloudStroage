@@ -45,6 +45,16 @@
         type="text/javascript"></script>
 <script src="<c:url value="/static/common/bower_plugins/bootstrap-gtreetable/dist/bootstrap-gtreetable.min.js"/>"
         type="text/javascript"></script>
+<script src="<c:url value="/static/common/bower_plugins/bootstrap-gtreetable/dist/languages/bootstrap-gtreetable.zh-CN.js"/>"
+        type="text/javascript"></script>
+<script src="<c:url value="/static/common/bower_plugins/bootstrap-contextmenu/bootstrap-contextmenu.js"/>"
+        type="text/javascript"></script>
+<script src="<c:url value="/static/common/bower_plugins/dropzone/dist/dropzone-amd-module.js"/>"
+        type="text/javascript"></script>
+<script src="<c:url value="/static/common/bower_plugins/cryptojslib/components/core-min.js"/>"
+        type="text/javascript"></script>
+<script src="<c:url value="/static/common/bower_plugins/cryptojslib/rollups/aes.js"/>"
+        type="text/javascript"></script>
 <!-- END CORE PLUGINS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="<c:url value="/static/common/global/scripts/metronic.js"/>" type="text/javascript"></script>
