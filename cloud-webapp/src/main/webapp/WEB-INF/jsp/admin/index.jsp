@@ -9,11 +9,11 @@
 <html>
 <head>
     <title>首页</title>
-    <jsp:include page="template/template_head.jsp"/>
+    <jsp:include page="../common/template/template_head.jsp"/>
 </head>
 <body>
 <h1>TODO://未来打算做个One Page形式的</h1>
-<jsp:include page="template/template_script.jsp"/>
+<jsp:include page="../common/template/template_script.jsp"/>
 
 </body>
 </html>

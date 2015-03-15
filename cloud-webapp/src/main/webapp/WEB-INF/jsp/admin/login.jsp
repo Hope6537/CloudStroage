@@ -9,7 +9,7 @@
 <html>
 <head>
     <title>登录</title>
-    <jsp:include page="template/template_head.jsp"/>
+    <jsp:include page="../common/template/template_head.jsp"/>
 </head>
 <body>
 CloudStroage 云盘 Version 0.2-SNAPSHOT<br/>
@@ -19,7 +19,7 @@ CloudStroage 云盘 Version 0.2-SNAPSHOT<br/>
     密码:<input type="password" id="password"/><br/>
     <button type="button" id="loginButton">登录</button>
 </div>
-<jsp:include page="template/template_script.jsp"/>
+<jsp:include page="../common/template/template_script.jsp"/>
 <script src="<c:url value="/static/admin/js/login.js"/>"></script>
 <script>
     $(document).ready(function () {

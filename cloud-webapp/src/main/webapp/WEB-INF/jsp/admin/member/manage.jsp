@@ -9,7 +9,7 @@
 <html>
 <head>
     <title></title>
-    <jsp:include page="../template/template_head.jsp"/>
+    <jsp:include page="../common/template/template_head.jsp"/>
 </head>
 <body>
 
@@ -108,7 +108,7 @@
 </div>
 
 </body>
-<jsp:include page="../template/template_script.jsp"/>
+<jsp:include page="../../common/template/template_script.jsp"/>
 <script src="<c:url value="/static/admin/js/member/member.js"/>"></script>
 <script>
     $(document).ready(function () {
