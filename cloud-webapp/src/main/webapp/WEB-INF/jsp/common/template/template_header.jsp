@@ -25,7 +25,7 @@
                 <li class="dropdown dropdown-user">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
                        data-close-others="true">
-                        <img alt="" class="img-circle" src="../../assets/admin/layout/img/avatar3_small.jpg"/>
+                        <img alt="" class="img-circle"/>
 					<span class="username username-hide-on-mobile">
 					Nick </span>
                         <i class="fa fa-angle-down"></i>

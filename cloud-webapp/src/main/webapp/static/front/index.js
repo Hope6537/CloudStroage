@@ -24,7 +24,6 @@ var Index = function () {
      */
     var parentId;
 
-
     var service = {
 
         getMember: function () {
@@ -47,7 +46,7 @@ var Index = function () {
 
         },
         initRightClick: function () {
-            $('#context').contextmenu({
+            $('#dataTable').contextmenu({
                 target: '#context-menu',
                 onItem: function (context, e) {
                     alert($(e.target).text());
@@ -105,16 +104,108 @@ var Index = function () {
             )
             ;
 
-        }
+        },
+        initTable: function () {
 
-    }
+            var table = $('#dataTable');
+
+            // begin first table
+            table.dataTable({
+
+                "paging": false,
+
+                "searching": false,
+
+                "language": {
+                    "sProcessing": "处理中...",
+                    "sLengthMenu": "显示 _MENU_ 项结果",
+                    "sZeroRecords": "没有匹配结果",
+                    "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                    "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                    "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                    "sInfoPostFix": "",
+                    "sSearch": "搜索:",
+                    "sUrl": "",
+                    "sEmptyTable": "表中数据为空",
+                    "sLoadingRecords": "载入中...",
+                    "sInfoThousands": ",",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "上页",
+                        "sNext": "下页",
+                        "sLast": "末页"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": 以升序排列此列",
+                        "sSortDescending": ": 以降序排列此列"
+                    }
+                },
+
+
+                "bStateSave": true, // save datatable state(pagination, sort, etc) in cookie.
+
+                "columns": [{
+                    "orderable": false
+                }, {
+                    "orderable": true
+                }, {
+                    "orderable": false
+                }, {
+                    "orderable": false
+                }, {
+                    "orderable": true
+                }, {
+                    "orderable": false
+                }],
+                "pagingType": "bootstrap_full_number",
+                "columnDefs": [{  // set default column settings
+                    'orderable': false,
+                    'targets': [0]
+                }, {
+                    "searchable": false,
+                    "targets": [0]
+                }],
+                "order": [
+                    [1, "asc"]
+                ]
+            });
+
+            var tableWrapper = jQuery('#sample_1_wrapper');
+
+            table.find('.group-checkable').change(function () {
+                var set = jQuery(this).attr("data-set");
+                var checked = jQuery(this).is(":checked");
+                jQuery(set).each(function () {
+                    if (checked) {
+                        $(this).attr("checked", true);
+                        $(this).parents('tr').addClass("active");
+                    } else {
+                        $(this).attr("checked", false);
+                        $(this).parents('tr').removeClass("active");
+                    }
+                });
+                jQuery.uniform.update(set);
+            });
+
+            table.on('change', 'tbody tr .checkboxes', function () {
+                $(this).parents('tr').toggleClass("active");
+            });
+
+            tableWrapper.find('.dataTables_length select').
+                addClass("form-control input-xsmall input-inline"); // modify table per page dropdown
+        },
+        showUpload: function () {
+            $("#full-width").modal();
+        }
+    };
 
     var handleEvent = function () {
-        $(document).on("ready", service.initRightClick);
         $(document).on("ready", service.getMember);
         $(document).on("ready", service.getHander);
-        $(document).on("ready", service.getTree);
-    }
+        $(document).on("ready", service.initTable);
+        $(document).on("ready", service.initRightClick);
+        $("#toUpload").on("click", service.showUpload);
+    };
 
     return {
         init: function () {

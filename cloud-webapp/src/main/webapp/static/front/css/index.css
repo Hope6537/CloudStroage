@@ -1,0 +1,9 @@
+/*
+ * Copyright (c) 2015. Hope6537 The Founder of Lab.JiChuang ,ChangChun University,
+ * JiLin Province,China
+ * JiChuang CloudStroage is a maven webapp using Hadoop Distributed File System for storage ' s Cloud Stroage System
+ */
+
+.table-bordered > thead > tr > th, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td {
+    border: 0px solid #ddd;
+}
