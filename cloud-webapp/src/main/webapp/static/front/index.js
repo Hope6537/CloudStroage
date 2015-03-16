@@ -46,7 +46,7 @@ var Index = function () {
 
         },
         initRightClick: function () {
-            $('#dataTable').contextmenu({
+            $('#dataTable tbody').contextmenu({
                 target: '#context-menu',
                 onItem: function (context, e) {
                     alert($(e.target).text());

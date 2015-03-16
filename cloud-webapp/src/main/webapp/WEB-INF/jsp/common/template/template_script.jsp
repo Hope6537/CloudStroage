@@ -24,8 +24,10 @@
 <script src="<c:url value="/static/common/bower_plugins/jquery-slimscroll/jquery.slimscroll.min.js"/>"
         type="text/javascript"></script>
 <script src='<c:url value="/static/common/bower_plugins/hope6537-plugin/global/plugins/excanvas.min.js"/>'></script>
-<script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/global/plugins/jquery.blockui.min.js"/>" type="text/javascript"></script>
-<script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/global/plugins/jquery.cokie.min.js"/>" type="text/javascript"></script>
+<script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/global/plugins/jquery.blockui.min.js"/>"
+        type="text/javascript"></script>
+<script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/global/plugins/jquery.cokie.min.js"/>"
+        type="text/javascript"></script>
 <script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/global/plugins/uniform/jquery.uniform.min.js"/>"
         type="text/javascript"></script>
 <script src="<c:url value="/static/common/bower_plugins/bootstrap-switch/dist/js/bootstrap-switch.min.js"/>"
@@ -38,7 +40,6 @@
 <script src="<c:url value="/static/common/bower_plugins/select2/select2.min.js"/>" type="text/javascript"></script>
 <script src="<c:url value="/static/common/bower_plugins/select2/select2_locale_zh-CN.js"/>"
         type="text/javascript"></script>
-
 <script src="<c:url value="/static/common/bower_plugins/flot/jquery.flot.js"/>" type="text/javascript"></script>
 <script src="<c:url value="/static/common/bower_plugins/flot/jquery.flot.resize.js"/>" type="text/javascript"></script>
 <script src="<c:url value="/static/common/bower_plugins/flot/jquery.flot.categories.js"/>"
@@ -55,15 +56,29 @@
         type="text/javascript"></script>
 <script src="<c:url value="/static/common/bower_plugins/cryptojslib/rollups/aes.js"/>"
         type="text/javascript"></script>
+<script src="<c:url value="/static/common/bower_plugins/datatable/media/js/jquery.dataTables.min.js"/>"
+        type="text/javascript"></script>
+<script src="<c:url value="/static/common/bower_plugins/datatable/plugins/bootstrap/dataTables.bootstrap.js"/>"
+        type="text/javascript"></script>
+<script src="<c:url value="/static/common/bower_plugins/bootstrap-modal/js/bootstrap-modal.js"/>"
+        type="text/javascript"></script>
+<script src="<c:url value="/static/common/bower_plugins/bootstrap-modal/js/bootstrap-modalmanager.js"/>"
+        type="text/javascript"></script>
 <!-- END CORE PLUGINS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
-<script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/global/scripts/metronic.js"/>" type="text/javascript"></script>
+<script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/global/scripts/metronic.js"/>"
+        type="text/javascript"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
-<script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/global/scripts/global.js"/>" type="text/javascript"></script>
-<script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/layout/scripts/layout.js"/>" type="text/javascript"></script>
-<script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/layout/scripts/quick-sidebar.js"/>" type="text/javascript"></script>
-<script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/layout/scripts/demo.js"/>" type="text/javascript"></script>
-<script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/global/scripts/util.js"/>" type="text/javascript"></script>
+<script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/global/scripts/global.js"/>"
+        type="text/javascript"></script>
+<script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/layout/scripts/layout.js"/>"
+        type="text/javascript"></script>
+<script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/layout/scripts/quick-sidebar.js"/>"
+        type="text/javascript"></script>
+<script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/layout/scripts/demo.js"/>"
+        type="text/javascript"></script>
+<script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/global/scripts/util.js"/>"
+        type="text/javascript"></script>
 <script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/global/scripts/toast.js"/>"></script>
 <script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/global/plugins/autoComplete/autoComplete.js"/>"></script>
 <script src="<c:url value="/static/admin/js/global.js"/>" type="text/javascript"></script>
@@ -73,6 +88,7 @@
         Metronic.init();
         Layout.init();
         QuickSidebar.init();
+        Demo.init();
         $(".sidebar-toggler").trigger("click");
     });
 </script>
