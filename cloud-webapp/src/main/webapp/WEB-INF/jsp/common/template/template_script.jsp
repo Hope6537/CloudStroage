@@ -50,8 +50,6 @@
         type="text/javascript"></script>
 <script src="<c:url value="/static/common/bower_plugins/bootstrap-contextmenu/bootstrap-contextmenu.js"/>"
         type="text/javascript"></script>
-<script src="<c:url value="/static/common/bower_plugins/dropzone/dist/dropzone-amd-module.js"/>"
-        type="text/javascript"></script>
 <script src="<c:url value="/static/common/bower_plugins/cryptojslib/components/core-min.js"/>"
         type="text/javascript"></script>
 <script src="<c:url value="/static/common/bower_plugins/cryptojslib/rollups/aes.js"/>"
@@ -64,6 +62,11 @@
         type="text/javascript"></script>
 <script src="<c:url value="/static/common/bower_plugins/bootstrap-modal/js/bootstrap-modalmanager.js"/>"
         type="text/javascript"></script>
+<script src="<c:url value="/static/common/bower_plugins/pace/pace.js"/>"
+        type="text/javascript"></script>
+<script src="<c:url value="/static/common/bower_plugins/dropzone/dropzone.js"/>"
+        type="text/javascript"></script>
+
 <!-- END CORE PLUGINS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/global/scripts/metronic.js"/>"

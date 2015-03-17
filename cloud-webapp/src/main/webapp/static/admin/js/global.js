@@ -18,7 +18,9 @@ var globalConstant = {
     NO: "否",
     FOUNDER: "创建者",
     READER: "只读",
-    WRITER: "读写"
+    WRITER: "读写",
+    FOLDER: "文件夹",
+    FILE: "文件"
 };
 
 var globalFunction = {

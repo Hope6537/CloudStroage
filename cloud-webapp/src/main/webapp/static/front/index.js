@@ -24,11 +24,29 @@ var Index = function () {
      */
     var parentId;
 
+    /**
+     * 当前被选中的hander的id
+     */
+    var selection;
+
+    var fileCount;
+
+    var allSelected;
+
+    function getTypeIcon(type) {
+        if (type == globalConstant.FILE) {
+            return '<i class = "fa fa-file"></i>';
+        } else if (type == globalConstant.FOLDER) {
+            return '<i class = "fa fa-folder"></i>';
+        }
+    }
+
     var service = {
 
         getMember: function () {
-            member = JSON.parse($('#member').text());
-            $("#member").text("");
+            var $member = $('#member');
+            member = JSON.parse($member.text());
+            $member.text("");
             parentId = (window.location + "").split("parentId=")[1];
             if (parentId == undefined) {
                 parentId = "-1";
@@ -40,18 +58,49 @@ var Index = function () {
                 contentType: "application/json",
                 type: "GET",
                 success: function (data) {
-                    console.log(data)
+                    if (globalFunction.returnResult(data)) {
+                        var list = data.returnData.list;
+                        fileCount = list.length;
+                        var html;
+                        for (var i = 0; i < list.length; i++) {
+                            var hander = list[i];
+                            var type = hander.folder;
+                            html += '<tr class="odd gradeX"> ' +
+                            '<td> <div class="checker"><span class=""><input type="checkbox" class="checkboxes" value="' + hander.handerId + '"></span></div> </td>' +
+                            '<td> <a href="' + hander.handerId + '"> ' + getTypeIcon(type) + ' ' + hander.fileName + ' </a></td> ' +
+                            '<td class="center"> ' + hander.fullPath + ' </td>' +
+                            '<td class="center"> ' + hander.status + ' </td>' +
+                            '</tr>';
+                        }
+                        if (html == undefined) {
+                            toast.info("空文件夹");
+                            html = '<tr class="odd gradeX"><td colspan="4" class="center">这里空空如也，什么都没有</td></tr>'
+                        }
+                        $("#tableContext").append(html);
+                        service.initTable();
+                    }
                 }
             })
-
         },
         initRightClick: function () {
-            $('#dataTable tbody').contextmenu({
+            $('#dataTable').find('tbody').contextmenu({
                 target: '#context-menu',
                 onItem: function (context, e) {
                     alert($(e.target).text());
                 }
             });
+        },
+        getSelection: function () {
+            var $selection = $("input[type='checkbox'].checkboxes");
+            selection = new Array($selection.length);
+            $selection.each(function (i) {
+                if ($(this).parent().hasClass("checked")) {
+                    selection[i] = $(this).val()
+                }
+            });
+            for (var i = 0; i < selection.length; i++) {
+                console.log(selection[i])
+            }
         },
         getTree: function () {
             $('#fileTable').gtreetable({
@@ -104,7 +153,8 @@ var Index = function () {
             )
             ;
 
-        },
+        }
+        ,
         initTable: function () {
 
             var table = $('#dataTable');
@@ -140,79 +190,108 @@ var Index = function () {
                         "sSortDescending": ": 以降序排列此列"
                     }
                 },
-
-
                 "bStateSave": true, // save datatable state(pagination, sort, etc) in cookie.
-
-                "columns": [{
-                    "orderable": false
-                }, {
-                    "orderable": true
-                }, {
-                    "orderable": false
-                }, {
-                    "orderable": false
-                }, {
-                    "orderable": true
-                }, {
-                    "orderable": false
-                }],
+                "columns": [
+                    {
+                        "orderable": false
+                    },
+                    {
+                        "orderable": true
+                    },
+                    {
+                        "orderable": true
+                    },
+                    {
+                        "orderable": true
+                    },
+                ],
                 "pagingType": "bootstrap_full_number",
-                "columnDefs": [{  // set default column settings
-                    'orderable': false,
-                    'targets': [0]
-                }, {
-                    "searchable": false,
-                    "targets": [0]
-                }],
                 "order": [
                     [1, "asc"]
                 ]
             });
-
-            var tableWrapper = jQuery('#sample_1_wrapper');
-
             table.find('.group-checkable').change(function () {
-                var set = jQuery(this).attr("data-set");
-                var checked = jQuery(this).is(":checked");
-                jQuery(set).each(function () {
-                    if (checked) {
+                var set = $(this).attr("data-set");
+                var checked = $(this).is(":checked");
+                var status = $(this).data("isc");
+                $(set).each(function () {
+                    if (status == 0) {
                         $(this).attr("checked", true);
-                        $(this).parents('tr').addClass("active");
+                        $(this).parents('tr').toggleClass("active");
+                        $(this).parents('tr').children(0).toggleClass("focus");
+                        $(this).parents('tr').find("span").toggleClass("checked");
                     } else {
                         $(this).attr("checked", false);
                         $(this).parents('tr').removeClass("active");
+                        $(this).parents('tr').children(0).removeClass("focus");
+                        $(this).parents('tr').find("span").removeClass("checked");
                     }
                 });
-                jQuery.uniform.update(set);
+                if (status == 0) {
+                    $(this).data("isc", 1);
+                    allSelected = true;
+                } else {
+                    $(this).data("isc", 0);
+                }
             });
 
-            table.on('change', 'tbody tr .checkboxes', function () {
-                $(this).parents('tr').toggleClass("active");
+            table.on('mousedown', 'tbody tr', function () {
+                if (allSelected) {
+                    allSelected = false;
+                    table.find('.group-checkable').parents().removeClass("checked");
+                }
+                $(this).toggleClass("active");
+                $(this).children(0).toggleClass("focus");
+                $(this).find("span").toggleClass("checked");
             });
-
-            tableWrapper.find('.dataTables_length select').
-                addClass("form-control input-xsmall input-inline"); // modify table per page dropdown
-        },
+        }
+        ,
         showUpload: function () {
             $("#full-width").modal();
+        },
+        initDropZone: function () {
+            Dropzone.options.uploadzone = {
+                init: function () {
+                    this.on("addedfile", function (file) {
+                        // Create the remove button
+                        var removeButton = Dropzone.createElement("<button class='btn btn-sm btn-block'>Remove file</button>");
+
+                        // Capture the Dropzone instance as closure.
+                        var _this = this;
+
+                        // Listen to the click event
+                        removeButton.addEventListener("click", function (e) {
+                            // Make sure the button click doesn't submit the form:
+                            e.preventDefault();
+                            e.stopPropagation();
+
+                            // Remove the file preview.
+                            _this.removeFile(file);
+                            // If you want to the delete the file on the server as well,
+                            // you can do the AJAX request here.
+                        });
+
+                        // Add the button to the file preview element.
+                        file.previewElement.appendChild(removeButton);
+                    });
+                }
+            }
         }
     };
 
     var handleEvent = function () {
+        $(document).on("ready", service.initDropZone);
         $(document).on("ready", service.getMember);
         $(document).on("ready", service.getHander);
-        $(document).on("ready", service.initTable);
         $(document).on("ready", service.initRightClick);
         $("#toUpload").on("click", service.showUpload);
+        $("#testButton").on("click", service.getSelection)
     };
 
     return {
         init: function () {
             handleEvent();
-
         }
     }
 
-}
-();
+}();
