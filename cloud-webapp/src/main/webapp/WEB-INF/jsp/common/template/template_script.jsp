@@ -62,8 +62,8 @@
         type="text/javascript"></script>
 <script src="<c:url value="/static/common/bower_plugins/bootstrap-modal/js/bootstrap-modalmanager.js"/>"
         type="text/javascript"></script>
-<script src="<c:url value="/static/common/bower_plugins/pace/pace.js"/>"
-        type="text/javascript"></script>
+<script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/pace/pace.js"/>"
+        data-pace-options='{ "ajax": true }' type="text/javascript"></script>
 <script src="<c:url value="/static/common/bower_plugins/dropzone/dropzone.js"/>"
         type="text/javascript"></script>
 

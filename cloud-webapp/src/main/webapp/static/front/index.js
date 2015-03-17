@@ -33,6 +33,8 @@ var Index = function () {
 
     var allSelected;
 
+    var $dataTable;
+
     function getTypeIcon(type) {
         if (type == globalConstant.FILE) {
             return '<i class = "fa fa-file"></i>';
@@ -53,12 +55,13 @@ var Index = function () {
             }
         },
         getHander: function () {
+            $("#tableContext").empty();
             $.ajax({
                 url: basePath + "hander/" + parentId + "/son",
                 contentType: "application/json",
                 type: "GET",
                 success: function (data) {
-                    if (globalFunction.returnResult(data)) {
+                    if (globalFunction.returnResult(data, undefined, false)) {
                         var list = data.returnData.list;
                         fileCount = list.length;
                         var html;
@@ -156,16 +159,13 @@ var Index = function () {
         }
         ,
         initTable: function () {
-
             var table = $('#dataTable');
-
-            // begin first table
-            table.dataTable({
-
+            if ($dataTable != undefined) {
+                $dataTable.destroy();
+            }
+            $dataTable = table.dataTable({
                 "paging": false,
-
                 "searching": false,
-
                 "language": {
                     "sProcessing": "处理中...",
                     "sLengthMenu": "显示 _MENU_ 项结果",
@@ -234,8 +234,7 @@ var Index = function () {
                     $(this).data("isc", 0);
                 }
             });
-
-            table.on('mousedown', 'tbody tr', function () {
+            table.on('mousedown', 'tbody tr', function (e) {
                 if (allSelected) {
                     allSelected = false;
                     table.find('.group-checkable').parents().removeClass("checked");
@@ -243,39 +242,34 @@ var Index = function () {
                 $(this).toggleClass("active");
                 $(this).children(0).toggleClass("focus");
                 $(this).find("span").toggleClass("checked");
+                if (e.which == 3) {
+                    console.log("right")
+                }
             });
         }
         ,
         showUpload: function () {
-            $("#full-width").modal();
+            $("#uploadModal").modal();
         },
         initDropZone: function () {
             Dropzone.options.uploadzone = {
                 init: function () {
                     this.on("addedfile", function (file) {
                         // Create the remove button
-                        var removeButton = Dropzone.createElement("<button class='btn btn-sm btn-block'>Remove file</button>");
-
-                        // Capture the Dropzone instance as closure.
+                        var removeButton = Dropzone.createElement("<button class='btn btn-sm btn-block'>移除上传队列</button>");
                         var _this = this;
-
-                        // Listen to the click event
                         removeButton.addEventListener("click", function (e) {
-                            // Make sure the button click doesn't submit the form:
                             e.preventDefault();
                             e.stopPropagation();
-
-                            // Remove the file preview.
                             _this.removeFile(file);
-                            // If you want to the delete the file on the server as well,
-                            // you can do the AJAX request here.
                         });
-
-                        // Add the button to the file preview element.
                         file.previewElement.appendChild(removeButton);
                     });
                 }
             }
+        },
+        showNewFolder: function () {
+            $("#newFolderModal").modal();
         }
     };
 
@@ -285,7 +279,9 @@ var Index = function () {
         $(document).on("ready", service.getHander);
         $(document).on("ready", service.initRightClick);
         $("#toUpload").on("click", service.showUpload);
-        $("#testButton").on("click", service.getSelection)
+        $("#testButton").on("click", service.getSelection);
+        $("#toNewFolder").on("click", service.showNewFolder);
+        $("#toRefresh").on("click", service.getHander);
     };
 
     return {

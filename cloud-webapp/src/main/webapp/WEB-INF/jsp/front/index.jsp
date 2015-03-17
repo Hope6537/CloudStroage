@@ -67,12 +67,14 @@
                                     <i class="fa fa-upload"></i> 测试 </a>
                                 <a href="javascript:;" id="toUpload" class="btn btn-circle red-sunglo btn-sm">
                                     <i class="fa fa-upload"></i> 上传文件 </a>
-                                <a href="javascript:;" class="btn btn-circle red-sunglo btn-sm"
+                                <a href="javascript:;" id="toNewFolder" class="btn btn-circle red-sunglo btn-sm"
                                    style="background-color:#6A99E2">
                                     <i class="fa fa-folder"></i> 新建文件夹 </a>
-
+                                <a href="javascript:;" id="toRefresh" class="btn btn-circle red-sunglo btn-sm"
+                                   style="background-color: #5EC23C">
+                                    <i class="fa fa-refresh"></i> 刷新 </a>
                                 <a class="btn btn-circle btn-icon-only btn-default fullscreen" href="#"
-                                   data-original-title="" title="全屏">
+                                   data-original-title="" title="全屏"><i class="fa fa-fullscreen"></i>
                                 </a>
                             </div>
                         </div>
@@ -154,7 +156,8 @@
                                     </li>
                                 </ul>
                             </div>
-                            <div id="full-width" class="modal container fade" tabindex="-1">
+                            <div id="uploadModal" class="modal container fade" tabindex="-1" data-backdrop="static"
+                                 data-keyboard="false">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal"
                                             aria-hidden="true"></button>
@@ -173,8 +176,20 @@
                                     </p>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
-                                    <button type="button" class="btn blue">Save changes</button>
+                                    <button type="button" data-dismiss="modal" class="btn btn-default">取消上传</button>
+                                    <button type="button" class="btn blue">确认上传</button>
+                                </div>
+                            </div>
+                            <div id="newFolderModal" class="modal fade" tabindex="-1">
+                                <div class="modal-body">
+                                    <p>
+                                        <input class="form-control form-control-solid placeholder-no-fix" type="text"
+                                               autocomplete="off"
+                                               placeholder="输入文件夹名称" id="folderName"/>
+                                    </p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" data-dismiss="modal" class="btn blue">确认</button>
                                 </div>
                             </div>
                         </div>
