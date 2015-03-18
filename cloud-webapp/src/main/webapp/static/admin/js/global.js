@@ -20,7 +20,10 @@ var globalConstant = {
     READER: "只读",
     WRITER: "读写",
     FOLDER: "文件夹",
-    FILE: "文件"
+    FILE: "文件",
+    STATUS_NORMAL: "正常",
+    STATUS_DIE: "不可用",
+    STATUS_JUDGE: "待审核"
 };
 
 var globalFunction = {
@@ -55,35 +58,22 @@ var globalFunction = {
             success: function (data) {
                 if (globalFunction.returnResult(data, undefined, false)) {
                     afterDataFunction(data, targetIndex);
-                    /*var list = eval(data.returnData.roleList);
-                     roleList = list;
-                     for (var i = 0; i < list.length; i++) {
-                     var roleType = list[i].type;
-                     var roleId = list[i].roleId;
-                     var des = list[i].des;
-                     if (roleType == "管理员权限") {
-                     adminRoles.append("<option value = " + roleId + ">" + des + "</option>");
-                     }
-                     if (roleType == "读写权限") {
-                     writeRoles.append("<option value = " + roleId + ">" + des + "</option>");
-                     }
-                     if (roleType == "只读权限") {
-                     readRoles.append("<option value = " + roleId + ">" + des + "</option>");
-                     }
-                     }*/
                 }
             }
         })
     },
     returnResult: function (data, message, binding) {
         var messageNull = message == "" || message == undefined;
-        if (data.returnState == "OK") {
+        if (data.ok) {
             if (binding != false)
                 toast.success(messageNull ? data.returnMsg : message);
             return true;
+        }
+        else if (data.warning) {
+            toast.error(messageNull ? data.returnMsg : message)
+            return false;
         } else {
-            if (binding != false && messageNull)
-                toast.error(messageNull ? data.returnMsg : message);
+            toast.error(messageNull ? data.returnMsg : message);
             return false;
         }
     },

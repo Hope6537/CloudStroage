@@ -29,12 +29,29 @@ var Index = function () {
      */
     var selection;
 
+    /**
+     * 当前被选中的数量
+     */
+    var selectionCount;
+
+    /**
+     * 当前文件的数量
+     */
     var fileCount;
 
+    /**
+     * 是否全部选中
+     */
     var allSelected;
 
+    /**
+     * 表格对象
+     */
     var $dataTable;
 
+    /**
+     * 根据类型获取图标
+     */
     function getTypeIcon(type) {
         if (type == globalConstant.FILE) {
             return '<i class = "fa fa-file"></i>';
@@ -44,20 +61,25 @@ var Index = function () {
     }
 
     var service = {
-
+        /**
+         * 获得member的json对象
+         */
         getMember: function () {
             var $member = $('#member');
             member = JSON.parse($member.text());
             $member.text("");
-            parentId = (window.location + "").split("parentId=")[1];
+            parentId = $("#parentId").text();
             if (parentId == undefined) {
                 parentId = "-1";
             }
         },
+        /**
+         * 载入hander对象，并调用表格初始化方法
+         */
         getHander: function () {
             $("#tableContext").empty();
             $.ajax({
-                url: basePath + "hander/" + parentId + "/son",
+                url: basePath + "hander/" + parentId + "/son/wrapper",
                 contentType: "application/json",
                 type: "GET",
                 success: function (data) {
@@ -70,9 +92,9 @@ var Index = function () {
                             var type = hander.folder;
                             html += '<tr class="odd gradeX"> ' +
                             '<td> <div class="checker"><span class=""><input type="checkbox" class="checkboxes" value="' + hander.handerId + '"></span></div> </td>' +
-                            '<td> <a href="' + hander.handerId + '"> ' + getTypeIcon(type) + ' ' + hander.fileName + ' </a></td> ' +
-                            '<td class="center"> ' + hander.fullPath + ' </td>' +
-                            '<td class="center"> ' + hander.status + ' </td>' +
+                            '<td> <a class ="toSon" href="javascript:;" data-href="' + (basePath + 'index?p=' + hander.handerId) + '" data-type = "' + type + '"> ' + getTypeIcon(type) + ' ' + hander.fileName + ' </a></td> ' +
+                            '<td class="center"> ' + (hander.itemInfo.size == "0B" ? "" : hander.itemInfo.size) + ' </td>' +
+                            '<td class="center"> ' + hander.updateDate + ' </td>' +
                             '</tr>';
                         }
                         if (html == undefined) {
@@ -81,11 +103,41 @@ var Index = function () {
                         }
                         $("#tableContext").append(html);
                         service.initTable();
+                    } else {
+                        var html = '<tr class="odd gradeX"><td></td>' +
+                            '<td colspan="4" class="center"> 空文件夹 </td>' +
+                            '</tr>';
+                        $("#tableContext").append(html);
                     }
                 }
             })
         },
+        /**
+         * 跳转到子节点页面
+         */
+        toSonHander: function (a) {
+            var type = a.data("type");
+            console.log(a[0]);
+            if (type == globalConstant.FOLDER) {
+                window.location.href = a.data("href");
+            } else if (type == globalConstant.FILE) {
+                console.log("file")
+            } else {
+                console.log("no type");
+            }
+
+        },
+        /**
+         * 生成右键菜单
+         */
         initRightClick: function () {
+            service.getSelection();
+            console.log(selectionCount)
+            if (selectionCount > 1) {
+                $("#rename").hide();
+            } else {
+                $("#rename").show();
+            }
             $('#dataTable').find('tbody').contextmenu({
                 target: '#context-menu',
                 onItem: function (context, e) {
@@ -93,7 +145,11 @@ var Index = function () {
                 }
             });
         },
+        /**
+         * 生成被选中的handerId数组，同时给选中数量赋值
+         */
         getSelection: function () {
+            selectionCount = 0;
             var $selection = $("input[type='checkbox'].checkboxes");
             selection = new Array($selection.length);
             $selection.each(function (i) {
@@ -102,7 +158,10 @@ var Index = function () {
                 }
             });
             for (var i = 0; i < selection.length; i++) {
-                console.log(selection[i])
+                //console.log(selection[i])
+                if (selection[i] != undefined) {
+                    selectionCount++;
+                }
             }
         },
         getTree: function () {
@@ -207,7 +266,7 @@ var Index = function () {
                 ],
                 "pagingType": "bootstrap_full_number",
                 "order": [
-                    [1, "asc"]
+                    [2, "asc"]
                 ]
             });
             table.find('.group-checkable').change(function () {
@@ -243,7 +302,7 @@ var Index = function () {
                 $(this).children(0).toggleClass("focus");
                 $(this).find("span").toggleClass("checked");
                 if (e.which == 3) {
-                    console.log("right")
+                    service.initRightClick();
                 }
             });
         }
@@ -270,18 +329,53 @@ var Index = function () {
         },
         showNewFolder: function () {
             $("#newFolderModal").modal();
+            $("#folderName").val(' ')
+        },
+        addNewFolder: function () {
+            Pace.track(function () {
+                var data = {
+                    memberId: member.memberId,
+                    fileName: $("#folderName").val().trim(),
+                    itemId: 1,
+                    folder: globalConstant.FOLDER,
+                    status: globalConstant.STATUS_NORMAL,
+                    parentId: parentId
+                }
+                $.ajax({
+                    url: basePath + "hander",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(data),
+                    success: function (data) {
+                        if (globalFunction.returnResult(data, "成功创建文件夹")) {
+                            $("#newFolderModal").modal('hide');
+                            service.getHander();
+                        } else {
+                            toast.error("操作失败，请重试")
+                        }
+                    }
+                })
+            });
         }
+
     };
 
     var handleEvent = function () {
         $(document).on("ready", service.initDropZone);
         $(document).on("ready", service.getMember);
         $(document).on("ready", service.getHander);
-        $(document).on("ready", service.initRightClick);
+        /*$(document).on("ready", service.initRightClick);*/
         $("#toUpload").on("click", service.showUpload);
         $("#testButton").on("click", service.getSelection);
         $("#toNewFolder").on("click", service.showNewFolder);
         $("#toRefresh").on("click", service.getHander);
+        $("#buttonAddFolder").on("click", service.addNewFolder);
+        $(".back").live("click", function () {
+            window.location.href = $(this).find("a").attr("href");
+        });
+        $(".toSon").live("click", function () {
+            service.toSonHander($(this))
+        })
     };
 
     return {

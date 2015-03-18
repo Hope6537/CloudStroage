@@ -12,7 +12,7 @@
     <!--如需显示sql，将下面这行调整成debug即可-->
     <logger name="org.hope6537" level="debug"/>
 
-    <root level="info">
+    <root level="debug">
         <appender-ref ref="console"/>
     </root>
 </configuration>

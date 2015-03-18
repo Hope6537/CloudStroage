@@ -15,7 +15,9 @@
 <body class="page-header-fixed page-quick-sidebar-over-content page-style-square page-sidebar-closed">
 <jsp:include page="../common/template/template_header.jsp"/>
 <div class="page-container">
+    <span hidden="hidden" id="backId">${backId}</span>
     <span hidden="hidden" id="member">${member}</span>
+    <span hidden="hidden" id="parentId">${parentId}</span>
     <jsp:include page="../common/template/template_sidebar.jsp"/>
     <div class="page-content-wrapper">
         <div class="page-content">
@@ -43,28 +45,13 @@
                             <div class="caption font-purple-plum">
                                 <i class="icon-file font-purple-plum"></i>
                                 <span class="caption-subject bold uppercase">我的文件</span>
-                                <span class="caption-helper" id=""></span>
                             </div>
                             <div class="actions">
-                                <%--<div class="btn-group">
-                                    <a class="btn btn-circle btn-default btn-sm" href="#" data-toggle="dropdown"
-                                       style="margin-right: 50px;">
-                                        <i class="icon-file"></i> 文件操作 <i class="fa fa-angle-down"></i>
-                                    </a>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li>
-                                            <a href="#">
-                                                <i class="icon-user"></i> 上传文件 </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i class="icon-present"></i> 新建文件夹
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>--%>
                                 <a href="javascript:;" id="testButton" class="btn btn-circle red-sunglo btn-sm">
                                     <i class="fa fa-upload"></i> 测试 </a>
+                                <a href="index?p=${parentId}&t=b" id="toBack" class="btn btn-circle red-sunglo btn-sm"
+                                   style="background-color:#66CCFF">
+                                    <i class="fa fa-level-up"></i> 返回上一级 </a>
                                 <a href="javascript:;" id="toUpload" class="btn btn-circle red-sunglo btn-sm">
                                     <i class="fa fa-upload"></i> 上传文件 </a>
                                 <a href="javascript:;" id="toNewFolder" class="btn btn-circle red-sunglo btn-sm"
@@ -100,58 +87,44 @@
                                 </tr>
                                 </thead>
                                 <tbody id="tableContext">
-                                <tr class="odd gradeX">
-                                    <td>
-                                        <input type="checkbox" class="checkboxes" value="1"/>
-                                    </td>
-                                    <td>
-                                        <a href="mailto:shuxer@gmail.com">
-                                            shuxer@gmail.com </a>
-                                    </td>
-                                    <td>
-                                        120
-                                    </td>
-                                    <td>
-									<span class="label label-sm label-success">
-									Approved </span>
-                                    </td>
-                                </tr>
-                                </tbody>
                             </table>
                             <div id="context-menu">
                                 <ul class="dropdown-menu" role="menu">
-
                                     <li>
-                                        <a href="#">
+                                        <a href="javascript:;" id="buttonDownload">
                                             <i class="fa fa-download"></i> 下载文件
                                         </a>
                                     </li>
                                     <li class="divider">
                                     <li>
-                                        <a href="#">
+                                        <a href="javascript:;" id="buttonShare">
                                             <i class="fa fa-share"></i> 分享文件
                                         </a>
                                     </li>
                                     <li class="divider">
                                     <li>
-                                        <a href="#">
+                                        <a href="javascript:;" id="buttonOpen">
                                             <i class="fa fa-folder-open"></i> 打开文件</a>
                                     </li>
                                     <li>
-                                        <a href="#">
+                                        <a href="javascript:;" id="buttonDelete">
                                             <i class="fa fa-trash-o"></i> 删除文件 </a>
                                     </li>
                                     <li class="divider">
                                     </li>
+                                    <li id="rename">
+                                        <a href="javascript:;" id="buttonRename">
+                                            <i class="fa fa-cut"></i> 重命名
+                                        </a>
+                                    </li>
                                     <li>
-                                        <a href="#">
+                                        <a href="javascript:;" id="buttonMove">
                                             <i class="fa fa-cut"></i> 移动到
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#">
-                                            <i class="fa fa-copy"></i> 复制到 <span
-                                                class="badge badge-warning">12</span>
+                                        <a href="javascript:;" id="buttonCopy">
+                                            <i class="fa fa-copy"></i> 复制到
                                         </a>
                                     </li>
                                 </ul>
@@ -170,7 +143,7 @@
 
                                     <p>
 
-                                    <form action='#' class="dropzone"
+                                    <form action='javascript:;' class="dropzone"
                                           id="uploadzone">
                                     </form>
                                     </p>
@@ -181,6 +154,11 @@
                                 </div>
                             </div>
                             <div id="newFolderModal" class="modal fade" tabindex="-1">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"
+                                            aria-hidden="true"></button>
+                                    <h4 class="modal-title">新建文件夹</h4>
+                                </div>
                                 <div class="modal-body">
                                     <p>
                                         <input class="form-control form-control-solid placeholder-no-fix" type="text"
@@ -189,7 +167,10 @@
                                     </p>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" data-dismiss="modal" class="btn blue">确认</button>
+                                    <button type="button" data-dismiss="modal" class="btn btn-default">取消</button>
+                                    <button type="button" id="buttonAddFolder" data-dismiss="modal" class="btn blue">
+                                        确认
+                                    </button>
                                 </div>
                             </div>
                         </div>

@@ -54,9 +54,9 @@
         type="text/javascript"></script>
 <script src="<c:url value="/static/common/bower_plugins/cryptojslib/rollups/aes.js"/>"
         type="text/javascript"></script>
-<script src="<c:url value="/static/common/bower_plugins/datatable/media/js/jquery.dataTables.min.js"/>"
+<script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/datatable/media/js/jquery.dataTables.min.js"/>"
         type="text/javascript"></script>
-<script src="<c:url value="/static/common/bower_plugins/datatable/plugins/bootstrap/dataTables.bootstrap.js"/>"
+<script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/datatable/plugins/bootstrap/dataTables.bootstrap.js"/>"
         type="text/javascript"></script>
 <script src="<c:url value="/static/common/bower_plugins/bootstrap-modal/js/bootstrap-modal.js"/>"
         type="text/javascript"></script>
@@ -85,7 +85,6 @@
 <script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/global/scripts/toast.js"/>"></script>
 <script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/global/plugins/autoComplete/autoComplete.js"/>"></script>
 <script src="<c:url value="/static/admin/js/global.js"/>" type="text/javascript"></script>
-
 <script>
     $(document).ready(function () {
         Metronic.init();

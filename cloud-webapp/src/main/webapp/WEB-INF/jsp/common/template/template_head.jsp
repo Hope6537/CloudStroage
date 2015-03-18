@@ -17,7 +17,7 @@
 <link href="<c:url value="/static/common/bower_plugins/hope6537-plugin/uniform/css/uniform.default.css"/>" rel="stylesheet" type="text/css"/>
 <link href="<c:url value="/static/common/bower_plugins/bootstrap-modal/css/bootstrap-modal-bs3patch.css"/>" rel="stylesheet" type="text/css"/>
 <link href="<c:url value="/static/common/bower_plugins/bootstrap-modal/css/bootstrap-modal.css"/>" rel="stylesheet" type="text/css"/>
-<link href="<c:url value="/static/common/bower_plugins/datatable/plugins/bootstrap/dataTables.bootstrap.css"/>" rel="stylesheet" type="text/css"/>
+<link href="<c:url value="/static/common/bower_plugins/hope6537-plugin/datatable/plugins/bootstrap/dataTables.bootstrap.css"/>" rel="stylesheet" type="text/css"/>
 <link href="<c:url value="/static/common/bower_plugins/fontawesome/css/font-awesome.min.css"/>" rel="stylesheet" type="text/css"/>
 <link href="<c:url value="/static/common/bower_plugins/bootstrap-gtreetable/dist/bootstrap-gtreetable.min.css"/>" rel="stylesheet" type="text/css"/>
 <link href="<c:url value="/static/common/bower_plugins/simple-line-icons/css/simple-line-icons.css"/>" rel="stylesheet" type="text/css"/>

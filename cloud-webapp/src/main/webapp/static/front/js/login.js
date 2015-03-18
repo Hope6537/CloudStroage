@@ -9,32 +9,37 @@ var Login = function () {
     var service = {
 
         login: function () {
-            var data = {
-                username: $("#username").val(),
-                password: $("#password").val()
-            }
-            if (data.username != "" && data.password != "") {
-                data.password = globalFunction.Encrypt(data.password);
-                $.ajax({
-                    url: basePath + "/login",
-                    type: "POST",
-                    contentType: "application/json",
-                    data: JSON.stringify(data),
-                    success: function (data) {
-                        if (globalFunction.returnResult(data, "登录成功,正在跳转中")) {
-                            setTimeout(function () {
-                                window.location.href = basePath + "index";
-                            }, 2000)
+            Pace.track(function () {
+                $("#loginButton").hide();
+                var data = {
+                    username: $("#username").val(),
+                    password: $("#password").val()
+                }
+                if (data.username != "" && data.password != "") {
+                    data.password = globalFunction.Encrypt(data.password);
+                    $.ajax({
+                        url: basePath + "/login",
+                        type: "POST",
+                        contentType: "application/json",
+                        data: JSON.stringify(data),
+                        success: function (data) {
+                            if (globalFunction.returnResult(data, "登录成功,正在跳转中")) {
+                                setTimeout(function () {
+                                    window.location.href = basePath + "index";
+                                }, 2000)
+                            }
+                            else {
+                                toast.error("错误的用户名或密码")
+                                $("#loginButton").show();
+                            }
                         }
-                        else {
-                            toast.error("错误的用户名或密码")
-                        }
-                    }
-                })
-            }
-            else {
-                toast.error("请输入用户名和密码");
-            }
+                    })
+                }
+                else {
+                    toast.error("请输入用户名和密码");
+                    $("#loginButton").show();
+                }
+            });
         },
         register: function () {
             var data = {

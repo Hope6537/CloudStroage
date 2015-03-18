@@ -10,6 +10,7 @@ import com.alibaba.fastjson.JSON;
 import org.hope6537.ajax.AjaxResponse;
 import org.hope6537.ajax.ReturnState;
 import org.hope6537.cloudstroage.basic.context.ApplicationConstant;
+import org.hope6537.cloudstroage.hander.service.HanderService;
 import org.hope6537.cloudstroage.member.model.Member;
 import org.hope6537.cloudstroage.member.service.MemberService;
 import org.hope6537.security.AESLocker;
@@ -33,14 +34,34 @@ public class FrontController {
     @Autowired
     private MemberService memberService;
 
+    @Autowired
+    private HanderService handerService;
+
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String index(HttpServletRequest request) {
         Member member = getLoginMember(request);
+        String type = request.getParameter("t");
+        String parentId = request.getParameter("p");
+        if (ApplicationConstant.isNull(type)) {
+            type = ApplicationConstant.GETTYPE_NORAML;
+        }
+        if (ApplicationConstant.isNull(parentId)) {
+            parentId = "-1";
+        }
         if (ApplicationConstant.notNull(member)) {
             request.setAttribute("member", JSON.toJSONString(member));
+            switch (type) {
+                case ApplicationConstant.GETTYPE_BACK:
+                    parentId = handerService.getGrandParentId(parentId);
+                    break;
+                case ApplicationConstant.GETTYPE_NORAML:
+                    break;
+            }
+            request.setAttribute("parentId", parentId);
         }
         return ApplicationConstant.FRONTPATH + "index";
     }
+
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login() {
