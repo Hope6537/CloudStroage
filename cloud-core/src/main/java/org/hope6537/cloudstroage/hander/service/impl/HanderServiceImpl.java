@@ -16,10 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -64,6 +61,11 @@ public class HanderServiceImpl extends BasicServiceImpl<Hander, HanderDao> imple
         getSonHanderIds(hander, ids);
         return dao.deleteMultiHander(ids) == ids.size();
 
+    }
+
+    @Override
+    public Optional<Boolean> deleteMultiHander(List<Hander> handers) {
+        return handers.stream().map(this::deleteFolder).reduce((a, b) -> a && b);
     }
 
     @Override

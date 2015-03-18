@@ -62,18 +62,19 @@ var globalFunction = {
             }
         })
     },
-    returnResult: function (data, message, binding) {
+    returnResult: function (data, message, binding, failmessage) {
         var messageNull = message == "" || message == undefined;
+        var failMessageNull = failmessage = "" || failmessage == undefined;
         if (data.ok) {
             if (binding != false)
                 toast.success(messageNull ? data.returnMsg : message);
             return true;
         }
         else if (data.warning) {
-            toast.error(messageNull ? data.returnMsg : message)
+            toast.error(failMessageNull ? data.returnMsg : failmessage)
             return false;
         } else {
-            toast.error(messageNull ? data.returnMsg : message);
+            toast.error(failMessageNull ? data.returnMsg : failmessage);
             return false;
         }
     },

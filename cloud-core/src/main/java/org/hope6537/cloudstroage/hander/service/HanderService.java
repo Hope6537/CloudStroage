@@ -12,6 +12,7 @@ import org.hope6537.cloudstroage.hander.model.Hander;
 import org.hope6537.cloudstroage.hander.model.HanderWrapper;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -25,6 +26,8 @@ public interface HanderService extends BasicService<Hander, HanderDao> {
     public boolean updateFolderName(Hander hander);
 
     public boolean deleteFolder(Hander hander);
+
+    public Optional<Boolean> deleteMultiHander(List<Hander> handers);
 
     public boolean disableFolder(Hander hander);
 

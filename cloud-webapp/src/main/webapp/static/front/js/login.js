@@ -105,9 +105,7 @@ var Login = function () {
     return {
         //main function to initiate the module
         init: function () {
-            console.log(globalFunction.Encrypt("aaaaaaaa"));
             handleEvent()
-
         }
 
     };

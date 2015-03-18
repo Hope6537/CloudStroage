@@ -90,6 +90,16 @@ public class HanderController extends BasicController<Hander, HanderDao, HanderS
         }
     }
 
+    @RequestMapping(value = "/deleteMulti", method = RequestMethod.DELETE)
+    @ResponseBody
+    public AjaxResponse deleteMultiModel(@RequestBody List<Hander> handers) {
+        if (ApplicationConstant.notNull(handers)) {
+            return AjaxResponse.getInstanceByResult(service.deleteMultiHander(handers).get());
+        }
+        return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN);
+
+    }
+
     @RequestMapping(value = "/{parentHanderId}/son", method = RequestMethod.GET)
     @ResponseBody
     public AjaxResponse getSonHanderByParent(@PathVariable String parentHanderId, HttpServletRequest request) {

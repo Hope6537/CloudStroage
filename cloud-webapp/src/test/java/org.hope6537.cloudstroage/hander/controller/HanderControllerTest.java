@@ -113,7 +113,7 @@ public class HanderControllerTest extends SpringWebTestHelper {
     }
 
     @Test
-    public void testAddMember() throws Exception {
+    public void testAddHander() throws Exception {
         String request = JSON.toJSONString(hander);
         mockMvc.perform(post("/hander").sessionAttr("loginMember", loginMember)
                 .contentType(MediaType.APPLICATION_JSON).content(request)
@@ -124,7 +124,7 @@ public class HanderControllerTest extends SpringWebTestHelper {
     }
 
     @Test
-    public void testUpdateMember() throws Exception {
+    public void testUpdateHander() throws Exception {
         hander.setFileName("_after");
         String request = JSON.toJSONString(hander);
         mockMvc.perform(put("/hander").sessionAttr("loginMember", loginMember)
@@ -144,7 +144,7 @@ public class HanderControllerTest extends SpringWebTestHelper {
     }
 
     @Test
-    public void testDisableMember() throws Exception {
+    public void testDisableHander() throws Exception {
         String request = JSON.toJSONString(hander);
         mockMvc.perform(delete("/hander/disable").sessionAttr("loginMember", loginMember)
                 .contentType(MediaType.APPLICATION_JSON).content(request)
@@ -164,7 +164,7 @@ public class HanderControllerTest extends SpringWebTestHelper {
     }
 
     @Test
-    public void testDeleteMember() throws Exception {
+    public void testDeleteHander() throws Exception {
         String request = JSON.toJSONString(hander);
         mockMvc.perform(delete("/hander/delete").sessionAttr("loginMember", loginMember)
                 .contentType(MediaType.APPLICATION_JSON).content(request)
@@ -181,10 +181,11 @@ public class HanderControllerTest extends SpringWebTestHelper {
                 .andReturn();
     }
 
-   /* @Test
-    public void testFilter() throws Exception {
-        //mockMvc = webAppContextSetup(wac).addFilter(Filter, "*//*").build();
-        mockMvc.perform(get("/hander/toPage"))
-                .andExpect(request().attribute("filter", true));
-    }*/
+    @Test
+    public void testDeleteMultiHander() throws Exception {
+        String arr = "[" + file1.getHanderId() + "," + file2.getHanderId() + "]";
+        String request = JSON.toJSONString(arr);
+
+
+    }
 }
