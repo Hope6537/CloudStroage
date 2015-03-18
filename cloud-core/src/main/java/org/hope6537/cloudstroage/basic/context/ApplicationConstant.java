@@ -18,5 +18,8 @@ public class ApplicationConstant extends org.hope6537.context.ApplicationConstan
     public static final String FRONTPATH = "/front/";
     public static final String ADMIN_LOGINPATH = ADMINPATH + "/login";
     public static final String FRONT_LOGINPATH = FRONTPATH + "/login";
+
+    public static final String GETTYPE_NORAML = "n";
+    public static final String GETTYPE_BACK = "b";
 }
 

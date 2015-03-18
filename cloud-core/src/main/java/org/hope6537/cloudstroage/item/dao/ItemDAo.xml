@@ -9,8 +9,8 @@
 <mapper namespace="org.hope6537.cloudstroage.item.dao.ItemDao">
 
     <insert id="addEntry">
-        INSERT INTO iteminfo (absolutePath,serverPath,status,sha1,updateDate,itemTypeId) VALUES
-        (#{absolutePath},#{serverPath},#{status},#{sha1},#{updateDate},#{itemTypeId})
+        INSERT INTO iteminfo (absolutePath,serverPath,status,sha1,size,itemTypeId) VALUES
+        (#{absolutePath},#{serverPath},#{status},#{sha1},#{size},#{itemTypeId})
         <selectKey resultType="string" keyProperty="itemId">
             SELECT LAST_INSERT_ID()
         </selectKey>
@@ -20,7 +20,7 @@
         SET
             absolutePath = #{absolutePath}, serverPath = #{serverPath},
             status       = #{status},
-            sha1         = #{sha1}, updateDate = #{updateDate}, itemTypeId = #{itemTypeId}
+            sha1         = #{sha1}, size = #{size}, itemTypeId = #{itemTypeId}
         WHERE itemId = #{itemId}
     </update>
     <update id="disableEntry">
@@ -56,6 +56,9 @@
         </if>
         <if test="serverPath!=null and serverPath!=''">
             and serverPath = #{serverPath}
+        </if>
+        <if test="size!=null and size!=''">
+            and size = #{size}
         </if>
         <if test="status!=null and status!=''">
             and status = #{status}

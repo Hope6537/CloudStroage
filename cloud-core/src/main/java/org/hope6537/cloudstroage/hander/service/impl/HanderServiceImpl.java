@@ -9,6 +9,7 @@ package org.hope6537.cloudstroage.hander.service.impl;
 import org.hope6537.cloudstroage.basic.service.impl.BasicServiceImpl;
 import org.hope6537.cloudstroage.hander.dao.HanderDao;
 import org.hope6537.cloudstroage.hander.model.Hander;
+import org.hope6537.cloudstroage.hander.model.HanderWrapper;
 import org.hope6537.cloudstroage.hander.service.HanderService;
 import org.hope6537.context.ApplicationConstant;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,6 +97,16 @@ public class HanderServiceImpl extends BasicServiceImpl<Hander, HanderDao> imple
         Hander queryHander = new Hander();
         queryHander.setParentId(hander.getHanderId());
         return this.getEntryListByEntry(queryHander);
+    }
+
+    @Override
+    public HanderWrapper getWrapperByHanderId(Hander hander) {
+        return dao.getWrapperByHanderId(hander);
+    }
+
+    @Override
+    public String getGrandParentId(String parentId) {
+        return dao.getGrandParentId(parentId);
     }
 
 

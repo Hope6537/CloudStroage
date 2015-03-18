@@ -24,7 +24,7 @@ public class ItemInfo extends BasicModel {
 
     private String sha1;
 
-    private String updateDate;
+    private String size;
 
     private File file;
 
@@ -40,17 +40,17 @@ public class ItemInfo extends BasicModel {
                 ApplicationConstant.STATUS_NORMAL,
                 "-1",
                 "_sha111111",
-                DateFormatCalculate.createNowTime());
+                "1.24MB");
     }
 
 
-    public ItemInfo(String absolutePath, String serverPath, String status, String itemTypeId, String sha1, String updateDate) {
+    public ItemInfo(String absolutePath, String serverPath, String status, String itemTypeId, String sha1, String size) {
         this.absolutePath = absolutePath;
         this.serverPath = serverPath;
         this.status = status;
         this.itemTypeId = itemTypeId;
         this.sha1 = sha1;
-        this.updateDate = updateDate;
+        this.size = size;
     }
 
     public static long getSerialVersionUID() {
@@ -97,13 +97,6 @@ public class ItemInfo extends BasicModel {
         this.sha1 = sha1;
     }
 
-    public String getUpdateDate() {
-        return updateDate;
-    }
-
-    public void setUpdateDate(String updateDate) {
-        this.updateDate = updateDate;
-    }
 
     public File getFile() {
         return file;
@@ -111,6 +104,14 @@ public class ItemInfo extends BasicModel {
 
     public void setFile(File file) {
         this.file = file;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
     }
 
     @Override

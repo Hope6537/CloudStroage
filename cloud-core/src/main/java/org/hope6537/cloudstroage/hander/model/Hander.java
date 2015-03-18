@@ -8,6 +8,7 @@ package org.hope6537.cloudstroage.hander.model;
 
 import org.hope6537.cloudstroage.basic.context.ApplicationConstant;
 import org.hope6537.cloudstroage.basic.model.BasicModel;
+import org.hope6537.cloudstroage.item.model.ItemInfo;
 
 import java.io.File;
 import java.util.List;
@@ -32,6 +33,10 @@ public class Hander extends BasicModel {
     private String fullPath;
 
     private List<Hander> sonHanderList;
+
+    private String updateDate;
+
+    private ItemInfo itemInfo;
 
     public Hander() {
     }
@@ -157,4 +162,21 @@ public class Hander extends BasicModel {
     public void setSonHanderList(List<Hander> sonHanderList) {
         this.sonHanderList = sonHanderList;
     }
+
+    public String getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(String updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    public ItemInfo getItemInfo() {
+        return itemInfo;
+    }
+
+    public void setItemInfo(ItemInfo itemInfo) {
+        this.itemInfo = itemInfo;
+    }
 }
+

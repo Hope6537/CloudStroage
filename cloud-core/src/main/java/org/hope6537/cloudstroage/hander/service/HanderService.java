@@ -9,6 +9,7 @@ package org.hope6537.cloudstroage.hander.service;
 import org.hope6537.cloudstroage.basic.service.BasicService;
 import org.hope6537.cloudstroage.hander.dao.HanderDao;
 import org.hope6537.cloudstroage.hander.model.Hander;
+import org.hope6537.cloudstroage.hander.model.HanderWrapper;
 
 import java.util.List;
 import java.util.Set;
@@ -34,5 +35,10 @@ public interface HanderService extends BasicService<Hander, HanderDao> {
     public List<Hander> getHanderListByPath(String memberId, String fullPath);
 
     public List<Hander> getHanderListByParentHander(Hander hander);
+
+    public HanderWrapper getWrapperByHanderId(Hander hander);
+
+    public String getGrandParentId(String parentId);
+
 
 }

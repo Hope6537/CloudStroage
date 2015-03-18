@@ -8,6 +8,7 @@ package org.hope6537.cloudstroage.hander.service;
 
 import org.hope6537.cloudstroage.basic.context.ApplicationConstant;
 import org.hope6537.cloudstroage.hander.model.Hander;
+import org.hope6537.cloudstroage.hander.model.HanderWrapper;
 import org.hope6537.cloudstroage.item.model.ItemInfo;
 import org.hope6537.cloudstroage.item.service.ItemService;
 import org.hope6537.cloudstroage.member.model.Member;
@@ -171,8 +172,6 @@ public class HanderServiceTest extends SpringTestHelper {
 
         List<Hander> handerList2 = handerService.getHanderListByMemberId("-2");
         assertTrue(handerList2.size() == 2);
-
-
     }
 
     @Test
@@ -182,9 +181,21 @@ public class HanderServiceTest extends SpringTestHelper {
         assertTrue(handerService.addEntry(handerFolder));
         handerFile.resetHander(handerFolder);
         assertTrue(handerService.addEntry(handerFile));
-
         List<Hander> handers = handerService.getHanderListByPath("-1", File.separator + "usr");
         assertEquals(1, handers.size());
+    }
+
+
+    @Test
+    public void testGetWrapper() {
+        assertTrue(handerService.addEntry(handerRoot));
+        handerFolder.resetHander(handerRoot);
+        assertTrue(handerService.addEntry(handerFolder));
+        handerFile.resetHander(handerFolder);
+        assertTrue(handerService.addEntry(handerFile));
+        Hander hander = new Hander();
+        HanderWrapper wrapper = handerService.getWrapperByHanderId(hander);
+        assertTrue(ApplicationConstant.notNull(wrapper.getHanders()));
     }
 
 

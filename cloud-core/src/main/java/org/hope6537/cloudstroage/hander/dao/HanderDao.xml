@@ -9,8 +9,8 @@
 <mapper namespace="org.hope6537.cloudstroage.hander.dao.HanderDao">
 
     <insert id="addEntry">
-        INSERT INTO hander (memberId, itemId, parentId, fileName, folder, fullPath, status) VALUES
-        (#{memberId}, #{itemId}, #{parentId}, #{fileName}, #{folder}, #{fullPath}, #{status})
+        INSERT INTO hander (memberId, itemId, parentId, fileName, folder, fullPath, status,updateDate) VALUES
+        (#{memberId}, #{itemId}, #{parentId}, #{fileName}, #{folder}, #{fullPath}, #{status},#{updateDate})
         <selectKey resultType="string" keyProperty="handerId">
             SELECT LAST_INSERT_ID()
         </selectKey>
@@ -20,7 +20,7 @@
         SET memberId = #{memberId}, itemId = #{itemId},
             parentId = #{parentId},
             fileName = #{fileName}, folder = #{folder}, fullPath = #{fullPath},
-            status   = #{status}
+            status   = #{status}, updateDate = #{updateDate}
         WHERE handerId = #{handerId}
     </update>
     <update id="disableEntry">
@@ -73,6 +73,13 @@
         WHERE handerId = #{handerId}
     </select>
 
+    <select id="getGrandParentId" resultType="string">
+        SELECT parentId
+        FROM hander
+        WHERE hander.handerId = #{parentId}
+    </select>
+
+
     <select id="getEntryListByEntry" resultType="org.hope6537.cloudstroage.hander.model.Hander">
         SELECT * FROM hander
         WHERE 1=1
@@ -100,6 +107,9 @@
         <if test="status!=null and status!=''">
             and status = #{status}
         </if>
+        <if test="updateDate!=null and updateDate!=''">
+            and updateDate = #{updateDate}
+        </if>
     </select>
 
     <select id="getHanderListByPath" resultType="org.hope6537.cloudstroage.hander.model.Hander">
@@ -112,6 +122,54 @@
             and fullPath Like CONCAT('%',#{fullPath},'%' ) and fullPath != #{fullPath}
         </if>
         and status = '正常'
+    </select>
+
+    <cache/>
+
+    <resultMap id="hander" autoMapping="true" type="org.hope6537.cloudstroage.hander.model.Hander">
+        <association property="itemInfo" javaType="org.hope6537.cloudstroage.item.model.ItemInfo">
+            <result property="itemId" column="itemId"/>
+            <result property="absolutePath" column="absolutePath"/>
+            <result property="serverPath" column="serverPath"/>
+            <result property="sha1" column="sha1"/>
+            <result property="size" column="size"/>
+            <result property="status" column="status"/>
+        </association>
+    </resultMap>
+
+    <resultMap id="handerList" type="org.hope6537.cloudstroage.hander.model.HanderWrapper">
+        <collection property="handers" autoMapping="true" resultMap="hander"/>
+    </resultMap>
+
+
+    <select id="getWrapperByHanderId" resultMap="handerList">
+        SELECT
+        hander.handerId AS handerId
+        ,hander.memberId AS memberId
+        ,hander.fileName AS fileName
+        ,hander.parentId AS parentId
+        ,hander.updateDate AS updateDate
+        ,hander.status AS STATUS
+        ,hander.folder AS folder
+        ,itemInfo.absolutePath AS absolutePath
+        ,itemInfo.itemId as itemId
+        ,itemInfo.size AS size
+        ,itemInfo.sha1 AS SHA1
+        ,itemInfo.serverPath AS serverPath
+        FROM hander , iteminfo
+        WHERE hander.itemId = iteminfo.itemId
+        <if test="handerId!=null and handerId !=''">
+            and handerId = #{handerId}
+        </if>
+        <if test="memberId!=null and memberId !=''">
+            and memberId = #{memberId}
+        </if>
+        <if test="status!=null and status !=''">
+            and hander.status = #{status}
+        </if>
+        <if test="parentId!=null and parentId !=''">
+            and parentId = #{parentId}
+        </if>
     </select>
 
 </mapper>
