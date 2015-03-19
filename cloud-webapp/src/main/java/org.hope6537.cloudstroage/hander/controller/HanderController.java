@@ -113,15 +113,7 @@ public class HanderController extends BasicController<Hander, HanderDao, HanderS
             query.setParentId(parentHanderId);
             query.setStatus(ApplicationConstant.STATUS_NORMAL);
             List<Hander> list = service.getEntryListByEntry(query);
-            if (ApplicationConstant.notNull(list)) {
-                return AjaxResponse.getInstanceByResult(true).addAttribute("list", list);
-            } else {
-                if (list != null && list.size() == 0) {
-                    return AjaxResponse.getInstanceByResult(true).addAttribute("empty", true).addReturnMsg("空文件夹");
-                }
-            }
-            return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN);
-
+            return ApplicationConstant.collectionCheck(list);
         }
         return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN);
     }
@@ -157,14 +149,7 @@ public class HanderController extends BasicController<Hander, HanderDao, HanderS
     public AjaxResponse getSonHanderByPath(@PathVariable String fullPath, HttpServletRequest request) {
         Member member = getLoginMember(request);
         if (ApplicationConstant.notNull(fullPath) && ApplicationConstant.notNull(member)) {
-            List<Hander> list = service.getHanderListByPath(member.getMemberId(), fullPath);
-            if (ApplicationConstant.notNull(list)) {
-                return AjaxResponse.getInstanceByResult(true).addAttribute("list", list);
-            } else {
-                if (list != null && list.size() == 0) {
-                    return AjaxResponse.getInstanceByResult(true).addAttribute("empty", true).addReturnMsg("空文件夹");
-                }
-            }
+            return ApplicationConstant.collectionCheck(service.getHanderListByPath(member.getMemberId(), fullPath));
         }
         return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN);
     }

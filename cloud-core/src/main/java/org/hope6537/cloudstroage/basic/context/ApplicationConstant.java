@@ -6,6 +6,11 @@
 
 package org.hope6537.cloudstroage.basic.context;
 
+import org.hope6537.ajax.AjaxResponse;
+import org.hope6537.ajax.ReturnState;
+
+import java.util.Collection;
+
 /**
  * Created by Hope6537 on 2015/3/10.
  */
@@ -21,5 +26,15 @@ public class ApplicationConstant extends org.hope6537.context.ApplicationConstan
 
     public static final String GETTYPE_NORAML = "n";
     public static final String GETTYPE_BACK = "b";
+
+    public static <T extends Collection<?>> AjaxResponse collectionCheck(T t) {
+        if (notNull(t)) {
+            if (t.size() != 0) {
+                return AjaxResponse.getInstanceByResult(true).addAttribute("list", t);
+            }
+            return new AjaxResponse(ReturnState.WARNING,"空文件夹").addAttribute("empty", true);
+        }
+        return new AjaxResponse(ReturnState.ERROR, FAILCHN);
+    }
 }
 
