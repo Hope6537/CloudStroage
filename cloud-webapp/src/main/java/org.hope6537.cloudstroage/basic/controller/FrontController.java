@@ -39,7 +39,7 @@ public class FrontController {
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String index(HttpServletRequest request) {
-        Member member = getLoginMember(request);
+        Member member = BasicController.getLoginMember(request);
         String type = request.getParameter("t");
         String parentId = request.getParameter("p");
         if (ApplicationConstant.isNull(type)) {
@@ -119,8 +119,5 @@ public class FrontController {
         return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN);
     }
 
-    public Member getLoginMember(HttpServletRequest request) {
-        return (Member) request.getSession().getAttribute("loginMember");
-    }
 
 }

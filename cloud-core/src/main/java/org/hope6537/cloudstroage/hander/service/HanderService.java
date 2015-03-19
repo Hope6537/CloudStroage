@@ -43,5 +43,4 @@ public interface HanderService extends BasicService<Hander, HanderDao> {
 
     public String getGrandParentId(String parentId);
 
-
 }

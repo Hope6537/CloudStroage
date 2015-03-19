@@ -110,7 +110,7 @@ public abstract class BasicController<Model extends BasicModel, Dao extends Basi
         return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN);
     }
 
-    public Member getLoginMember(HttpServletRequest request) {
+    public static Member getLoginMember(HttpServletRequest request) {
         return (Member) request.getSession().getAttribute("loginMember");
     }
 

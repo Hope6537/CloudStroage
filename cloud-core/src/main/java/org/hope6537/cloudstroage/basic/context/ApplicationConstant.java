@@ -18,6 +18,11 @@ public class ApplicationConstant extends org.hope6537.context.ApplicationConstan
 
     public static final String FOLDER = "文件夹";
     public static final String FILE = "文件";
+
+    public static final String FILE_STATUS_NORMAL = "云端已同步";
+    public static final String FILE_STATUS_NO_CONTACT = "没有联系";
+    public static final String FILE_STATUS_ONLY_SERVER = "只在服务器上";
+
     public static final String APPLICATION_NAME = "CloudStroage";
     public static final String ADMINPATH = "/admin/";
     public static final String FRONTPATH = "/front/";
@@ -32,7 +37,7 @@ public class ApplicationConstant extends org.hope6537.context.ApplicationConstan
             if (t.size() != 0) {
                 return AjaxResponse.getInstanceByResult(true).addAttribute("list", t);
             }
-            return new AjaxResponse(ReturnState.WARNING,"空文件夹").addAttribute("empty", true);
+            return new AjaxResponse(ReturnState.WARNING, "空文件夹").addAttribute("empty", true);
         }
         return new AjaxResponse(ReturnState.ERROR, FAILCHN);
     }

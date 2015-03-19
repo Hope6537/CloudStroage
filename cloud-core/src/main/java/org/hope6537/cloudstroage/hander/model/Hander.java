@@ -10,7 +10,6 @@ import org.hope6537.cloudstroage.basic.context.ApplicationConstant;
 import org.hope6537.cloudstroage.basic.model.BasicModel;
 import org.hope6537.cloudstroage.item.model.ItemInfo;
 
-import java.io.File;
 import java.util.List;
 
 /**
@@ -69,8 +68,10 @@ public class Hander extends BasicModel {
     }
 
     public void resetHander(Hander hander) {
-        this.setParentId(hander.getHanderId());
-        this.setFullPath(hander.getFullPath() + File.separator + getFileName());
+        if (ApplicationConstant.notNull(hander)) {
+            this.setParentId(hander.getHanderId());
+            this.setFullPath(hander.getFullPath() + "/" + getFileName());
+        }
     }
 
 

@@ -143,8 +143,7 @@
 
                                     <p>
 
-                                    <form action='javascript:;' class="dropzone"
-                                          id="uploadzone">
+                                    <form action='upload' class="dropzone" id="uploadzone">
                                     </form>
                                     </p>
                                 </div>
@@ -154,21 +153,26 @@
                                 </div>
                             </div>
                             <div id="newFolderModal" class="modal fade" tabindex="-1">
+                                <input type="hidden" id="renameHanderId">
+
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal"
                                             aria-hidden="true"></button>
-                                    <h4 class="modal-title">新建文件夹</h4>
+                                    <h4 class="modal-title" id="modalTitle">新建文件夹</h4>
                                 </div>
                                 <div class="modal-body">
                                     <p>
                                         <input class="form-control form-control-solid placeholder-no-fix" type="text"
                                                autocomplete="off"
-                                               placeholder="输入文件夹名称" id="folderName"/>
+                                               placeholder="请输入名称" id="folderName"/>
                                     </p>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" data-dismiss="modal" class="btn btn-default">取消</button>
                                     <button type="button" id="buttonAddFolder" data-dismiss="modal" class="btn blue">
+                                        确认
+                                    </button>
+                                    <button type="button" id="buttonRenameModal" data-dismiss="modal" class="btn green">
                                         确认
                                     </button>
                                 </div>

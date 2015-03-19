@@ -7,7 +7,7 @@
 /**
  * Created by Hope6537 on 2015/3/15.
  */
-var Index = function() {
+var Index = function () {
 
     /**
      * 当前操作用户对象
@@ -61,7 +61,7 @@ var Index = function() {
         /**
          * 获得member的json对象
          */
-        getMember: function() {
+        getMember: function () {
             var $member = $('#member');
             member = JSON.parse($member.text());
             $member.text("");
@@ -77,18 +77,24 @@ var Index = function() {
         /**
          * 载入hander对象，并调用表格初始化方法
          */
-        getHander: function() {
+        getHander: function () {
             $("#tableContext").empty();
+            if ($dataTable == undefined) {
+                service.initTable();
+            } else {
+                $dataTable.fnClearTable();
+            }
             $.ajax({
                 url: basePath + "hander/" + parentId + "/son/wrapper",
                 contentType: "application/json",
                 type: "GET",
-                success: function(data) {
+                success: function (data) {
                     if (!globalFunction.returnResult(data, undefined, false)) {
                         html = '<tr class="odd gradeX"><td colspan="4" class="center">这里空空如也，什么都没有</td></tr>';
                         $("#tableContext").append(html);
-                    } else { /** @namespace data.returnData */
-                    var list = data.returnData.list;
+                    } else {
+                        /** @namespace data.returnData */
+                        var list = data.returnData.list;
                         fileCount = list.length;
                         var html = '';
                         for (var i = 0; i < list.length; i++) {
@@ -97,14 +103,17 @@ var Index = function() {
                             var value = JSON.stringify({
                                 handerId: hander.handerId,
                                 memberId: hander.memberId,
-                                folder: type
+                                folder: type,
+                                parentId: hander.parentId
                             });
-                            /** @namespace hander.updateDate */
-                            /** @namespace hander.itemInfo */
-                            html += '<tr class="odd gradeX"> ' + '<td>' + ' <div class="checker"><span class="">' + '<input type="checkbox" class="checkboxes" data-json=' + value + '></span></div> </td>' + '<td> <a class ="toSon" href="javascript:;" data-href="' + (basePath + 'index?p=' + hander.handerId) + '" data-type = "' + type + '"> ' + getTypeIcon(type) + ' ' + hander.fileName + ' </a></td> ' + '<td class="center"> ' + (hander.itemInfo.size == "0B" ? "" : hander.itemInfo.size) + ' </td>' + '<td class="center"> ' + hander.updateDate + " </td></tr>";
+                            var line1 = '<div class="checker"><span class=""><input type="checkbox" class="checkboxes" data-json=\'' + value + '\'></span></div>';
+                            var line2 = '<a class ="toSon" href="javascript:;" data-href="' + (basePath + 'index?p=' + hander.handerId) + '" data-type = "' + type + '"> ' + getTypeIcon(type) + ' ' + hander.fileName + ' </a>';
+                            var line3 = (hander.itemInfo.size == "0B" ? "" : hander.itemInfo.size);
+                            var line4 = hander.updateDate;
+                            $dataTable.fnAddData([line1, line2, line3, line4]);
                         }
                         $("#tableContext").append(html);
-                        service.initTable();
+
                     }
                 }
             })
@@ -112,7 +121,7 @@ var Index = function() {
         /**
          * 跳转到子节点页面
          */
-        toSonHander: function(a) {
+        toSonHander: function (a) {
             var type = a.data("type");
             console.log(a[0]);
             if (type == globalConstant.FOLDER) {
@@ -127,7 +136,7 @@ var Index = function() {
         /**
          * 生成右键菜单
          */
-        initRightClick: function() {
+        initRightClick: function () {
             service.getSelection();
             //console.log(selectionCount);
             if (selectionCount > 1) {
@@ -145,11 +154,11 @@ var Index = function() {
         /**
          * 生成被选中的handerId数组，同时给选中数量赋值
          */
-        getSelection: function() {
+        getSelection: function () {
             selectionCount = 0;
             var $selection = $("input[type='checkbox'].checkboxes");
             var tmp = new Array($selection.length);
-            $selection.each(function(i) {
+            $selection.each(function (i) {
                 if ($(this).parent().hasClass("checked")) {
                     tmp[i] = $(this).data("json");
                     if (tmp[i] != undefined) {
@@ -169,19 +178,19 @@ var Index = function() {
         /**
          *
          */
-        getTree: function() {
+        getTree: function () {
             $('#fileTable').gtreetable({
-                'source': function() {
+                'source': function () {
                     return {
                         type: 'GET',
                         url: basePath + "hander/" + parentId + "/son/wrapper",
                         contentType: "application/json",
-                        error: function(data) {
+                        error: function (data) {
                             alert(data.status + ': ' + data.responseText);
                         }
                     }
                 },
-                'onSave': function(oNode) {
+                'onSave': function (oNode) {
                     return {
                         type: 'POST',
                         url: !oNode.isSaved() ? 'nodeCreate' : 'nodeUpdate?id=' + oNode.getId(),
@@ -192,36 +201,32 @@ var Index = function() {
                             related: oNode.getRelatedNodeId()
                         },
                         dataType: 'json',
-                        error: function(XMLHttpRequest) {
+                        error: function (XMLHttpRequest) {
                             alert(XMLHttpRequest.status + ': ' + XMLHttpRequest.responseText);
                         }
                     };
                 }
 
                 ,
-                'onDelete': function(oNode) {
+                'onDelete': function (oNode) {
                     return {
                         type: 'POST',
                         url: 'nodeDelete?id=' + oNode.getId(),
                         dataType: 'json',
-                        error: function(XMLHttpRequest) {
+                        error: function (XMLHttpRequest) {
                             alert(XMLHttpRequest.status + ': ' + XMLHttpRequest.responseText);
                         }
                     };
                 },
                 'language': 'zh-CN',
                 'types': {
-                    default:
-                        'glyphicon glyphicon-folder-open', file: 'glyphicon glyphicon-file',
+                    default: 'glyphicon glyphicon-folder-open', file: 'glyphicon glyphicon-file',
                     folder: 'glyphicon glyphicon-folder-open'
                 }
             });
 
         },
-        initTable: function() {
-            if ($dataTable != undefined) {
-                $dataTable.destroy();
-            }
+        initTable: function () {
             $dataTable = $('#dataTable').dataTable({
                 "paging": false,
                 "searching": false,
@@ -259,23 +264,22 @@ var Index = function() {
                 }, {
                     "orderable": true
                 }],
-                "pagingType": "bootstrap_full_number",
                 "order": [
                     [2, "asc"]
                 ]
             });
         },
-        showUpload: function() {
+        showUpload: function () {
             $("#uploadModal").modal();
         },
-        initDropZone: function() {
+        initDropZone: function () {
             Dropzone.options.uploadzone = {
-                init: function() {
-                    this.on("addedfile", function(file) {
+                init: function () {
+                    this.on("addedfile", function (file) {
                         // Create the remove button
                         var removeButton = Dropzone.createElement("<button class='btn btn-sm btn-block'>移除上传队列</button>");
                         var _this = this;
-                        removeButton.addEventListener("click", function(e) {
+                        removeButton.addEventListener("click", function (e) {
                             e.preventDefault();
                             e.stopPropagation();
                             _this.removeFile(file);
@@ -285,12 +289,17 @@ var Index = function() {
                 }
             }
         },
-        showNewFolder: function() {
+        showNewFolder: function () {
             $("#newFolderModal").modal();
-            $("#folderName").val(' ')
+            $("#folderName").val('')
+            $("#buttonRenameModal").hide();
+            $("#buttonAddFolder").show();
         },
-        addNewFolder: function() {
-            Pace.track(function() {
+        addNewFolder: function () {
+            $("#modalTitle").text("新建文件夹");
+            $("#buttonAddFolder").show();
+            $("#buttonRenameModal").hide();
+            Pace.track(function () {
                 var data = {
                     memberId: member.memberId,
                     fileName: $("#folderName").val().trim(),
@@ -304,7 +313,7 @@ var Index = function() {
                     type: "POST",
                     contentType: "application/json",
                     data: JSON.stringify(data),
-                    success: function(data) {
+                    success: function (data) {
                         if (globalFunction.returnResult(data, "成功创建文件夹")) {
                             $("#newFolderModal").modal('hide');
                             service.getHander();
@@ -319,49 +328,82 @@ var Index = function() {
 
     var rightClickService = {
 
-        deleteHander: function() {
-            console.log(selection);
+        deleteHander: function () {
             $.ajax({
                 url: basePath + "/hander/deleteMulti",
                 type: "DELETE",
                 dataType: "json",
                 contentType: "application/json",
                 data: JSON.stringify(selection),
-                success: function(data) {
+                success: function (data) {
                     if (globalFunction.returnResult(data, "成功删除文件")) {
                         service.getHander();
                     }
                 }
             })
         },
-        openHander: function() {
-
+        openHander: function () {
+            var parentId = selection[0].handerId;
+            window.location.href = basePath + "index?p=" + parentId;
+        },
+        showRenameFolder: function () {
+            $("#modalTitle").text("文件重命名");
+            $("#newFolderModal").modal();
+            $("#folderName").val('');
+            $("#renameHanderId").val(JSON.stringify(selection[0]));
+            $("#buttonAddFolder").hide();
+            $("#buttonRenameModal").show();
+        },
+        renameFolder: function () {
+            Pace.track(function () {
+                var hander = JSON.parse($("#renameHanderId").val());
+                console.log(hander);
+                hander.fileName = $("#folderName").val().trim();
+                $.ajax({
+                    url: basePath + "hander/",
+                    type: "PUT",
+                    contentType: "application/json",
+                    data: JSON.stringify(hander),
+                    success: function (data) {
+                        $("#newFolderModal").modal('hide');
+                        if (globalFunction.returnResult(data, "重命名成功")) {
+                            service.getHander();
+                        }
+                    }
+                });
+            });
         }
     };
 
-    var handleEvent = function() {
+
+    var handleEvent = function () {
         var table = $('#dataTable');
         $(document).on("ready", service.initDropZone);
         $(document).on("ready", service.getMember);
-        $(document).on("ready", service.getHander); /*$(document).on("ready", service.initRightClick);*/
+        $(document).on("ready", service.getHander);
+        /*$(document).on("ready", service.initRightClick);*/
         $("#toUpload").on("click", service.showUpload);
         $("#testButton").on("click", service.getSelection);
         $("#toNewFolder").on("click", service.showNewFolder);
         $("#toRefresh").on("click", service.getHander);
         $("#buttonAddFolder").on("click", service.addNewFolder);
-        $(".back").live("click", function() {
+        $(".back").live("click", function () {
             window.location.href = $(this).find("a").attr("href");
         });
-        $(".toSon").live("click", function() {
+        $(".toSon").live("click", function () {
             service.toSonHander($(this))
         });
+        $("#buttonRename").on("click", rightClickService.showRenameFolder);
+
         $("#buttonDelete").on("click", rightClickService.deleteHander);
         $("#buttonOpen").on("click", rightClickService.openHander);
-        table.find('.group-checkable').on("change", function() {
+        $("#buttonRenameModal").on("click", rightClickService.renameFolder);
+
+        table.find('.group-checkable').on("change", function () {
             var set = $(this).attr("data-set");
             var checked = $(this).is(":checked");
             var status = $(this).data("isc");
-            $(set).each(function() {
+            $(set).each(function () {
                 if (status == 0) {
                     $(this).attr("checked", true);
                     $(this).parents('tr').toggleClass("active");
@@ -381,7 +423,7 @@ var Index = function() {
                 $(this).data("isc", 0);
             }
         });
-        table.on('mousedown', 'tbody tr', function(e) {
+        table.on('mousedown', 'tbody tr', function (e) {
             if (allSelected) {
                 allSelected = false;
                 table.find('.group-checkable').parents().removeClass("checked");
@@ -396,7 +438,7 @@ var Index = function() {
     };
 
     return {
-        init: function() {
+        init: function () {
             handleEvent();
         }
     }

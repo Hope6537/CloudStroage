@@ -9,5 +9,6 @@ package org.hope6537.cloudstroage.basic.context;
 public class ResourceFile {
     public static final String FILEUPLOAD = "fileupload";
     public static final String IMAGE = "image";
+    public static final String FILE = "file";
     public static final long FILE_SIZE = 52275200;
 }

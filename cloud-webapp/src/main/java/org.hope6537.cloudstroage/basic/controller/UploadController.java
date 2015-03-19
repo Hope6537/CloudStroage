@@ -10,10 +10,12 @@ import org.hope6537.ajax.AjaxResponse;
 import org.hope6537.ajax.ReturnState;
 import org.hope6537.cloudstroage.basic.context.ApplicationConstant;
 import org.hope6537.cloudstroage.basic.context.ResourceFile;
+import org.hope6537.cloudstroage.item.model.ItemInfo;
+import org.hope6537.cloudstroage.item.service.ItemService;
 import org.hope6537.date.DateFormatCalculate;
 import org.hope6537.file.FileUtil;
-import org.hope6537.hadoop.ConfigurationFactory;
 import org.hope6537.hadoop.hdfs.HdfsUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,26 +48,53 @@ public class UploadController {
     @Value("${hdfsURL}")
     private String hdfsURL;
 
+    @Autowired
+    private HdfsUtils hdfsUtils;
+
+    @Autowired
+    private ItemService itemService;
+
     @RequestMapping(method = RequestMethod.POST, value = "/upload")
     @ResponseBody
     public AjaxResponse uploadImage(@RequestParam("file") MultipartFile multipartFile, HttpServletRequest request) {
         String fileName = getUploadFileName(multipartFile);
-        String serverPath = getServerPath(ResourceFile.IMAGE);
-        String netURL = getURL(ResourceFile.IMAGE);
-        boolean result = false;
+        String serverPathFolder = getServerPath(ResourceFile.FILE);
+        String hdfsPathFolder = hdfsURL + "/CloudStroage/" + DateFormatCalculate.createNowTime(DateFormatCalculate.BASIC_DATE_FORMAT);
+        String netURL = getURL(ResourceFile.FILE);
+        String md5;
         try {
-            HdfsUtils hdfsUtils = HdfsUtils.getInstanceOfPseudoDistributed(ConfigurationFactory.getConfigurationOfPseudoDistributed());
             InputStream source = multipartFile.getInputStream();
-            OutputStream server = new FileOutputStream(new File(serverPath, fileName));
-            OutputStream hdfs = hdfsUtils.getHdfsOutPutStream("/CloudStroage/user/hope6537/" + DateFormatCalculate.createNowTime(DateFormatCalculate.BASIC_DATE_FORMAT) + "/" + fileName);
-            closeStream(new Closeable[]{source, server, hdfs});
-            result = FileUtil.copyFileToServerAndHDFS(source, server, hdfs, 4096);
+            File serverPathDirectory = new File(serverPathFolder);
+            File hdfsPathDirectory = new File(hdfsPathFolder);
+            synchronized (this) {
+                if (!serverPathDirectory.exists()) {
+                    serverPathDirectory.mkdir();
+                }
+                if (!hdfsPathDirectory.exists()) {
+                    hdfsPathDirectory.mkdir();
+                }
+
+                OutputStream server = new FileOutputStream(new File(serverPathFolder, fileName));
+                OutputStream hdfs = hdfsUtils.getHdfsOutPutStream(hdfsPathFolder + "/" + fileName);
+                md5 = FileUtil.copyFileToServerAndHDFS(source, server, hdfs, 4096);
+                closeStream(new Closeable[]{source, server, hdfs});
+                if (ApplicationConstant.notNull(md5)) {
+                    ItemInfo itemInfo = new ItemInfo();
+                    itemInfo.setAbsolutePath(hdfsPathFolder + "/" + fileName);
+                    itemInfo.setServerPath(serverPathFolder + "/" + fileName);
+                    itemInfo.setSize(String.valueOf(multipartFile.getSize()));
+                    itemInfo.setStatus(ApplicationConstant.FILE_STATUS_NO_CONTACT);
+                    itemInfo.setSha1(md5);
+                    itemService.addEntry(itemInfo);
+                }
+
+            }
         } catch (IOException e) {
             return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN).addAttribute("Exception", e.getMessage());
         }
-        return AjaxResponse.getInstanceByResult(result)
-                .addAttribute("serverPath", netURL + File.separator + fileName)
-                .addAttribute("hdfsPath", hdfsURL + "/" + fileName);
+        return AjaxResponse.getInstanceByResult(ApplicationConstant.notNull(md5))
+                .addAttribute("serverPath", netURL + "/" + fileName)
+                .addAttribute("hdfsPath", hdfsPathFolder + "/" + fileName);
     }
 
     private void closeStream(Closeable[] list) {
@@ -85,11 +114,11 @@ public class UploadController {
     }
 
     private String getServerPath(String fileType) {
-        return serverPath + File.separator + ResourceFile.FILEUPLOAD + File.separator + fileType;
+        return serverPath + "/" + ResourceFile.FILEUPLOAD + "/" + fileType;
     }
 
     public String getURL(String fileType) {
-        return netURL + File.separator + ResourceFile.FILEUPLOAD + File.separator + fileType;
+        return netURL + "/" + ResourceFile.FILEUPLOAD + "/" + fileType;
     }
 
 

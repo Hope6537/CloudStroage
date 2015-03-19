@@ -17,10 +17,26 @@
     </insert>
     <update id="updateEntry">
         UPDATE hander
-        SET memberId = #{memberId}, itemId = #{itemId},
-            parentId = #{parentId},
-            fileName = #{fileName}, folder = #{folder}, fullPath = #{fullPath},
-            status   = #{status}, updateDate = #{updateDate}
+        SET
+        memberId = #{memberId}
+        <if test="itemId!=null and itemId!=''">
+            ,itemId = #{itemId}
+        </if>
+        <if test="parentId!=null and parentId!=''">
+            ,parentId = #{parentId}
+        </if>
+        <if test="fileName!=null and fileName!=''">
+            ,fileName = #{fileName}
+        </if>
+        <if test="status!=null and status!=''">
+            ,status = #{status}
+        </if>
+        <if test="fullPath!=null and fullPath!=''">
+            ,fullPath = #{fullPath}
+        </if>
+        <if test="updateDate!=null and updateDate!=''">
+            ,updateDate = #{updateDate}
+        </if>
         WHERE handerId = #{handerId}
     </update>
     <update id="disableEntry">

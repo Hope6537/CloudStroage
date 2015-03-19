@@ -15,4 +15,11 @@
     <context:component-scan base-package="org.hope6537.cloudstroage.*.dao"/>
     <context:component-scan base-package="org.hope6537.cloudstroage.*.service"/>
 
+    <bean id="hadoopConfiguration" class="org.hope6537.hadoop.ConfigurationFactory"
+          factory-method="getConfigurationOfPseudoDistributed"/>
+    <bean id="hdfsUtils" class="org.hope6537.hadoop.hdfs.HdfsUtils" scope="singleton"
+          factory-method="getInstanceOfPseudoDistributed">
+        <constructor-arg type="org.apache.hadoop.conf.Configuration" ref="hadoopConfiguration"/>
+    </bean>
+
 </beans>

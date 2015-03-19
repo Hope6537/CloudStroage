@@ -16,9 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * Created by Hope6537 on 2015/3/11.
@@ -40,15 +41,12 @@ public class HanderServiceImpl extends BasicServiceImpl<Hander, HanderDao> imple
             return this.updateEntry(hander);
         }
         List<Hander> sonHanderList = getHanderListByParentHander(hander);
-        hander.resetHander(this.getEntryById(hander.getParentId()));
+        if (!hander.getParentId().equals("-1")) {
+            hander.resetHander(this.getEntryById(hander.getParentId()));
+        }
+        hander.setFullPath("root/" + hander.getFileName());
         sonHanderList.forEach((sonHander) -> sonHander.resetHander(hander));
         sonHanderList.forEach((sonHander) -> this.updateFolderName(sonHander));
-        List<String> names = new ArrayList<>();
-        List<String> words = sonHanderList
-                .stream()
-                .flatMap(hander1 -> Stream.of(hander1.getFileName()))
-                .collect(Collectors.toList());
-
         return this.updateEntry(hander);
     }
 
