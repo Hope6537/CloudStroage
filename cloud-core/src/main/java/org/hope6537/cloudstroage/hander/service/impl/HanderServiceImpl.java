@@ -9,6 +9,7 @@ package org.hope6537.cloudstroage.hander.service.impl;
 import org.hope6537.cloudstroage.basic.service.impl.BasicServiceImpl;
 import org.hope6537.cloudstroage.hander.dao.HanderDao;
 import org.hope6537.cloudstroage.hander.model.Hander;
+import org.hope6537.cloudstroage.hander.model.HanderItemWrapper;
 import org.hope6537.cloudstroage.hander.model.HanderWrapper;
 import org.hope6537.cloudstroage.hander.service.HanderService;
 import org.hope6537.context.ApplicationConstant;
@@ -34,6 +35,17 @@ public class HanderServiceImpl extends BasicServiceImpl<Hander, HanderDao> imple
         super.setDao(dao);
     }
 
+
+    @Override
+    public boolean addHander2ItemByWrapper(HanderItemWrapper handerItemWrapper) {
+        synchronized (handerItemWrapper) {
+            if (ApplicationConstant.notNull(handerItemWrapper)) {
+                handerItemWrapper.wrapper();
+                return dao.addHander2ItemByWrapper(handerItemWrapper) == handerItemWrapper.getItemIdAndName().size();
+            }
+        }
+        return false;
+    }
 
     @Override
     public boolean updateFolderName(Hander hander) {

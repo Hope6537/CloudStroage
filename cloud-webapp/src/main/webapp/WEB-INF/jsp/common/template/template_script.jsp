@@ -85,6 +85,7 @@
 <script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/global/scripts/toast.js"/>"></script>
 <script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/global/plugins/autoComplete/autoComplete.js"/>"></script>
 <script src="<c:url value="/static/admin/js/global.js"/>" type="text/javascript"></script>
+<script src="<c:url value="/static/admin/js/hashmap.js"/>" type="text/javascript"></script>
 <script>
     $(document).ready(function () {
         Metronic.init();

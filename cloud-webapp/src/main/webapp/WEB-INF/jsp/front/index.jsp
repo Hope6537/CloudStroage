@@ -149,7 +149,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" data-dismiss="modal" class="btn btn-default">取消上传</button>
-                                    <button type="button" class="btn blue">确认上传</button>
+                                    <button type="button" id="buttonUpload" class="btn blue">确认上传</button>
                                 </div>
                             </div>
                             <div id="newFolderModal" class="modal fade" tabindex="-1">
@@ -180,7 +180,6 @@
                         </div>
                     </div>
                     <!-- END PORTLET-->
-
                 </div>
             </div>
             <!-- END PAGE CONTENT-->

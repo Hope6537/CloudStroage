@@ -12,8 +12,10 @@ import org.hope6537.cloudstroage.basic.context.ApplicationConstant;
 import org.hope6537.cloudstroage.basic.controller.BasicController;
 import org.hope6537.cloudstroage.hander.dao.HanderDao;
 import org.hope6537.cloudstroage.hander.model.Hander;
+import org.hope6537.cloudstroage.hander.model.HanderItemWrapper;
 import org.hope6537.cloudstroage.hander.model.HanderWrapper;
 import org.hope6537.cloudstroage.hander.service.HanderService;
+import org.hope6537.cloudstroage.item.service.ItemService;
 import org.hope6537.cloudstroage.member.model.Member;
 import org.hope6537.date.DateFormatCalculate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +54,9 @@ public class HanderController extends BasicController<Hander, HanderDao, HanderS
         super.setService(service);
     }
 
+    @Autowired
+    private ItemService itemService;
+
     @Override
     public String toPage() {
         return null;
@@ -88,6 +93,17 @@ public class HanderController extends BasicController<Hander, HanderDao, HanderS
         } else {
             return AjaxResponse.getInstanceByResult(service.disableFolder(model));
         }
+    }
+
+    @RequestMapping(value = "/addMulti", method = RequestMethod.POST)
+    @ResponseBody
+    public AjaxResponse addMultiModel(@RequestBody HanderItemWrapper handerItemWrapper) {
+        if (ApplicationConstant.notNull(handerItemWrapper)) {
+            boolean res = service.addHander2ItemByWrapper(handerItemWrapper)
+                    && itemService.onlyChangeStatusByIds(ApplicationConstant.FILE_STATUS_NORMAL, handerItemWrapper.getItemIds());
+            return AjaxResponse.getInstanceByResult(res);
+        }
+        return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN);
     }
 
     @RequestMapping(value = "/deleteMulti", method = RequestMethod.DELETE)

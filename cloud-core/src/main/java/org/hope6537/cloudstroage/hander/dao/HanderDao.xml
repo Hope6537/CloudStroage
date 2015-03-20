@@ -15,6 +15,25 @@
             SELECT LAST_INSERT_ID()
         </selectKey>
     </insert>
+
+    <insert id="addHander2ItemByWrapper">
+        INSERT INTO hander (memberId, itemId, parentId, fileName, folder, fullPath, status,updateDate ) VALUES
+        <foreach collection="itemIdAndName" item="value" index="key" separator=",">
+            (
+            #{hander.memberId},
+            #{key},
+            #{hander.parentId},
+            #{value},
+            #{hander.folder},
+            #{hander.fullPath},
+            #{hander.status},
+            #{hander.updateDate}
+            )
+        </foreach>
+        <selectKey resultType="string" keyProperty="handerId">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
     <update id="updateEntry">
         UPDATE hander
         SET

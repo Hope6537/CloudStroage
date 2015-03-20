@@ -9,6 +9,7 @@
  */
 var Index = function () {
 
+
     /**
      * 当前操作用户对象
      */
@@ -44,6 +45,11 @@ var Index = function () {
      */
     var $dataTable;
 
+    var uploadInfoMap;
+
+    var uploadzone;
+
+    var fileCount;
 
     /**
      * 根据类型获取图标
@@ -91,7 +97,7 @@ var Index = function () {
                 success: function (data) {
                     if (!globalFunction.returnResult(data, undefined, false)) {
                         html = '<tr class="odd gradeX"><td colspan="4" class="center">这里空空如也，什么都没有</td></tr>';
-                        $("#tableContext").append(html);
+                        //$("#tableContext").append(html);
                     } else {
                         /** @namespace data.returnData */
                         var list = data.returnData.list;
@@ -123,13 +129,10 @@ var Index = function () {
          */
         toSonHander: function (a) {
             var type = a.data("type");
-            console.log(a[0]);
             if (type == globalConstant.FOLDER) {
                 window.location.href = a.data("href");
             } else if (type == globalConstant.FILE) {
-                console.log("file")
             } else {
-                console.log("no type");
             }
 
         },
@@ -138,7 +141,6 @@ var Index = function () {
          */
         initRightClick: function () {
             service.getSelection();
-            //console.log(selectionCount);
             if (selectionCount > 1) {
                 $("#rename").hide();
                 $("#open").hide();
@@ -170,7 +172,6 @@ var Index = function () {
             var index = 0;
             for (var i = 0; i < tmp.length; i++) {
                 if (tmp[i] != undefined) {
-                    console.log(tmp[i]);
                     selection[index++] = (tmp[i]);
                 }
             }
@@ -240,7 +241,7 @@ var Index = function () {
                     "sInfoPostFix": "",
                     "sSearch": "搜索:",
                     "sUrl": "",
-                    "sEmptyTable": "表中数据为空",
+                    "sEmptyTable": "这里空空如也，什么都没有",
                     "sLoadingRecords": "载入中...",
                     "sInfoThousands": ",",
                     "oPaginate": {
@@ -271,27 +272,89 @@ var Index = function () {
         },
         showUpload: function () {
             $("#uploadModal").modal();
+            if (uploadInfoMap.count() == 0) {
+                fileCount = 0;
+                uploadzone.removeAllFiles();
+            }
         },
         initDropZone: function () {
-            Dropzone.options.uploadzone = {
-                init: function () {
-                    this.on("addedfile", function (file) {
-                        // Create the remove button
-                        var removeButton = Dropzone.createElement("<button class='btn btn-sm btn-block'>移除上传队列</button>");
-                        var _this = this;
-                        removeButton.addEventListener("click", function (e) {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            _this.removeFile(file);
-                        });
-                        file.previewElement.appendChild(removeButton);
-                    });
-                }
+            if (uploadInfoMap == undefined) {
+                uploadInfoMap = new HashMap();
             }
+            if (uploadzone == undefined) {
+                uploadzone = new Dropzone("form#uploadzone");
+                uploadzone.on("addedfile", function (file) {
+                    fileCount++;
+                    if (fileCount > 14) {
+                        toast.error("超过最大同时上传文件数，请上传完当前文件");
+                        this.removeFile(file);
+                        return;
+                    }
+                    $("#buttonUpload").hide();
+                    // 增加删除按钮
+                    var removeButton = Dropzone.createElement("<button class='btn btn-sm btn-block'>移除上传队列</button>");
+                    var _this = this;
+                    removeButton.addEventListener("click", function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        _this.removeFile(file);
+                        fileCount--;
+                        var response = file.xhr.response;
+                        if (response != undefined) {
+                            var data = JSON.parse(response);
+                            uploadInfoMap.remove(data.returnData.itemId);
+                        }
+                    });
+                    file.previewElement.appendChild(removeButton);
+                });
+                uploadzone.on("error", function (file) {
+                    $("#buttonUpload").show();
+                    toast.error("上传失败")
+                });
+                uploadzone.on("success", function (file, data) {
+                    $("#buttonUpload").show();
+                    if (globalFunction.returnResult(data, undefined, false)) {
+                        var itemId = data.returnData.itemId;
+                        uploadInfoMap.set(itemId, file.name);
+                    }
+                });
+            }
+        },
+        confirmUpload: function () {
+            var json = '';
+            uploadInfoMap.forEach(
+                function (value, key) {
+                    json += '"' + key + '":"' + value + '",';
+                }
+            );
+            json = '{' + json.substring(0, json.length - 1) + '}';
+            if (json != '') {
+                var data = {
+                    itemIdAndName: JSON.parse(json),
+                    parentId: parentId,
+                    memberId: member.memberId
+                };
+                $.ajax({
+                    url: basePath + "hander/addMulti",
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    contentType: "application/json",
+                    success: function (data) {
+                        if (globalFunction.returnResult(data, "上传成功")) {
+                            uploadInfoMap.clear();
+                            $("#uploadModal").modal('hide');
+                            service.getHander();
+                        }
+                    }
+                })
+            } else {
+                toast.info("您未上传任何文件")
+            }
+
         },
         showNewFolder: function () {
             $("#newFolderModal").modal();
-            $("#folderName").val('')
+            $("#folderName").val('');
             $("#buttonRenameModal").hide();
             $("#buttonAddFolder").show();
         },
@@ -357,7 +420,6 @@ var Index = function () {
         renameFolder: function () {
             Pace.track(function () {
                 var hander = JSON.parse($("#renameHanderId").val());
-                console.log(hander);
                 hander.fileName = $("#folderName").val().trim();
                 $.ajax({
                     url: basePath + "hander/",
@@ -378,6 +440,7 @@ var Index = function () {
 
     var handleEvent = function () {
         var table = $('#dataTable');
+        Dropzone.autoDiscover = false;
         $(document).on("ready", service.initDropZone);
         $(document).on("ready", service.getMember);
         $(document).on("ready", service.getHander);
@@ -387,14 +450,15 @@ var Index = function () {
         $("#toNewFolder").on("click", service.showNewFolder);
         $("#toRefresh").on("click", service.getHander);
         $("#buttonAddFolder").on("click", service.addNewFolder);
+        $("#buttonUpload").on("click", service.confirmUpload);
         $(".back").live("click", function () {
             window.location.href = $(this).find("a").attr("href");
         });
         $(".toSon").live("click", function () {
             service.toSonHander($(this))
         });
-        $("#buttonRename").on("click", rightClickService.showRenameFolder);
 
+        $("#buttonRename").on("click", rightClickService.showRenameFolder);
         $("#buttonDelete").on("click", rightClickService.deleteHander);
         $("#buttonOpen").on("click", rightClickService.openHander);
         $("#buttonRenameModal").on("click", rightClickService.renameFolder);

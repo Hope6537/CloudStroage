@@ -6,6 +6,7 @@
 
 package org.hope6537.cloudstroage.item.service.impl;
 
+import org.hope6537.cloudstroage.basic.context.ApplicationConstant;
 import org.hope6537.cloudstroage.basic.service.impl.BasicServiceImpl;
 import org.hope6537.cloudstroage.item.dao.ItemDao;
 import org.hope6537.cloudstroage.item.model.ItemInfo;
@@ -13,6 +14,8 @@ import org.hope6537.cloudstroage.item.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+
+import java.util.Set;
 
 /**
  * Created by Hope6537 on 2015/3/10.
@@ -27,4 +30,11 @@ public class ItemServiceImpl extends BasicServiceImpl<ItemInfo, ItemDao> impleme
         super.setDao(dao);
     }
 
+    @Override
+    public boolean onlyChangeStatusByIds(String status, Set<String> ids) {
+        if (ApplicationConstant.notNull(status, ids)) {
+            return dao.onlyChangeStatusByIds(status, ids) == ids.size();
+        }
+        return false;
+    }
 }

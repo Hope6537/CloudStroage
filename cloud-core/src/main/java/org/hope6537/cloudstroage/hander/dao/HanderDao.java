@@ -9,6 +9,7 @@ package org.hope6537.cloudstroage.hander.dao;
 import org.apache.ibatis.annotations.Param;
 import org.hope6537.cloudstroage.basic.dao.BasicDao;
 import org.hope6537.cloudstroage.hander.model.Hander;
+import org.hope6537.cloudstroage.hander.model.HanderItemWrapper;
 import org.hope6537.cloudstroage.hander.model.HanderWrapper;
 import org.hope6537.page.annotation.MybatisRepository;
 
@@ -21,13 +22,15 @@ import java.util.Set;
 @MybatisRepository
 public interface HanderDao extends BasicDao<Hander> {
 
-    String getGrandParentId(String parentId);
+    int addHander2ItemByWrapper(HanderItemWrapper handerItemWrapper);
 
     int deleteHanderByMemberAndItem(@Param("memberId") String memberId, @Param("itemId") String itemId);
 
     int deleteMultiHander(@Param("idSet") Set<String> idSet);
 
     int disableMultiHander(@Param("idSet") Set<String> idSet);
+
+    String getGrandParentId(String parentId);
 
     List<Hander> getHanderListByPath(@Param("memberId") String memberId, @Param("fullPath") String fullPath);
 

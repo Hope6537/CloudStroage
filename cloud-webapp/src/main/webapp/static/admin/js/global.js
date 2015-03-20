@@ -27,8 +27,6 @@ var globalConstant = {
 };
 
 var globalFunction = {
-
-
     autoCompleteDriver: function (targetUrl, method, formData, autoCompleteInput, putSelectionFunction, afterDataFunction) {
         $.ajax({
             url: targetUrl,

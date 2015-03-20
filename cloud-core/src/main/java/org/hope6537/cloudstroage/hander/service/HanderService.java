@@ -9,6 +9,7 @@ package org.hope6537.cloudstroage.hander.service;
 import org.hope6537.cloudstroage.basic.service.BasicService;
 import org.hope6537.cloudstroage.hander.dao.HanderDao;
 import org.hope6537.cloudstroage.hander.model.Hander;
+import org.hope6537.cloudstroage.hander.model.HanderItemWrapper;
 import org.hope6537.cloudstroage.hander.model.HanderWrapper;
 
 import java.util.List;
@@ -20,6 +21,8 @@ import java.util.Set;
  */
 public interface HanderService extends BasicService<Hander, HanderDao> {
 
+
+    public boolean addHander2ItemByWrapper(HanderItemWrapper handerItemWrapper);
 
     public void getSonHanderIds(Hander hander, Set<String> list);
 

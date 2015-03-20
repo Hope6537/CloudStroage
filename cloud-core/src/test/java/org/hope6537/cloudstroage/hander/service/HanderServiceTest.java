@@ -8,6 +8,7 @@ package org.hope6537.cloudstroage.hander.service;
 
 import org.hope6537.cloudstroage.basic.context.ApplicationConstant;
 import org.hope6537.cloudstroage.hander.model.Hander;
+import org.hope6537.cloudstroage.hander.model.HanderItemWrapper;
 import org.hope6537.cloudstroage.hander.model.HanderWrapper;
 import org.hope6537.cloudstroage.item.model.ItemInfo;
 import org.hope6537.cloudstroage.item.service.ItemService;
@@ -20,7 +21,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -196,6 +199,26 @@ public class HanderServiceTest extends SpringTestHelper {
         Hander hander = new Hander();
         HanderWrapper wrapper = handerService.getWrapperByHanderId(hander);
         assertTrue(ApplicationConstant.notNull(wrapper.getHanders()));
+    }
+
+    @Test
+    public void testHanderItemWrapper() {
+        assertTrue(handerService.addEntry(handerRoot));
+        handerFolder.resetHander(handerRoot);
+        assertTrue(handerService.addEntry(handerFolder));
+        handerFile.resetHander(handerFolder);
+        assertTrue(handerService.addEntry(handerFile));
+
+        Map<String, String> items = new HashMap<>();
+        items.put("-1", "a.txt");
+        items.put("-2", "b.txt");
+
+        HanderItemWrapper handerItemWrapper = new HanderItemWrapper();
+        handerItemWrapper.setItemIdAndName(items);
+        handerItemWrapper.setMemberId(handerFile.getMemberId());
+        handerItemWrapper.setParentId(handerFile.getParentId());
+
+        assertTrue(handerService.addHander2ItemByWrapper(handerItemWrapper));
     }
 
 

@@ -185,7 +185,5 @@ public class HanderControllerTest extends SpringWebTestHelper {
     public void testDeleteMultiHander() throws Exception {
         String arr = "[" + file1.getHanderId() + "," + file2.getHanderId() + "]";
         String request = JSON.toJSONString(arr);
-
-
     }
 }
