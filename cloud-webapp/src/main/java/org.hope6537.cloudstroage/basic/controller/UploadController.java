@@ -45,8 +45,18 @@ public class UploadController {
     @Value("${netURL}")
     private String netURL;
 
-    @Value("${hdfsURL}")
-    private String hdfsURL;
+    @Value("${netPath}")
+    private String netPath;
+
+    @Value("${hdfsPath}")
+    private String hdfsPath;
+
+    @Value("${hdfsUrlPrefix}")
+    private String hdfsUrlPrefix;
+
+    @Value("${hdfsUrlSuffix}")
+    private String hdfsUrlSuffix;
+
 
     @Autowired
     private HdfsUtils hdfsUtils;
@@ -59,7 +69,8 @@ public class UploadController {
     public AjaxResponse uploadImage(@RequestParam("file") MultipartFile multipartFile, HttpServletRequest request) {
         String fileName = getUploadFileName(multipartFile);
         String serverPathFolder = getServerPath(ResourceFile.FILE);
-        String hdfsPathFolder = hdfsURL + "/CloudStroage/" + DateFormatCalculate.createNowTime(DateFormatCalculate.BASIC_DATE_FORMAT);
+        String hdfsPathFolderNoUrl = getHdfsFolderPath();
+        String hdfsPathFolder = hdfsPath + hdfsPathFolderNoUrl;
         String netURL = getURL(ResourceFile.FILE);
         String md5;
         try {
@@ -73,15 +84,14 @@ public class UploadController {
                 if (!hdfsPathDirectory.exists()) {
                     hdfsPathDirectory.mkdir();
                 }
-
                 OutputStream server = new FileOutputStream(new File(serverPathFolder, fileName));
                 OutputStream hdfs = hdfsUtils.getHdfsOutPutStream(hdfsPathFolder + "/" + fileName);
                 md5 = FileUtil.copyFileToServerAndHDFS(source, server, hdfs, 4096);
                 closeStream(new Closeable[]{source, server, hdfs});
                 if (ApplicationConstant.notNull(md5)) {
                     ItemInfo itemInfo = new ItemInfo();
-                    itemInfo.setAbsolutePath(hdfsPathFolder + "/" + fileName);
-                    itemInfo.setServerPath(serverPathFolder + "/" + fileName);
+                    itemInfo.setAbsolutePath(hdfsPathFolderNoUrl + "/" + fileName);
+                    itemInfo.setServerPath(netURL + "/" + fileName);
                     itemInfo.setSize(String.valueOf(multipartFile.getSize()));
                     itemInfo.setStatus(ApplicationConstant.FILE_STATUS_NO_CONTACT);
                     itemInfo.setSha1(md5);
@@ -93,8 +103,8 @@ public class UploadController {
             return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN).addAttribute("Exception", e.getMessage());
         }
         return AjaxResponse.getInstanceByResult(ApplicationConstant.notNull(md5))
-                .addAttribute("serverPath", netURL + "/" + fileName)
-                .addAttribute("hdfsPath", hdfsPathFolder + "/" + fileName);
+                .addAttribute("serverPath", netPath + netURL + "/" + fileName)
+                .addAttribute("hdfsPath", hdfsPathFolderNoUrl + "/" + fileName);
     }
 
     private void closeStream(Closeable[] list) {
@@ -115,6 +125,10 @@ public class UploadController {
 
     private String getServerPath(String fileType) {
         return serverPath + "/" + ResourceFile.FILEUPLOAD + "/" + fileType;
+    }
+
+    private String getHdfsFolderPath() {
+        return "/CloudStroage/" + DateFormatCalculate.createNowTime(DateFormatCalculate.BASIC_DATE_FORMAT);
     }
 
     public String getURL(String fileType) {
