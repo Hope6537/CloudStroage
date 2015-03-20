@@ -72,8 +72,6 @@
 <script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/global/scripts/metronic.js"/>"
         type="text/javascript"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
-<script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/global/scripts/global.js"/>"
-        type="text/javascript"></script>
 <script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/layout/scripts/layout.js"/>"
         type="text/javascript"></script>
 <script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/layout/scripts/quick-sidebar.js"/>"
@@ -84,8 +82,8 @@
         type="text/javascript"></script>
 <script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/global/scripts/toast.js"/>"></script>
 <script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/global/plugins/autoComplete/autoComplete.js"/>"></script>
-<script src="<c:url value="/static/admin/js/global.js"/>" type="text/javascript"></script>
-<script src="<c:url value="/static/admin/js/hashmap.js"/>" type="text/javascript"></script>
+<script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/global.js"/>"></script>
+<script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/hashmap.js"/>"></script>
 <script>
     $(document).ready(function () {
         Metronic.init();

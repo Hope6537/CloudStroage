@@ -49,7 +49,7 @@ var Index = function () {
 
     var uploadzone;
 
-    var fileCount;
+    var fileCount = 0;
 
     /**
      * 根据类型获取图标
@@ -272,9 +272,15 @@ var Index = function () {
         },
         showUpload: function () {
             $("#uploadModal").modal();
-            if (uploadInfoMap.count() == 0) {
+            if (uploadzone != undefined && uploadInfoMap.count() == 0) {
                 fileCount = 0;
-                uploadzone.removeAllFiles();
+                uploadzone.destroy();
+                uploadzone = undefined;
+            } else if (fileCount != 0 && fileCount != undefined) {
+                console.log("not zero " + fileCount);
+            }
+            else {
+                service.initDropZone()
             }
         },
         initDropZone: function () {
@@ -285,6 +291,7 @@ var Index = function () {
                 uploadzone = new Dropzone("form#uploadzone");
                 uploadzone.on("addedfile", function (file) {
                     fileCount++;
+                    console.log(fileCount)
                     if (fileCount > 14) {
                         toast.error("超过最大同时上传文件数，请上传完当前文件");
                         this.removeFile(file);
@@ -440,8 +447,6 @@ var Index = function () {
 
     var handleEvent = function () {
         var table = $('#dataTable');
-        Dropzone.autoDiscover = false;
-        $(document).on("ready", service.initDropZone);
         $(document).on("ready", service.getMember);
         $(document).on("ready", service.getHander);
         /*$(document).on("ready", service.initRightClick);*/
@@ -503,6 +508,7 @@ var Index = function () {
 
     return {
         init: function () {
+            Dropzone.autoDiscover = false;
             handleEvent();
         }
     }
