@@ -64,7 +64,7 @@
         type="text/javascript"></script>
 <script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/pace/pace.js"/>"
         data-pace-options='{ "ajax": true }' type="text/javascript"></script>
-<script src="<c:url value="/static/common/bower_plugins/dropzone/dropzone.js"/>"
+<script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/dropzone/dropzone.js"/>"
         type="text/javascript"></script>
 
 <!-- END CORE PLUGINS -->

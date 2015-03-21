@@ -177,6 +177,42 @@
                                     </button>
                                 </div>
                             </div>
+
+                            <div id="preViewModal" class="modal fade" tabindex="-1">
+                                <input type="hidden" id="preViewHanderId">
+
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"
+                                            aria-hidden="true"></button>
+                                    <h4 class="modal-title">预览文件</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <p>
+                                        文件正文
+                                    </p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" data-dismiss="modal" class="btn btn-default">取消</button>
+                                </div>
+                            </div>
+
+                            <div id="downloadModal" class="modal fade" tabindex="-1">
+                                <input type="hidden" id="downloadHanderId">
+
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"
+                                            aria-hidden="true"></button>
+                                    <h4 class="modal-title">下载文件</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <p>
+                                        正在为您生成下载链接
+                                    </p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" data-dismiss="modal" class="btn btn-default">取消</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <!-- END PORTLET-->

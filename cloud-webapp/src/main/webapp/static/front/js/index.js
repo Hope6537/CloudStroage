@@ -96,12 +96,11 @@ var Index = function () {
                 type: "GET",
                 success: function (data) {
                     if (!globalFunction.returnResult(data, undefined, false)) {
-                        html = '<tr class="odd gradeX"><td colspan="4" class="center">这里空空如也，什么都没有</td></tr>';
-                        //$("#tableContext").append(html);
-                    } else {
+                        console.log("empty folder");
+                    }
+                    else {
                         /** @namespace data.returnData */
                         var list = data.returnData.list;
-                        fileCount = list.length;
                         var html = '';
                         for (var i = 0; i < list.length; i++) {
                             var hander = list[i];
@@ -132,6 +131,7 @@ var Index = function () {
             if (type == globalConstant.FOLDER) {
                 window.location.href = a.data("href");
             } else if (type == globalConstant.FILE) {
+                rightClickService.showPreViewModal();
             } else {
             }
 
@@ -290,6 +290,7 @@ var Index = function () {
             if (uploadzone == undefined) {
                 uploadzone = new Dropzone("form#uploadzone");
                 uploadzone.on("addedfile", function (file) {
+                    console.log(file);
                     fileCount++;
                     console.log(fileCount)
                     if (fileCount > 14) {
@@ -441,6 +442,16 @@ var Index = function () {
                     }
                 });
             });
+        },
+        showDownload: function () {
+            $("#downloadModal").modal();
+
+        },
+        download: function () {
+
+        },
+        showPreViewModal: function () {
+            $("#preViewModal").modal();
         }
     };
 
@@ -449,7 +460,6 @@ var Index = function () {
         var table = $('#dataTable');
         $(document).on("ready", service.getMember);
         $(document).on("ready", service.getHander);
-        /*$(document).on("ready", service.initRightClick);*/
         $("#toUpload").on("click", service.showUpload);
         $("#testButton").on("click", service.getSelection);
         $("#toNewFolder").on("click", service.showNewFolder);
@@ -467,6 +477,24 @@ var Index = function () {
         $("#buttonDelete").on("click", rightClickService.deleteHander);
         $("#buttonOpen").on("click", rightClickService.openHander);
         $("#buttonRenameModal").on("click", rightClickService.renameFolder);
+        $("#buttonDownload").on("click", rightClickService.showDownload);
+
+
+        table.on('mousedown', 'tbody tr', function (e) {
+            if (allSelected) {
+                allSelected = false;
+                table.find('.group-checkable').parents().removeClass("checked");
+            }
+            $(this).toggleClass("active");
+            $(this).children(0).toggleClass("focus");
+            $(this).find("span").toggleClass("checked");
+            if (e.which == 3) {
+                service.initRightClick();
+            }
+        });
+        table.find('.checker').on('click', function () {
+            console.log("click");
+        });
 
         table.find('.group-checkable').on("change", function () {
             var set = $(this).attr("data-set");
@@ -492,18 +520,7 @@ var Index = function () {
                 $(this).data("isc", 0);
             }
         });
-        table.on('mousedown', 'tbody tr', function (e) {
-            if (allSelected) {
-                allSelected = false;
-                table.find('.group-checkable').parents().removeClass("checked");
-            }
-            $(this).toggleClass("active");
-            $(this).children(0).toggleClass("focus");
-            $(this).find("span").toggleClass("checked");
-            if (e.which == 3) {
-                service.initRightClick();
-            }
-        });
+
     };
 
     return {

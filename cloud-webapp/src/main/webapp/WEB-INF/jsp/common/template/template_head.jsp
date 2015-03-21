@@ -27,8 +27,8 @@
 <link href="<c:url value="/static/common/bower_plugins/select2/select2-bootstrap.css"/>" rel="stylesheet" type="text/css"/>
 <link href="<c:url value="/static/common/bower_plugins/toastr/toastr.min.css"/>" rel="stylesheet" type="text/css"/>
 <link href="<c:url value="/static/common/bower_plugins/hope6537-plugin/pace/themes/pace-theme-barber-shop.css"/>" rel="stylesheet" type="text/css"/>
-<link href="<c:url value="/static/common/bower_plugins/dropzone/css/basic.css"/>" rel="stylesheet" type="text/css"/>
-<link href="<c:url value="/static/common/bower_plugins/dropzone/css/dropzone.css"/>" rel="stylesheet" type="text/css"/>
+<link href="<c:url value="/static/common/bower_plugins/hope6537-plugin/dropzone/css/basic.css"/>" rel="stylesheet" type="text/css"/>
+<link href="<c:url value="/static/common/bower_plugins/hope6537-plugin/dropzone/css/dropzone.css"/>" rel="stylesheet" type="text/css"/>
 <!-- END GLOBAL MANDATORY STYLES -->
 <!-- BEGIN THEME STYLES -->
 <link href="<c:url value="/static/common/bower_plugins/hope6537-plugin/global/css/components.css"/>" id="style_components" rel="stylesheet" type="text/css"/>
