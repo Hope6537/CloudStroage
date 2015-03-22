@@ -177,7 +177,7 @@
     </resultMap>
 
 
-    <select id="getWrapperByHanderId" resultMap="handerList">
+    <select id="getWrapperByHander" resultMap="handerList">
         SELECT
         h.handerId AS handerId
         ,h.memberId AS memberId
@@ -205,6 +205,22 @@
         <if test="parentId!=null and parentId !=''">
             and parentId = #{parentId}
         </if>
+    </select>
+
+    <select id="getMultiDownloadLink" resultType="org.hope6537.cloudstroage.hander.model.HanderDownloadWrapper">
+        SELECT
+        h.handerId AS handerId,
+        h.memberId AS memberId,
+        h.status AS STATUS,
+        i.absolutePath AS hdfsPath,
+        i.itemId AS itemId,
+        i.serverPath AS serverPath
+        FROM hander h, iteminfo i
+        WHERE (h.itemId = i.itemId and h.memberId = #{memberId}) and (
+        <foreach collection="ids" item="id" separator=" or ">
+            h.handerId = #{id}
+        </foreach>
+        )
     </select>
 
 </mapper>

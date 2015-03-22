@@ -9,6 +9,7 @@ package org.hope6537.cloudstroage.hander.service.impl;
 import org.hope6537.cloudstroage.basic.service.impl.BasicServiceImpl;
 import org.hope6537.cloudstroage.hander.dao.HanderDao;
 import org.hope6537.cloudstroage.hander.model.Hander;
+import org.hope6537.cloudstroage.hander.model.HanderDownloadWrapper;
 import org.hope6537.cloudstroage.hander.model.HanderItemWrapper;
 import org.hope6537.cloudstroage.hander.model.HanderWrapper;
 import org.hope6537.cloudstroage.hander.service.HanderService;
@@ -96,7 +97,7 @@ public class HanderServiceImpl extends BasicServiceImpl<Hander, HanderDao> imple
         Hander queryHander = new Hander();
         queryHander.setParentId(hander.getHanderId());
         List<Hander> sonHanderList = getEntryListByEntry(queryHander);
-        sonHanderList.forEach((sonHander) -> getSonHanderToHander(sonHander));
+        sonHanderList.forEach(this::getSonHanderToHander);
         hander.setSonHanderList(sonHanderList);
         return hander;
     }
@@ -113,12 +114,20 @@ public class HanderServiceImpl extends BasicServiceImpl<Hander, HanderDao> imple
 
     @Override
     public HanderWrapper getWrapperByHanderId(Hander hander) {
-        return dao.getWrapperByHanderId(hander);
+        return dao.getWrapperByHander(hander);
     }
 
     @Override
     public String getGrandParentId(String parentId) {
         return dao.getGrandParentId(parentId);
+    }
+
+    @Override
+    public List<HanderDownloadWrapper> getMultiDownloadLink(Set<String> ids, String memberId) {
+        if (ApplicationConstant.notNull(ids) && ApplicationConstant.notNull(memberId)) {
+            return this.dao.getMultiDownloadLink(ids, memberId);
+        }
+        return null;
     }
 
 

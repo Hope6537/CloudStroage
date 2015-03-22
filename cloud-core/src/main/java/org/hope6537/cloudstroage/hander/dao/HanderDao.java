@@ -9,6 +9,7 @@ package org.hope6537.cloudstroage.hander.dao;
 import org.apache.ibatis.annotations.Param;
 import org.hope6537.cloudstroage.basic.dao.BasicDao;
 import org.hope6537.cloudstroage.hander.model.Hander;
+import org.hope6537.cloudstroage.hander.model.HanderDownloadWrapper;
 import org.hope6537.cloudstroage.hander.model.HanderItemWrapper;
 import org.hope6537.cloudstroage.hander.model.HanderWrapper;
 import org.hope6537.page.annotation.MybatisRepository;
@@ -34,6 +35,8 @@ public interface HanderDao extends BasicDao<Hander> {
 
     List<Hander> getHanderListByPath(@Param("memberId") String memberId, @Param("fullPath") String fullPath);
 
-    HanderWrapper getWrapperByHanderId(Hander hander);
+    HanderWrapper getWrapperByHander(Hander hander);
+
+    List<HanderDownloadWrapper> getMultiDownloadLink(@Param("ids") Set<String> ids, @Param("memberId") String memberId);
 
 }

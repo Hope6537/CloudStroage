@@ -9,6 +9,7 @@ package org.hope6537.cloudstroage.hander.service;
 import org.hope6537.cloudstroage.basic.service.BasicService;
 import org.hope6537.cloudstroage.hander.dao.HanderDao;
 import org.hope6537.cloudstroage.hander.model.Hander;
+import org.hope6537.cloudstroage.hander.model.HanderDownloadWrapper;
 import org.hope6537.cloudstroage.hander.model.HanderItemWrapper;
 import org.hope6537.cloudstroage.hander.model.HanderWrapper;
 
@@ -45,5 +46,7 @@ public interface HanderService extends BasicService<Hander, HanderDao> {
     public HanderWrapper getWrapperByHanderId(Hander hander);
 
     public String getGrandParentId(String parentId);
+
+    public List<HanderDownloadWrapper> getMultiDownloadLink(Set<String> ids, String memberId);
 
 }

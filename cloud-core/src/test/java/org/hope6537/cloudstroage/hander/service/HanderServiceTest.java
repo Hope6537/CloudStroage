@@ -8,6 +8,7 @@ package org.hope6537.cloudstroage.hander.service;
 
 import org.hope6537.cloudstroage.basic.context.ApplicationConstant;
 import org.hope6537.cloudstroage.hander.model.Hander;
+import org.hope6537.cloudstroage.hander.model.HanderDownloadWrapper;
 import org.hope6537.cloudstroage.hander.model.HanderItemWrapper;
 import org.hope6537.cloudstroage.hander.model.HanderWrapper;
 import org.hope6537.cloudstroage.item.model.ItemInfo;
@@ -20,10 +21,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -64,6 +62,7 @@ public class HanderServiceTest extends SpringTestHelper {
         excelItem.setSha1("22345");
         handerRoot = Hander.getInstanceFolderOfTest();
         handerRoot.setFileName("root");
+        handerRoot.setFullPath("root");
         handerRoot.setParentId("-1");
         handerRoot.setFullPath("");
         handerFolder = Hander.getInstanceFolderOfTest();
@@ -110,8 +109,8 @@ public class HanderServiceTest extends SpringTestHelper {
         handerFile.setFileName("b.txt");
         handerFile.resetHander(handerFolder);
         assertTrue(handerService.updateEntry(handerFile));
-        assertEquals(File.separator + "tmp", handerService.getEntryById(handerFolder.getHanderId()).getFullPath());
-        assertEquals(File.separator + "tmp" + File.separator + "b.txt", handerService.getEntryById(handerFile.getHanderId()).getFullPath());
+        assertEquals("/tmp", handerService.getEntryById(handerFolder.getHanderId()).getFullPath());
+        assertEquals("/tmp/b.txt", handerService.getEntryById(handerFile.getHanderId()).getFullPath());
     }
 
     @Test
@@ -125,8 +124,8 @@ public class HanderServiceTest extends SpringTestHelper {
         handerFolder.setFileName("tmp");
         assertTrue(handerService.updateFolderName(handerFolder));
 
-        assertEquals(File.separator + "tmp", handerService.getEntryById(handerFolder.getHanderId()).getFullPath());
-        assertEquals(File.separator + "tmp" + File.separator + "a.txt", handerService.getEntryById(handerFile.getHanderId()).getFullPath());
+        assertEquals("root/tmp", handerService.getEntryById(handerFolder.getHanderId()).getFullPath());
+        assertEquals("root/tmp/a.txt", handerService.getEntryById(handerFile.getHanderId()).getFullPath());
     }
 
     @Test
@@ -184,7 +183,7 @@ public class HanderServiceTest extends SpringTestHelper {
         assertTrue(handerService.addEntry(handerFolder));
         handerFile.resetHander(handerFolder);
         assertTrue(handerService.addEntry(handerFile));
-        List<Hander> handers = handerService.getHanderListByPath("-1", File.separator + "usr");
+        List<Hander> handers = handerService.getHanderListByPath("-1", "/usr");
         assertEquals(1, handers.size());
     }
 
@@ -221,5 +220,23 @@ public class HanderServiceTest extends SpringTestHelper {
         assertTrue(handerService.addHander2ItemByWrapper(handerItemWrapper));
     }
 
+    @Test
+    public void testHanderDownloadWrapper() {
+        assertTrue(handerService.addEntry(handerRoot));
+        handerFolder.resetHander(handerRoot);
+        assertTrue(handerService.addEntry(handerFolder));
+        handerFile.resetHander(handerFolder);
+        assertTrue(handerService.addEntry(handerFile));
+        Hander file2 = Hander.getInstanceFileOfTest();
+        file2.setFileName("2.txt");
+        file2.resetHander(handerFolder);
+        assertTrue(handerService.addEntry(file2));
+        Set<String> set = new HashSet<>();
+        set.add(handerFile.getHanderId());
+        set.add(file2.getHanderId());
+        List<HanderDownloadWrapper> items = handerService.getMultiDownloadLink(set, "-1");
+        assertTrue(ApplicationConstant.notNull(items));
+
+    }
 
 }
