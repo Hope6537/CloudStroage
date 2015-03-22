@@ -34,14 +34,9 @@ import java.util.UUID;
 @Controller
 public class UploadController {
 
-    /**
-     * 开发时路径
-     */
     @Value("${serverPath}")
     private String serverPath;
-    /**
-     * 发布时路径
-     */
+
     @Value("${netURL}")
     private String netURL;
 

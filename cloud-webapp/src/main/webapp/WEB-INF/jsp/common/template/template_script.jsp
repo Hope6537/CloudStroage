@@ -66,6 +66,8 @@
         data-pace-options='{ "ajax": true }' type="text/javascript"></script>
 <script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/dropzone/dropzone.js"/>"
         type="text/javascript"></script>
+<script src="<c:url value="/static/common/bower_plugins/zeroclipboard/dist/ZeroClipboard.min.js"/>"
+        type="text/javascript"></script>
 
 <!-- END CORE PLUGINS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
@@ -81,6 +83,7 @@
 <script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/global/scripts/util.js"/>"
         type="text/javascript"></script>
 <script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/global/scripts/toast.js"/>"></script>
+<script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/jquery.copy.js"/>"></script>
 <script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/global/plugins/autoComplete/autoComplete.js"/>"></script>
 <script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/global.js"/>"></script>
 <script src="<c:url value="/static/common/bower_plugins/hope6537-plugin/hashmap.js"/>"></script>

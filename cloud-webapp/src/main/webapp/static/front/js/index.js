@@ -75,6 +75,8 @@ var Index = function () {
             if (parentId == undefined) {
                 parentId = "-1";
             }
+            var actions = '<a href="javascript:;" id="testButton" class="btn btn-circle red-sunglo btn-sm"> <i class="fa fa-upload"></i> 测试 </a> <a href="index?p=' + parentId + '&t=b" id="toBack" class="btn btn-circle red-sunglo btn-sm" style="background-color:#66CCFF"> <i class="fa fa-level-up"></i> 返回上一级 </a> <a href="javascript:;" id="toUpload" class="btn btn-circle red-sunglo btn-sm"> <i class="fa fa-upload"></i> 上传文件 </a> <a href="javascript:;" id="toNewFolder" class="btn btn-circle red-sunglo btn-sm" style="background-color:#6A99E2"> <i class="fa fa-folder"></i> 新建文件夹 </a> <a href="javascript:;" id="toRefresh" class="btn btn-circle red-sunglo btn-sm" style="background-color: #5EC23C"> <i class="fa fa-refresh"></i> 刷新 </a> <a class="btn btn-circle btn-icon-only btn-default fullscreen" href="#" data-original-title="" title="全屏"><i class="fa fa-fullscreen"></i> </a>';
+            $(".actions").append(actions);
             if (parentId == "-1") {
                 $("#toBack").hide();
             }
@@ -444,11 +446,58 @@ var Index = function () {
             });
         },
         showDownload: function () {
+            service.getSelection();
+            var $downloadButtonZone = $("#downloadButtonZone");
+            $downloadButtonZone.empty();
+            Pace.track(function () {
+                $.ajax({
+                    url: basePath + "hander/download",
+                    type: "POST",
+                    data: JSON.stringify(selection),
+                    contentType: "application/json",
+                    success: function (data) {
+                        var list = data.returnData.list;
+                        var downloadPath = "";
+                        var links = "";
+                        var multi = false;
+                        if (list.length > 1) {
+                            multi = true
+                            for (var i = 0; i < list.length; i++) {
+                                links += list[i].hdfsPath == "" ? list[i].serverPath : list[i].hdfsPath + "\r";
+                            }
+                        } else {
+                            downloadPath = list[0].hdfsPath == "" ? list[0].serverPath : list[0].hdfsPath;
+                            links = downloadPath;
+                        }
+                        console.log(links);
+                        var html = '<div class="col-lg-6 col-md-3 col-sm-6 col-xs-12"> ' +
+                            '<a href="' + downloadPath + '" class="dashboard-stat blue-madison ' + (multi ? 'disabled-link' : '') + '"> ' +
+                            '<div class="visual"> <i class="fa fa-download"></i> </div> <div class="details"> <div class="number"> Download File </div> <div class="desc"> 下载文件 </div> </div> </a> </div> <div class="col-lg-6 col-md-3 col-sm-6 col-xs-12"> ' +
+                            '<button data-clipboard-text = "' + links + '" class="downloadLinks dashboard-stat red-intense"> <div class="visual"> <i class="fa fa-copy"></i> </div> <div class="details"> <div class="number"> Copy Links </div> <div class="desc"> 复制链接 </div> </div> </button> </div> </div>';
+                        $downloadButtonZone.
+                            append(html);
+                    }
+                })
+            });
             $("#downloadModal").modal();
 
         },
         download: function () {
 
+        },
+        copyLink: function (e) {
+            // main.js
+            console.log(e[0])
+            var client = new ZeroClipboard(e[0]);
+            client.on("ready", function (readyEvent) {
+                // alert( "ZeroClipboard SWF is ready!" );
+                client.on("aftercopy", function (event) {
+                    // `this` === `client`
+                    // `event.target` === the element that was clicked
+                    event.target.style.display = "none";
+                    alert("Copied text to clipboard: " + event.data["text/plain"]);
+                });
+            });
         },
         showPreViewModal: function () {
             $("#preViewModal").modal();
@@ -460,25 +509,26 @@ var Index = function () {
         var table = $('#dataTable');
         $(document).on("ready", service.getMember);
         $(document).on("ready", service.getHander);
-        $("#toUpload").on("click", service.showUpload);
-        $("#testButton").on("click", service.getSelection);
-        $("#toNewFolder").on("click", service.showNewFolder);
-        $("#toRefresh").on("click", service.getHander);
-        $("#buttonAddFolder").on("click", service.addNewFolder);
-        $("#buttonUpload").on("click", service.confirmUpload);
+        $("#toUpload").live("click", service.showUpload);
+        $("#testButton").live("click", service.getSelection);
+        $("#toNewFolder").live("click", service.showNewFolder);
+        $("#toRefresh").live("click", service.getHander);
+        $("#buttonAddFolder").live("click", service.addNewFolder);
+        $("#buttonUpload").live("click", service.confirmUpload);
+        $("#buttonRename").on("click", rightClickService.showRenameFolder);
+        $("#buttonDelete").on("click", rightClickService.deleteHander);
+        $("#buttonOpen").on("click", rightClickService.openHander);
+        $("#buttonRenameModal").on("click", rightClickService.renameFolder);
+        $("#buttonDownload").on("click", rightClickService.showDownload);
+        $(".downloadLinks").live("click", function () {
+            rightClickService.copyLink($(this))
+        });
         $(".back").live("click", function () {
             window.location.href = $(this).find("a").attr("href");
         });
         $(".toSon").live("click", function () {
             service.toSonHander($(this))
         });
-
-        $("#buttonRename").on("click", rightClickService.showRenameFolder);
-        $("#buttonDelete").on("click", rightClickService.deleteHander);
-        $("#buttonOpen").on("click", rightClickService.openHander);
-        $("#buttonRenameModal").on("click", rightClickService.renameFolder);
-        $("#buttonDownload").on("click", rightClickService.showDownload);
-
 
         table.on('mousedown', 'tbody tr', function (e) {
             if (allSelected) {

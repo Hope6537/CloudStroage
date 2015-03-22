@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "respond": "1.1.0",
-    "bootstrap-modal":"2.2.5",
+    "bootstrap-modal": "2.2.5",
     "jquery": "1.11.0",
     "jquery-migrate": "1.2.1",
     "jquery-ui": "1.10.3",
@@ -36,7 +36,8 @@
     "dropzone": "v4.0.0",
     "bootstrap-contextmenu": "0.3.2",
     "hope6537-plugin": "0.2",
-    "simple-collection":"0.1.2"
+    "simple-collection": "0.1.2",
+    "zeroclipboard": "2.2.0"
   }
 }
 

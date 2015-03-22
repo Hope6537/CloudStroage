@@ -12,6 +12,7 @@ import org.hope6537.cloudstroage.basic.context.ApplicationConstant;
 import org.hope6537.cloudstroage.basic.controller.BasicController;
 import org.hope6537.cloudstroage.hander.dao.HanderDao;
 import org.hope6537.cloudstroage.hander.model.Hander;
+import org.hope6537.cloudstroage.hander.model.HanderDownloadWrapper;
 import org.hope6537.cloudstroage.hander.model.HanderItemWrapper;
 import org.hope6537.cloudstroage.hander.model.HanderWrapper;
 import org.hope6537.cloudstroage.hander.service.HanderService;
@@ -20,11 +21,14 @@ import org.hope6537.cloudstroage.member.model.Member;
 import org.hope6537.date.DateFormatCalculate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Hope6537 on 2015/3/13.
@@ -46,6 +50,24 @@ public class HanderController extends BasicController<Hander, HanderDao, HanderS
      * public List<Hander> getHanderListByPath(String memberId, String fullPath);
      * public List<Hander> getHanderListByParentHander(Hander hander);
      */
+
+    @Value("${serverPath}")
+    private String serverPath;
+
+    @Value("${netURL}")
+    private String netURL;
+
+    @Value("${netPath}")
+    private String netPath;
+
+    @Value("${hdfsPath}")
+    private String hdfsPath;
+
+    @Value("${hdfsUrlPrefix}")
+    private String hdfsUrlPrefix;
+
+    @Value("${hdfsUrlSuffix}")
+    private String hdfsUrlSuffix;
 
     @Autowired
     @Qualifier("handerService")
@@ -164,10 +186,27 @@ public class HanderController extends BasicController<Hander, HanderDao, HanderS
     @ResponseBody
     public AjaxResponse getSonHanderByPath(@PathVariable String fullPath, HttpServletRequest request) {
         Member member = getLoginMember(request);
-        if (ApplicationConstant.notNull(fullPath) && ApplicationConstant.notNull(member)) {
+        if (ApplicationConstant.notNull(fullPath, member)) {
             return ApplicationConstant.collectionCheck(service.getHanderListByPath(member.getMemberId(), fullPath));
         }
         return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN);
     }
 
+    @RequestMapping(value = "/download", method = RequestMethod.POST)
+    @ResponseBody
+    public AjaxResponse getMultiDownloadLink(@RequestBody List<Hander> handerList, HttpServletRequest request) {
+        Member member = getLoginMember(request);
+        if (ApplicationConstant.notNull(handerList, member)) {
+            Set<String> ids = new HashSet<>();
+            handerList.forEach(hander -> ids.add(hander.getHanderId()));
+            List<HanderDownloadWrapper> list = service.getMultiDownloadLink(ids, member.getMemberId());
+            list.forEach(item -> {
+                item.setHdfsPath(hdfsUrlPrefix + item.getHdfsPath() + hdfsUrlSuffix);
+                item.setServerPath(netPath + item.getServerPath());
+            });
+
+            return AjaxResponse.getInstanceByResult(ApplicationConstant.notNull(list)).addAttribute("list", list);
+        }
+        return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN);
+    }
 }

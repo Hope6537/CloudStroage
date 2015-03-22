@@ -21,7 +21,6 @@
     <jsp:include page="../common/template/template_sidebar.jsp"/>
     <div class="page-content-wrapper">
         <div class="page-content">
-            <!-- BEGIN PAGE HEADER-->
             <h3 class="page-title">
                 CloudStroage
                 <small>集创云存储</small>
@@ -35,11 +34,8 @@
                     </li>
                 </ul>
             </div>
-            <!-- END PAGE HEADER-->
-            <!-- BEGIN PAGE CONTENT-->
             <div class="row">
                 <div class="col-md-12">
-                    <!-- BEGIN PORTLET-->
                     <div class="portlet light bordered">
                         <div class="portlet-title">
                             <div class="caption font-purple-plum">
@@ -47,27 +43,9 @@
                                 <span class="caption-subject bold uppercase">我的文件</span>
                             </div>
                             <div class="actions">
-                                <a href="javascript:;" id="testButton" class="btn btn-circle red-sunglo btn-sm">
-                                    <i class="fa fa-upload"></i> 测试 </a>
-                                <a href="index?p=${parentId}&t=b" id="toBack" class="btn btn-circle red-sunglo btn-sm"
-                                   style="background-color:#66CCFF">
-                                    <i class="fa fa-level-up"></i> 返回上一级 </a>
-                                <a href="javascript:;" id="toUpload" class="btn btn-circle red-sunglo btn-sm">
-                                    <i class="fa fa-upload"></i> 上传文件 </a>
-                                <a href="javascript:;" id="toNewFolder" class="btn btn-circle red-sunglo btn-sm"
-                                   style="background-color:#6A99E2">
-                                    <i class="fa fa-folder"></i> 新建文件夹 </a>
-                                <a href="javascript:;" id="toRefresh" class="btn btn-circle red-sunglo btn-sm"
-                                   style="background-color: #5EC23C">
-                                    <i class="fa fa-refresh"></i> 刷新 </a>
-                                <a class="btn btn-circle btn-icon-only btn-default fullscreen" href="#"
-                                   data-original-title="" title="全屏"><i class="fa fa-fullscreen"></i>
-                                </a>
                             </div>
                         </div>
                         <div class="portlet-body" id="context">
-                            <%--<table class="table table-hover table-light gtreetable" id="fileTable">
-                            </table>--%>
                             <table class="table table-striped table-bordered table-hover" id="dataTable">
                                 <thead>
                                 <tr>
@@ -190,13 +168,14 @@
                                     <p>
                                         文件正文
                                     </p>
+
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" data-dismiss="modal" class="btn btn-default">取消</button>
                                 </div>
                             </div>
 
-                            <div id="downloadModal" class="modal fade" tabindex="-1">
+                            <div id="downloadModal" class="modal container fade" tabindex="-1">
                                 <input type="hidden" id="downloadHanderId">
 
                                 <div class="modal-header">
@@ -205,9 +184,21 @@
                                     <h4 class="modal-title">下载文件</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <p>
-                                        正在为您生成下载链接
-                                    </p>
+                                    <div class="note note-success">
+                                        <h4 class="block">正在为您生成下载链接</h4>
+
+                                        <p>
+
+                                        <div id="bar" class="progress progress-striped active" role="progressbar">
+                                            <div style="width: 50%;" class="progress-bar progress-bar-success">
+                                            </div>
+                                        </div>
+                                        </p>
+                                    </div>
+
+
+                                    <div id="downloadButtonZone" class="row">
+                                    </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" data-dismiss="modal" class="btn btn-default">取消</button>
@@ -215,10 +206,8 @@
                             </div>
                         </div>
                     </div>
-                    <!-- END PORTLET-->
                 </div>
             </div>
-            <!-- END PAGE CONTENT-->
         </div>
     </div>
     <jsp:include page="../common/template/template_quick_sidebar.jsp"/>
