@@ -461,7 +461,8 @@ var Index = function () {
                         var links = "";
                         var multi = false;
                         if (list.length > 1) {
-                            multi = true
+                            multi = true;
+                            downloadPath = "javascript:toast.warning('存在多个文件，无法直接下载');toast.info('请点击右侧按钮复制链接');"
                             for (var i = 0; i < list.length; i++) {
                                 links += list[i].hdfsPath == "" ? list[i].serverPath : list[i].hdfsPath + "\r";
                             }
@@ -473,9 +474,15 @@ var Index = function () {
                         var html = '<div class="col-lg-6 col-md-3 col-sm-6 col-xs-12"> ' +
                             '<a href="' + downloadPath + '" class="dashboard-stat blue-madison ' + (multi ? 'disabled-link' : '') + '"> ' +
                             '<div class="visual"> <i class="fa fa-download"></i> </div> <div class="details"> <div class="number"> Download File </div> <div class="desc"> 下载文件 </div> </div> </a> </div> <div class="col-lg-6 col-md-3 col-sm-6 col-xs-12"> ' +
-                            '<button data-clipboard-text = "' + links + '" class="downloadLinks dashboard-stat red-intense"> <div class="visual"> <i class="fa fa-copy"></i> </div> <div class="details"> <div class="number"> Copy Links </div> <div class="desc"> 复制链接 </div> </div> </button> </div> </div>';
-                        $downloadButtonZone.
-                            append(html);
+                            '<a id= "copy-button" data-clipboard-text = "' + links + '" class="downloadLinks dashboard-stat red-intense"> <div class="visual"> <i class="fa fa-copy"></i> </div> <div class="details"> <div class="number"> Copy Links </div> <div class="desc"> 复制链接 </div> </div> </a> </div> </div>';
+                        $downloadButtonZone.append(html);
+                        var client = new ZeroClipboard(document.getElementById("copy-button"));
+                        client.on("ready", function (readyEvent) {
+                            client.on("aftercopy", function (event) {
+                                toast.success("链接已复制");
+                                alert("链接已复制");
+                            });
+                        });
                     }
                 })
             });
@@ -484,20 +491,6 @@ var Index = function () {
         },
         download: function () {
 
-        },
-        copyLink: function (e) {
-            // main.js
-            console.log(e[0])
-            var client = new ZeroClipboard(e[0]);
-            client.on("ready", function (readyEvent) {
-                // alert( "ZeroClipboard SWF is ready!" );
-                client.on("aftercopy", function (event) {
-                    // `this` === `client`
-                    // `event.target` === the element that was clicked
-                    event.target.style.display = "none";
-                    alert("Copied text to clipboard: " + event.data["text/plain"]);
-                });
-            });
         },
         showPreViewModal: function () {
             $("#preViewModal").modal();
@@ -520,9 +513,6 @@ var Index = function () {
         $("#buttonOpen").on("click", rightClickService.openHander);
         $("#buttonRenameModal").on("click", rightClickService.renameFolder);
         $("#buttonDownload").on("click", rightClickService.showDownload);
-        $(".downloadLinks").live("click", function () {
-            rightClickService.copyLink($(this))
-        });
         $(".back").live("click", function () {
             window.location.href = $(this).find("a").attr("href");
         });

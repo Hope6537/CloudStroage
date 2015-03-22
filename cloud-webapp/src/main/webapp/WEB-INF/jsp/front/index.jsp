@@ -195,9 +195,8 @@
                                         </div>
                                         </p>
                                     </div>
-
-
                                     <div id="downloadButtonZone" class="row">
+
                                     </div>
                                 </div>
                                 <div class="modal-footer">
