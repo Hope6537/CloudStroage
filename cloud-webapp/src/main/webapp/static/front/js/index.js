@@ -133,8 +133,9 @@ var Index = function () {
             if (type == globalConstant.FOLDER) {
                 window.location.href = a.data("href");
             } else if (type == globalConstant.FILE) {
-                rightClickService.showPreViewModal();
+                rightClickService.showPreViewModal(globalConstant.FILE);
             } else {
+
             }
 
         },
@@ -456,33 +457,46 @@ var Index = function () {
                     data: JSON.stringify(selection),
                     contentType: "application/json",
                     success: function (data) {
-                        var list = data.returnData.list;
-                        var downloadPath = "";
-                        var links = "";
-                        var multi = false;
-                        if (list.length > 1) {
-                            multi = true;
-                            downloadPath = "javascript:toast.warning('存在多个文件，无法直接下载');toast.info('请点击右侧按钮复制链接');"
-                            for (var i = 0; i < list.length; i++) {
-                                links += list[i].hdfsPath == "" ? list[i].serverPath : list[i].hdfsPath + "\r";
+                        if (globalFunction.returnResult(data)) {
+                            $("#barBody").attr("class", "note note-success")
+                            $("#barTitle").text('下载链接生成成功，请点击下面的按钮进行操作');
+                            $("#bar").attr("style", "width: 100%;");
+                            var list = data.returnData.list;
+                            var downloadPath = "";
+                            var links = "";
+                            var multi = false;
+                            if (list.length > 1) {
+                                multi = true;
+                                downloadPath = "javascript:toast.warning('存在多个文件，无法直接下载');toast.info('请点击右侧按钮复制链接');"
+                                for (var i = 0; i < list.length; i++) {
+                                    links += list[i].hdfsPath == "" ? list[i].serverPath : list[i].hdfsPath + "\r";
+                                }
+                            } else {
+                                downloadPath = list[0].hdfsPath == "" ? list[0].serverPath : list[0].hdfsPath;
+                                links = downloadPath;
                             }
-                        } else {
-                            downloadPath = list[0].hdfsPath == "" ? list[0].serverPath : list[0].hdfsPath;
-                            links = downloadPath;
-                        }
-                        console.log(links);
-                        var html = '<div class="col-lg-6 col-md-3 col-sm-6 col-xs-12"> ' +
-                            '<a href="' + downloadPath + '" class="dashboard-stat blue-madison ' + (multi ? 'disabled-link' : '') + '"> ' +
-                            '<div class="visual"> <i class="fa fa-download"></i> </div> <div class="details"> <div class="number"> Download File </div> <div class="desc"> 下载文件 </div> </div> </a> </div> <div class="col-lg-6 col-md-3 col-sm-6 col-xs-12"> ' +
-                            '<a id= "copy-button" data-clipboard-text = "' + links + '" class="downloadLinks dashboard-stat red-intense"> <div class="visual"> <i class="fa fa-copy"></i> </div> <div class="details"> <div class="number"> Copy Links </div> <div class="desc"> 复制链接 </div> </div> </a> </div> </div>';
-                        $downloadButtonZone.append(html);
-                        var client = new ZeroClipboard(document.getElementById("copy-button"));
-                        client.on("ready", function (readyEvent) {
-                            client.on("aftercopy", function (event) {
-                                toast.success("链接已复制");
-                                alert("链接已复制");
+                            var html = '<div class="col-lg-6 col-md-3 col-sm-6 col-xs-12"> ' +
+                                '<a href="' + downloadPath + '" class="dashboard-stat blue-madison ' + (multi ? 'disabled-link' : '') + '"> ' +
+                                '<div class="visual"> <i class="fa fa-download"></i> </div> <div class="details"> <div class="number"> Download File </div> <div class="desc"> 下载文件 </div> </div> </a> </div> <div class="col-lg-6 col-md-3 col-sm-6 col-xs-12"> ' +
+                                '<a id= "copy-button" data-clipboard-text = "' + links + '" class="downloadLinks dashboard-stat red-intense"> <div class="visual"> <i class="fa fa-copy"></i> </div> <div class="details"> <div class="number"> Copy Links </div> <div class="desc"> 复制链接 </div> </div> </a> </div> </div>';
+                            $downloadButtonZone.append(html);
+                            var client = new ZeroClipboard(document.getElementById("copy-button"));
+                            client.on("ready", function (readyEvent) {
+                                client.on("aftercopy", function (event) {
+                                    toast.success("链接已复制");
+                                    alert("链接已复制");
+                                });
                             });
-                        });
+                        } else {
+                            $("#barBody").attr("class", "note note-error");
+                            $("#bar").attr("style", "width: 1%;");
+                            $("#barTitle").text('下载链接生成失败，请刷新后重试');
+                        }
+                    },
+                    error: function () {
+                        $("#barBody").attr("class", "note note-warning");
+                        $("#bar").attr("style", "width: 2%;");
+                        $("#barTitle").text('下载链接生成失败，请刷新后重试');
                     }
                 })
             });
@@ -492,8 +506,15 @@ var Index = function () {
         download: function () {
 
         },
-        showPreViewModal: function () {
+        showPreViewModal: function (type) {
             $("#preViewModal").modal();
+            $("#preViewModalBody").empty();
+            if (type == globalConstant.FILE) {
+                $("#preViewModalBody").append('<div id="barBody" class="note note-info"> <h4 class="block" id="barTitle">暂不支持该格式文件预览</h4></div>')
+            }
+            if (type == globalConstant.IMG) {
+
+            }
         }
     };
 

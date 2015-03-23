@@ -164,7 +164,7 @@
                                             aria-hidden="true"></button>
                                     <h4 class="modal-title">预览文件</h4>
                                 </div>
-                                <div class="modal-body">
+                                <div id="preViewModalBody" class="modal-body">
                                     <p>
                                         文件正文
                                     </p>
@@ -184,13 +184,13 @@
                                     <h4 class="modal-title">下载文件</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <div class="note note-success">
-                                        <h4 class="block">正在为您生成下载链接</h4>
+                                    <div id="barBody" class="note note-info">
+                                        <h4 class="block" id="barTitle">正在为您生成下载链接</h4>
 
                                         <p>
 
-                                        <div id="bar" class="progress progress-striped active" role="progressbar">
-                                            <div style="width: 50%;" class="progress-bar progress-bar-success">
+                                        <div class="progress progress-striped active" role="progressbar">
+                                            <div id="bar" style="width: 50%;" class="progress-bar progress-bar-success">
                                             </div>
                                         </div>
                                         </p>
