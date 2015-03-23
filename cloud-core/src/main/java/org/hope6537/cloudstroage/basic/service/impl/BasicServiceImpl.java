@@ -18,7 +18,8 @@ public abstract class BasicServiceImpl<T, DaoType extends BasicDao<T>> implement
             ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1].getClass()
     );
 
-    protected final String daoType = String.valueOf(((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1]);
+    protected final String daoType =
+            String.valueOf(((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1]);
 
     protected DaoType dao;
 

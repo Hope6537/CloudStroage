@@ -8,10 +8,7 @@ package org.hope6537.cloudstroage.hander.service;
 
 import org.hope6537.cloudstroage.basic.service.BasicService;
 import org.hope6537.cloudstroage.hander.dao.HanderDao;
-import org.hope6537.cloudstroage.hander.model.Hander;
-import org.hope6537.cloudstroage.hander.model.HanderDownloadWrapper;
-import org.hope6537.cloudstroage.hander.model.HanderItemWrapper;
-import org.hope6537.cloudstroage.hander.model.HanderWrapper;
+import org.hope6537.cloudstroage.hander.model.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,6 +33,10 @@ public interface HanderService extends BasicService<Hander, HanderDao> {
     public boolean disableFolder(Hander hander);
 
     public Hander getSonHanderToHander(Hander hander);
+
+    public List<Hander> getHanderByParentId(String parentId);
+
+    public List<ZTreeModel> getZTreeHander(String parentId, String memberId);
 
     public List<Hander> getHanderListByMemberId(String memberId);
 

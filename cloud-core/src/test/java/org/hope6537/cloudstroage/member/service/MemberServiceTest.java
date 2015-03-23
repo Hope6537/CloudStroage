@@ -22,8 +22,7 @@ public class MemberServiceTest extends SpringTestHelper {
     private MemberService memberService;
 
     public Member memberAppend() {
-        Member member = Member.getInstanceOfTest();
-        return member;
+        return Member.getInstanceOfTest();
     }
 
     @Test

@@ -51,6 +51,8 @@ var Index = function () {
 
     var fileCount = 0;
 
+    var zTreeObj;
+
     /**
      * 根据类型获取图标
      */
@@ -508,12 +510,61 @@ var Index = function () {
         },
         showPreViewModal: function (type) {
             $("#preViewModal").modal();
-            $("#preViewModalBody").empty();
+            var $modalBody = $("#preViewModalBody");
+            $modalBody.empty();
             if (type == globalConstant.FILE) {
-                $("#preViewModalBody").append('<div id="barBody" class="note note-info"> <h4 class="block" id="barTitle">暂不支持该格式文件预览</h4></div>')
+                $modalBody.append('<div id="barBody" class="note note-info"> <h4 class="block" id="barTitle">暂不支持该格式文件预览</h4></div>')
             }
             if (type == globalConstant.IMG) {
 
+            }
+        },
+        showCopyOrMove: function (type) {
+            var $copyButton = $("#buttonConfirmCopy");
+            var $moveButton = $("#buttonConfirmMove");
+            var $title = $("#copyOrMoveModalTitle");
+            var zTreeDiv = $("#zTree");
+            var setting = {
+                async: {
+                    enable: true,
+                    url: basePath + "/hander/zTree",
+                    autoParam: ["id"],
+                    type: "GET"
+                }
+            };
+            if (type == "copy") {
+                $copyButton.show();
+                $moveButton.hide();
+                $title.text("复制文件到")
+            } else if (type == "move") {
+                $copyButton.hide();
+                $moveButton.show();
+                $title.text("剪切文件到")
+            } else {
+                console.log("undefined type");
+            }
+            $("#copyOrMoveModal").modal();
+            $.ajax({
+                url: basePath + "/hander/zTree?id=" + parentId,
+                type: "GET",
+                contentType: "application/json",
+                success: function (data) {
+                    zTreeObj = $.fn.zTree.init(zTreeDiv, setting, data);
+                }
+            });
+            $("#buttonConfirm").on("click", function () {
+                rightClickService.copyOrMoveFile(type);
+            })
+        },
+        copyOrMoveFile: function (type) {
+            var targetId = zTreeObj.getSelectedNodes()[0].id;
+            console.log(targetId);
+            if (type == "copy") {
+
+            } else if (type == "move") {
+
+            } else {
+                console.log("undefined type");
             }
         }
     };
@@ -534,6 +585,12 @@ var Index = function () {
         $("#buttonOpen").on("click", rightClickService.openHander);
         $("#buttonRenameModal").on("click", rightClickService.renameFolder);
         $("#buttonDownload").on("click", rightClickService.showDownload);
+        $("#buttonCopy").on("click", function () {
+            rightClickService.showCopyOrMove("copy");
+        })
+        $("#buttonMove").on("click", function () {
+            rightClickService.showCopyOrMove("move");
+        });
         $(".back").live("click", function () {
             window.location.href = $(this).find("a").attr("href");
         });

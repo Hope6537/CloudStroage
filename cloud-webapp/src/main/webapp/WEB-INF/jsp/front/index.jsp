@@ -130,6 +130,26 @@
                                     <button type="button" id="buttonUpload" class="btn blue">确认上传</button>
                                 </div>
                             </div>
+                            <div id="copyOrMoveModal" class="modal fade" tabindex="-1" data-backdrop="static"
+                                 data-keyboard="false">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"
+                                            aria-hidden="true"></button>
+                                    <h4 class="modal-title" id="copyOrMoveModalTitle">上传文件</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="note note-info">
+                                        <h4 class="block">请选择目标目录</h4>
+                                    </div>
+                                    <div class="zTree">
+                                        <ul id="zTree" class="ztree"></ul>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" data-dismiss="modal" class="btn btn-default">取消操作</button>
+                                    <button type="button" id="buttonConfirm" class="btn blue">确认操作</button>
+                                </div>
+                            </div>
                             <div id="newFolderModal" class="modal fade" tabindex="-1">
                                 <input type="hidden" id="renameHanderId">
 

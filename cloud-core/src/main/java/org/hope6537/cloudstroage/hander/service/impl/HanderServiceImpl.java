@@ -6,22 +6,16 @@
 
 package org.hope6537.cloudstroage.hander.service.impl;
 
+import org.hope6537.cloudstroage.basic.context.ApplicationConstant;
 import org.hope6537.cloudstroage.basic.service.impl.BasicServiceImpl;
 import org.hope6537.cloudstroage.hander.dao.HanderDao;
-import org.hope6537.cloudstroage.hander.model.Hander;
-import org.hope6537.cloudstroage.hander.model.HanderDownloadWrapper;
-import org.hope6537.cloudstroage.hander.model.HanderItemWrapper;
-import org.hope6537.cloudstroage.hander.model.HanderWrapper;
+import org.hope6537.cloudstroage.hander.model.*;
 import org.hope6537.cloudstroage.hander.service.HanderService;
-import org.hope6537.context.ApplicationConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Hope6537 on 2015/3/11.
@@ -100,6 +94,34 @@ public class HanderServiceImpl extends BasicServiceImpl<Hander, HanderDao> imple
         sonHanderList.forEach(this::getSonHanderToHander);
         hander.setSonHanderList(sonHanderList);
         return hander;
+    }
+
+    @Override
+    public List<Hander> getHanderByParentId(String parentId) {
+        if (ApplicationConstant.notNull(parentId)) {
+            Hander query = new Hander();
+            query.setParentId(parentId);
+            return dao.getEntryListByEntry(query);
+        }
+        return null;
+    }
+
+    @Override
+    public List<ZTreeModel> getZTreeHander(String parentId, String memberId) {
+        if (ApplicationConstant.notNull(memberId)) {
+            if (ApplicationConstant.isNull(parentId)) {
+                parentId = "-1";
+            }
+            Hander hander = Hander.getInstanceOfParentId(parentId, memberId);
+            hander.setFolder(ApplicationConstant.FOLDER);
+            List<Hander> list = dao.getEntryListByEntry(hander);
+            List<ZTreeModel> returnList = new LinkedList<>();
+            list.forEach(item -> {
+                returnList.add(new ZTreeModel(item.getHanderId(), item.getParentId(), item.getFileName(), "true"));
+            });
+            return returnList;
+        }
+        return null;
     }
 
     @Override

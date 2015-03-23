@@ -44,6 +44,8 @@
 <script src="<c:url value="/static/common/bower_plugins/flot/jquery.flot.resize.js"/>" type="text/javascript"></script>
 <script src="<c:url value="/static/common/bower_plugins/flot/jquery.flot.categories.js"/>"
         type="text/javascript"></script>
+<script src="<c:url value="/static/common/bower_plugins/ztree_v3/js/jquery.ztree.core-3.5.min.js"/>"
+        type="text/javascript"></script>
 <script src="<c:url value="/static/common/bower_plugins/bootstrap-gtreetable/dist/bootstrap-gtreetable.min.js"/>"
         type="text/javascript"></script>
 <script src="<c:url value="/static/common/bower_plugins/bootstrap-gtreetable/dist/languages/bootstrap-gtreetable.zh-CN.js"/>"

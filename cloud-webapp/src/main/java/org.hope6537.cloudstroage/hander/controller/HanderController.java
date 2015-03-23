@@ -11,10 +11,7 @@ import org.hope6537.ajax.ReturnState;
 import org.hope6537.cloudstroage.basic.context.ApplicationConstant;
 import org.hope6537.cloudstroage.basic.controller.BasicController;
 import org.hope6537.cloudstroage.hander.dao.HanderDao;
-import org.hope6537.cloudstroage.hander.model.Hander;
-import org.hope6537.cloudstroage.hander.model.HanderDownloadWrapper;
-import org.hope6537.cloudstroage.hander.model.HanderItemWrapper;
-import org.hope6537.cloudstroage.hander.model.HanderWrapper;
+import org.hope6537.cloudstroage.hander.model.*;
 import org.hope6537.cloudstroage.hander.service.HanderService;
 import org.hope6537.cloudstroage.item.service.ItemService;
 import org.hope6537.cloudstroage.member.model.Member;
@@ -209,4 +206,15 @@ public class HanderController extends BasicController<Hander, HanderDao, HanderS
         }
         return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN);
     }
+
+    @RequestMapping(value = "/zTree", method = RequestMethod.GET)
+    @ResponseBody
+    public List<ZTreeModel> getZTreeHanderByParentId(HttpServletRequest request) {
+        String parentId = request.getParameter("id");
+        if (ApplicationConstant.isNull(parentId)) {
+            parentId = "-1";
+        }
+        return service.getZTreeHander(parentId, getLoginMember(request).getMemberId());
+    }
+
 }

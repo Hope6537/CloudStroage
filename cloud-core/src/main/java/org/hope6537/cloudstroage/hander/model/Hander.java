@@ -44,6 +44,13 @@ public class Hander extends BasicModel {
         return getFolder().equals(ApplicationConstant.FOLDER);
     }
 
+    public static Hander getInstanceOfParentId(String parentId, String memberId) {
+        Hander query = new Hander();
+        query.setParentId(parentId);
+        query.setMemberId(memberId);
+        return query;
+    }
+
     public static Hander getRootHander(String memberId) {
         Hander hander = new Hander();
         hander.setParentId("-1");
