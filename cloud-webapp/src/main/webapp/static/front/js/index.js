@@ -520,6 +520,7 @@ var Index = function () {
             }
         },
         showCopyOrMove: function (type) {
+            service.getSelection();
             var $copyButton = $("#buttonConfirmCopy");
             var $moveButton = $("#buttonConfirmMove");
             var $title = $("#copyOrMoveModalTitle");
@@ -530,6 +531,12 @@ var Index = function () {
                     url: basePath + "/hander/zTree",
                     autoParam: ["id"],
                     type: "GET"
+                },
+                check: {
+                    radioType: "all"
+                },
+                view: {
+                    selectedMulti: false
                 }
             };
             if (type == "copy") {
@@ -544,28 +551,42 @@ var Index = function () {
                 console.log("undefined type");
             }
             $("#copyOrMoveModal").modal();
-            $.ajax({
-                url: basePath + "/hander/zTree?id=" + parentId,
-                type: "GET",
-                contentType: "application/json",
-                success: function (data) {
-                    zTreeObj = $.fn.zTree.init(zTreeDiv, setting, data);
-                }
-            });
+            var data = {
+                id: "-1",
+                pid: "-2",
+                name: "根目录",
+                isParent: true
+            };
+            zTreeObj = $.fn.zTree.init(zTreeDiv, setting, data);
             $("#buttonConfirm").on("click", function () {
                 rightClickService.copyOrMoveFile(type);
             })
         },
         copyOrMoveFile: function (type) {
-            var targetId = zTreeObj.getSelectedNodes()[0].id;
-            console.log(targetId);
-            if (type == "copy") {
-
-            } else if (type == "move") {
-
-            } else {
-                console.log("undefined type");
+            var newParentId = zTreeObj.getSelectedNodes()[0].id;
+            console.log(newParentId);
+            console.log(selection[0].handerId);
+            if (selection[0].handerId == newParentId) {
+                toast.error("该文件已经在当前目录下");
+                return;
             }
+            var data = {
+                selection: selection,
+                newParentId: newParentId
+            }
+            $.ajax({
+                url: basePath + "/hander/copyOrMove/" + type,
+                type: "PUT",
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function (data) {
+                    if (globalFunction.returnResult(data)) {
+                        $("#copyOrMoveModal").modal('hide');
+                        service.getHander();
+                    }
+                }
+            });
+
         }
     };
 

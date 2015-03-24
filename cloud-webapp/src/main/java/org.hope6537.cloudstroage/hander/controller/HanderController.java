@@ -214,7 +214,55 @@ public class HanderController extends BasicController<Hander, HanderDao, HanderS
         if (ApplicationConstant.isNull(parentId)) {
             parentId = "-1";
         }
-        return service.getZTreeHander(parentId, getLoginMember(request).getMemberId());
+        List<ZTreeModel> list = service.getZTreeHander(parentId, getLoginMember(request).getMemberId());
+        return list;
     }
 
+    @RequestMapping(value = "/copyOrMove/{type}", method = RequestMethod.PUT)
+    @ResponseBody
+    public AjaxResponse updateCopyOrMoveHander(@PathVariable String type, @RequestBody CopyOrMoveWrapper copyOrMoveWrapper, HttpServletRequest request) {
+        Member member = getLoginMember(request);
+        boolean res = true;
+        if (ApplicationConstant.notNull(member, copyOrMoveWrapper, type)) {
+            if (type.equals("copy")) {
+                return AjaxResponse.getInstanceByResult(res)
+                        .addReturnMsg("复制" + (res ? ApplicationConstant.SUCCESSCHN : ApplicationConstant.ERRORCHN));
+            } else if (type.equals("move")) {
+                List<Hander> list = copyOrMoveWrapper.getSelection();
+                list.forEach(hander -> {
+                    if (!hander.getMemberId().equals(member.getMemberId())) {
+                        return;
+                    }
+                    hander.setParentId(copyOrMoveWrapper.getNewParentId());
+                    service.updateEntry(hander);
+                });
+                return AjaxResponse.getInstanceByResult(res)
+                        .addReturnMsg("移动" + (res ? ApplicationConstant.SUCCESSCHN : ApplicationConstant.ERRORCHN));
+            } else {
+                return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN);
+            }
+        }
+        return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN);
+    }
+
+    private static class CopyOrMoveWrapper {
+        private List<Hander> selection;
+        private String newParentId;
+
+        public List<Hander> getSelection() {
+            return selection;
+        }
+
+        public void setSelection(List<Hander> selection) {
+            this.selection = selection;
+        }
+
+        public String getNewParentId() {
+            return newParentId;
+        }
+
+        public void setNewParentId(String newParentId) {
+            this.newParentId = newParentId;
+        }
+    }
 }
