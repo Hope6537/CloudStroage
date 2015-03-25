@@ -20,7 +20,7 @@
     <update id="updateEntry">
         UPDATE itemtype
         SET typeName = #{typeName},
-            status   = #{status}
+        status = #{status}
         WHERE itemId = #{itemId}
     </update>
     <update id="disableEntry">

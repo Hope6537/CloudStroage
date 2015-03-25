@@ -15,6 +15,6 @@ public interface ItemDao extends BasicDao<ItemInfo> {
 
     int getItemUsingCount(@Param("itemId") String itemId);
 
-    int onlyChangeStatusByIds(@Param("status") String status,@Param("ids")Set<String> ids);
+    int onlyChangeStatusByIds(@Param("status") String status, @Param("ids") Set<String> ids);
 
 }

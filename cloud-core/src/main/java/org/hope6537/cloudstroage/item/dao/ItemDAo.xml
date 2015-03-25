@@ -18,9 +18,9 @@
     <update id="updateEntry">
         UPDATE iteminfo
         SET
-            absolutePath = #{absolutePath}, serverPath = #{serverPath},
-            status       = #{status},
-            sha1         = #{sha1}, size = #{size}, itemTypeId = #{itemTypeId}
+        absolutePath = #{absolutePath}, serverPath = #{serverPath},
+        status = #{status},
+        sha1 = #{sha1}, size = #{size}, itemTypeId = #{itemTypeId}
         WHERE itemId = #{itemId}
     </update>
     <update id="onlyChangeStatusByIds">

@@ -8,8 +8,6 @@
  * Created by Hope6537 on 2015/3/15.
  */
 var Index = function () {
-
-
     /**
      * 当前操作用户对象
      */
