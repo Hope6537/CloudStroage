@@ -32,14 +32,6 @@ public class ApplicationConstant extends org.hope6537.context.ApplicationConstan
     public static final String GETTYPE_NORAML = "n";
     public static final String GETTYPE_BACK = "b";
 
-    public static boolean notNull(Object... objects) {
-        boolean res = true;
-        for (Object o : objects) {
-            res = res && o instanceof String ? o != null && !((String) o).isEmpty() : (!(o instanceof Collection) ? o != null : o != null && !((Collection) o).isEmpty());
-        }
-        return res;
-    }
-
     public static <T extends Collection<?>> AjaxResponse collectionCheck(T t) {
         if (notNull(t)) {
             if (t.size() != 0) {

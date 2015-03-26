@@ -27,7 +27,7 @@
                        data-close-others="true">
                         <img alt="" class="img-circle"/>
 					<span class="username username-hide-on-mobile">
-					Nick </span>
+                        ${loginMember.name} </span>
                         <i class="fa fa-angle-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-default">

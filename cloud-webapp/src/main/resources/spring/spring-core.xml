@@ -18,7 +18,7 @@
     <bean id="hadoopConfiguration" class="org.hope6537.hadoop.ConfigurationFactory"
           factory-method="getConfigurationOfPseudoDistributed"/>
     <bean id="hdfsUtils" class="org.hope6537.hadoop.hdfs.HdfsUtils" scope="singleton"
-          factory-method="getInstanceOfJiChuang">
+          factory-method="getInstanceOfJiChuang" destroy-method="closeFileSystem">
         <constructor-arg type="org.apache.hadoop.conf.Configuration" ref="hadoopConfiguration"/>
     </bean>
 

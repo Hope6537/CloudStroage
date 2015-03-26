@@ -63,9 +63,11 @@ public class PageControllerTest extends SpringWebTestHelper {
         Assert.assertNotNull(result.getModelAndView().getModel().get("user")); //自定义断言
     }
 
+   /* */
+
     /**
      * 验证请求参数绑定到模型数据及Flash属性
-     */
+     *//*
     public void testParameters() throws Exception {
         mockMvc.perform(post("/user").param("name", "zhang")) //执行传递参数的POST请求(也可以post("/user?name=zhang"))
                 .andExpect(handler().handlerType(PageController.class)) //验证执行的控制器类型
@@ -74,7 +76,7 @@ public class PageControllerTest extends SpringWebTestHelper {
                 .andExpect(flash().attributeExists("success")) //验证存在flash属性
                 .andExpect(view().name("redirect:/user")); //验证视图
     }
-
+*/
     public void testFileUpload() throws Exception {
         //文件上传
         byte[] bytes = new byte[]{1, 2};

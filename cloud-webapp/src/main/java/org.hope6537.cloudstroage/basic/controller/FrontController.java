@@ -38,7 +38,7 @@ public class FrontController {
     private HanderService handerService;
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
-    public String index(HttpServletRequest request) {
+    public String index(HttpServletRequest request, HttpServletResponse response) {
         Member member = BasicController.getLoginMember(request);
         String type = request.getParameter("t");
         String parentId = request.getParameter("p");
@@ -105,12 +105,15 @@ public class FrontController {
             if (ApplicationConstant.notNull(entry)) {
                 if (AESLocker.encrypt(AESLocker.decrypt(member.getPassword())).equals(entry.getPassword())) {
                     HttpSession session = request.getSession();
+                    String username = AESLocker.encrypt(entry.getUsername());
+                    String key = MD5Util.string2MD5(entry.getPassword());
                     session.setAttribute("loginMember", entry);
                     session.setAttribute("cookies", "enabled");
-                    String key = MD5Util.string2MD5(entry.getPassword());
+                    Cookie _username = new Cookie("CloudStroageLoginUsername", username);
+                    _username.setMaxAge(60 * 60 * 24 * 7);
+                    response.addCookie(_username);
                     Cookie _cookie = new Cookie("CloudStroageLoginValidate", key);
                     _cookie.setMaxAge(60 * 60 * 24 * 7);
-                    _cookie.setDomain("cloud.hope6537.org");
                     response.addCookie(_cookie);
                     return AjaxResponse.getInstanceByResult(true).addReturnMsg("登录成功，正在跳转");
                 }

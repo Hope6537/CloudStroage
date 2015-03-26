@@ -66,16 +66,13 @@
     <mvc:interceptors>
         <!--&lt;!&ndash; session超时 &ndash;&gt;-->
         <mvc:interceptor>
-            <mvc:mapping path="/*/*"/>
+            <mvc:mapping path="/*"/>
             <bean class="org.hope6537.cloudstroage.basic.filter.SpringLoginFilter">
                 <property name="allowUrls">
                     <list>
                         <!--&lt;!&ndash; 如果请求中包含以下路径，则不进行拦截 &ndash;&gt;-->
                         <value>static</value>
-                        <value>/page/toIndex</value>
-                        <value>/page/toLogin</value>
-                        <value>/page/login</value>
-                        <value>/page/toTemplate</value>
+                        <value>/login</value>
                     </list>
                 </property>
             </bean>
