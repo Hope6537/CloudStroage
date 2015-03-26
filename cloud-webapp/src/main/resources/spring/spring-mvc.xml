@@ -64,17 +64,18 @@
     </bean>
 
     <mvc:interceptors>
-        <!-- session超时 -->
+        <!--&lt;!&ndash; session超时 &ndash;&gt;-->
         <mvc:interceptor>
             <mvc:mapping path="/*/*"/>
             <bean class="org.hope6537.cloudstroage.basic.filter.SpringLoginFilter">
                 <property name="allowUrls">
                     <list>
-                        <!-- 如果请求中包含以下路径，则不进行拦截 -->
+                        <!--&lt;!&ndash; 如果请求中包含以下路径，则不进行拦截 &ndash;&gt;-->
                         <value>static</value>
                         <value>/page/toIndex</value>
                         <value>/page/toLogin</value>
                         <value>/page/login</value>
+                        <value>/page/toTemplate</value>
                     </list>
                 </property>
             </bean>
@@ -101,8 +102,8 @@
             <value>UTF-8</value>
         </property>
         <property name="maxUploadSize">
-            <value>32505856</value>
-            <!-- 上传文件大小限制为31M，31*1024*1024 -->
+            <value>1073741824</value>
+            <!-- 上传文件大小限制为1G，1024*1024*1024 -->
         </property>
         <property name="maxInMemorySize">
             <value>4096</value>
