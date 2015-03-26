@@ -17,7 +17,7 @@
     </insert>
 
     <insert id="addHander2ItemByWrapper">
-        INSERT INTO hander (memberId, itemId, parentId, fileName, folder, fullPath, status,updateDate ) VALUES
+        INSERT INTO hander (memberId, itemId, parentId, fileName, folder, fullPath, status,updateDate) VALUES
         <foreach collection="itemIdAndName" item="value" index="key" separator=",">
             (
             #{hander.memberId},

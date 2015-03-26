@@ -180,56 +180,8 @@ var Index = function () {
             }
         },
         /**
-         *
+         * 生成目录
          */
-        getTree: function () {
-            $('#fileTable').gtreetable({
-                'source': function () {
-                    return {
-                        type: 'GET',
-                        url: basePath + "hander/" + parentId + "/son/wrapper",
-                        contentType: "application/json",
-                        error: function (data) {
-                            alert(data.status + ': ' + data.responseText);
-                        }
-                    }
-                },
-                'onSave': function (oNode) {
-                    return {
-                        type: 'POST',
-                        url: !oNode.isSaved() ? 'nodeCreate' : 'nodeUpdate?id=' + oNode.getId(),
-                        data: {
-                            parent: oNode.getParent(),
-                            name: oNode.getName(),
-                            position: oNode.getInsertPosition(),
-                            related: oNode.getRelatedNodeId()
-                        },
-                        dataType: 'json',
-                        error: function (XMLHttpRequest) {
-                            alert(XMLHttpRequest.status + ': ' + XMLHttpRequest.responseText);
-                        }
-                    };
-                }
-
-                ,
-                'onDelete': function (oNode) {
-                    return {
-                        type: 'POST',
-                        url: 'nodeDelete?id=' + oNode.getId(),
-                        dataType: 'json',
-                        error: function (XMLHttpRequest) {
-                            alert(XMLHttpRequest.status + ': ' + XMLHttpRequest.responseText);
-                        }
-                    };
-                },
-                'language': 'zh-CN',
-                'types': {
-                    default: 'glyphicon glyphicon-folder-open', file: 'glyphicon glyphicon-file',
-                    folder: 'glyphicon glyphicon-folder-open'
-                }
-            });
-
-        },
         initTable: function () {
             $dataTable = $('#dataTable').dataTable({
                 "paging": false,
@@ -273,19 +225,32 @@ var Index = function () {
                 ]
             });
         },
+        /**
+         * 弹出上传模态窗口
+         */
         showUpload: function () {
+            //弹出窗口
             $("#uploadModal").modal();
+            //如果上传区域有Dropzone对象，同时上传的个数为0
             if (uploadzone != undefined && uploadInfoMap.count() == 0) {
+                //那么将文件数清零
                 fileCount = 0;
+                //干掉上传区域
                 uploadzone.destroy();
                 uploadzone = undefined;
             } else if (fileCount != 0 && fileCount != undefined) {
+                //如果当前文件区域还有文件，那么将不做操作，等待用户再度上传
                 console.log("not zero " + fileCount);
-            }
-            else {
+            } else if (uploadzone == undefined) {
+                //如果没有上传区，那么生成
                 service.initDropZone()
+            } else {
+                console.log("when");
             }
         },
+        /**
+         * 生成拖拽区域
+         */
         initDropZone: function () {
             if (uploadInfoMap == undefined) {
                 uploadInfoMap = new HashMap();
@@ -331,6 +296,9 @@ var Index = function () {
                 });
             }
         },
+        /**
+         * 确认上传
+         */
         confirmUpload: function () {
             var json = '';
             uploadInfoMap.forEach(
@@ -363,12 +331,18 @@ var Index = function () {
             }
 
         },
+        /**
+         * 弹出创建文件夹模态窗口
+         */
         showNewFolder: function () {
             $("#newFolderModal").modal();
             $("#folderName").val('');
             $("#buttonRenameModal").hide();
             $("#buttonAddFolder").show();
         },
+        /**
+         * 确认创建文件夹
+         */
         addNewFolder: function () {
             $("#modalTitle").text("新建文件夹");
             $("#buttonAddFolder").show();
