@@ -127,7 +127,7 @@
     2015 &copy; Lab.JiChuang by Hope6537.
 </div>
 <jsp:include page="../common/template/template_script.jsp"/>
-<script src='<c:url value="/static/front/js/login.js"/>' type="text/javascript"></script>
+<script src='<c:url value="/static/front/js/index.min.js"/>' type="text/javascript"></script>
 <script>
     jQuery(document).ready(function () {
         Login.init();

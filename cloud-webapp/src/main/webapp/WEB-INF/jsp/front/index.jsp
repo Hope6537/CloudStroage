@@ -234,7 +234,7 @@
 <jsp:include page="../common/template/template_footer.jsp"/>
 </body>
 <jsp:include page="../common/template/template_script.jsp"/>
-<script src='<c:url value="/static/front/js/index.js"/>' type="text/javascript"></script>
+<script src='<c:url value="/static/front/js/index.min.js"/>' type="text/javascript"></script>
 <script>
     $(document).ready(function () {
         Index.init();
