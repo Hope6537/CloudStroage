@@ -32,9 +32,11 @@ public class ItemServiceImpl extends BasicServiceImpl<ItemInfo, ItemDao> impleme
 
     @Override
     public boolean onlyChangeStatusByIds(String status, Set<String> ids) {
-        if (ApplicationConstant.notNull(status, ids)) {
-            return dao.onlyChangeStatusByIds(status, ids) == ids.size();
+        synchronized (this) {
+            if (ApplicationConstant.notNull(status, ids)) {
+                return dao.onlyChangeStatusByIds(status, ids) == ids.size();
+            }
+            return false;
         }
-        return false;
     }
 }

@@ -4,25 +4,17 @@
     <groupId>org.hope6537</groupId>
     <artifactId>CloudStroage</artifactId>
     <packaging>pom</packaging>
-    <version>0.2-SNAPSHOT</version>
+    <version>1.0</version>
     <modules>
         <module>cloud-core</module>
         <module>cloud-webapp</module>
     </modules>
     <name>JiChuang CloudStroage</name>
-    <url>http://maven.apache.org</url>
-
 
     <properties>
         <hadoop.version>2.6.0</hadoop.version>
     </properties>
     <dependencies>
-        <!-- <dependency>
-             <groupId>org.hope6537</groupId>
-             <artifactId>hope6537-utils</artifactId>
-             <version>1.2-RELEASE</version>
-             <type>pom</type>
-         </dependency>-->
         <dependency>
             <groupId>org.hope6537</groupId>
             <artifactId>hope-basic-utils</artifactId>

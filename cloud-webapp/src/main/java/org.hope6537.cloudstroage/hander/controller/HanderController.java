@@ -35,19 +35,6 @@ import java.util.Set;
 public class HanderController extends BasicController<Hander, HanderDao, HanderService> {
 
 
-    /*
-     * TODO: 在这里使用这些方法
-     *
-     * public void getSonHanderIds(Hander hander, Set<String> list);
-     * public boolean updateFolderName(Hander hander, String newName); -ok
-     * public boolean deleteFolder(Hander hander); -ok
-     * public boolean disableFolder(Hander hander); -ok
-     * public Hander getSonHanderToHander(Hander hander);
-     * public List<Hander> getHanderListByMemberId(String memberId);
-     * public List<Hander> getHanderListByPath(String memberId, String fullPath);
-     * public List<Hander> getHanderListByParentHander(Hander hander);
-     */
-
     @Value("${serverPath}")
     private String serverPath;
 

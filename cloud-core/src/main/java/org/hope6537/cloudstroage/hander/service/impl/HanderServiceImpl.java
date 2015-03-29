@@ -48,12 +48,16 @@ public class HanderServiceImpl extends BasicServiceImpl<Hander, HanderDao> imple
             return this.updateEntry(hander);
         }
         List<Hander> sonHanderList = getHanderListByParentHander(hander);
-        if (!hander.getParentId().equals("-1")) {
-            hander.resetHander(this.getEntryById(hander.getParentId()));
+        synchronized (this) {
+            if (!hander.getParentId().equals("-1")) {
+                hander.resetHander(this.getEntryById(hander.getParentId()));
+            }
+            hander.setFullPath("root/" + hander.getFileName());
         }
-        hander.setFullPath("root/" + hander.getFileName());
         sonHanderList.forEach((sonHander) -> sonHander.resetHander(hander));
-        sonHanderList.forEach((sonHander) -> this.updateFolderName(sonHander));
+        synchronized (this) {
+            sonHanderList.forEach((sonHander) -> this.updateFolderName(sonHander));
+        }
         return this.updateEntry(hander);
     }
 
@@ -69,7 +73,7 @@ public class HanderServiceImpl extends BasicServiceImpl<Hander, HanderDao> imple
     }
 
     @Override
-    public Optional<Boolean> deleteMultiHander(List<Hander> handers) {
+    public synchronized Optional<Boolean> deleteMultiHander(List<Hander> handers) {
         return handers.stream().map(this::deleteFolder).reduce((a, b) -> a && b);
     }
 
@@ -88,11 +92,13 @@ public class HanderServiceImpl extends BasicServiceImpl<Hander, HanderDao> imple
         if (!hander.checkFolder()) {
             return hander;
         }
-        Hander queryHander = new Hander();
-        queryHander.setParentId(hander.getHanderId());
-        List<Hander> sonHanderList = getEntryListByEntry(queryHander);
-        sonHanderList.forEach(this::getSonHanderToHander);
-        hander.setSonHanderList(sonHanderList);
+        synchronized (this) {
+            Hander queryHander = new Hander();
+            queryHander.setParentId(hander.getHanderId());
+            List<Hander> sonHanderList = getEntryListByEntry(queryHander);
+            sonHanderList.forEach(this::getSonHanderToHander);
+            hander.setSonHanderList(sonHanderList);
+        }
         return hander;
     }
 
@@ -116,9 +122,7 @@ public class HanderServiceImpl extends BasicServiceImpl<Hander, HanderDao> imple
             hander.setFolder(ApplicationConstant.FOLDER);
             List<Hander> list = dao.getEntryListByEntry(hander);
             List<ZTreeModel> returnList = new LinkedList<>();
-            list.forEach(item -> {
-                returnList.add(new ZTreeModel(item.getHanderId(), item.getParentId(), item.getFileName(), "true"));
-            });
+            list.forEach(item -> returnList.add(new ZTreeModel(item.getHanderId(), item.getParentId(), item.getFileName(), "true")));
             return returnList;
         }
         return null;
