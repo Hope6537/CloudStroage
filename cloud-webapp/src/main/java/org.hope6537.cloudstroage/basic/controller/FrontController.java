@@ -122,5 +122,57 @@ public class FrontController {
         return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN);
     }
 
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logout(HttpServletRequest request, HttpServletResponse response) {
+        Member member = BasicController.getLoginMember(request);
+        if (ApplicationConstant.notNull(member)) {
+            HttpSession session = request.getSession();
+            session.setAttribute("loginMember", null);
+            Cookie _username = new Cookie("CloudStroageLoginUsername", null);
+            _username.setMaxAge(0);
+            Cookie _cookie = new Cookie("CloudStroageLoginValidate", null);
+            _cookie.setMaxAge(0);
+            response.addCookie(_username);
+            response.addCookie(_cookie);
+        }
+        return "login";
+    }
+
+    @RequestMapping(value = "/lock", method = RequestMethod.GET)
+    public String lock(HttpServletRequest request, HttpServletResponse response) {
+        Member member = BasicController.getLoginMember(request);
+        if (ApplicationConstant.notNull(member)) {
+            HttpSession session = request.getSession();
+            session.setAttribute("loginMember", null);
+            Cookie _lock = new Cookie("locked", AESLocker.encrypt(member.getPassword()));
+            _lock.setMaxAge(0);
+            response.addCookie(_lock);
+        }
+        return "lock";
+    }
+
+    @RequestMapping(value = "/unlock", method = RequestMethod.GET)
+    @ResponseBody
+    public AjaxResponse unlock(@RequestBody String unlock, HttpServletRequest request, HttpServletResponse response) {
+        String cookieUsername = null;
+        String cookiePassword = null;
+        Cookie[] cookies = request.getCookies();
+        if (ApplicationConstant.notNull(cookies)) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("CloudStroageLoginUsername")) {
+                    cookieUsername = AESLocker.decrypt(cookie.getValue());
+                }
+                if (cookie.getName().equals("CloudStroageLoginValidate")) {
+                    cookiePassword = cookie.getValue();
+                }
+            }
+            Member member = memberService.getMemberByUsername(cookieUsername);
+            if (member.getPassword().endsWith(cookiePassword) && cookiePassword.equals(unlock)) {
+                return AjaxResponse.getInstanceByResult(true);
+            }
+        }
+        return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.FAILCHN);
+    }
+
 
 }
