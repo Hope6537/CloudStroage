@@ -135,7 +135,7 @@ public class FrontController {
             response.addCookie(_username);
             response.addCookie(_cookie);
         }
-        return "login";
+        return "front/login";
     }
 
     @RequestMapping(value = "/lock", method = RequestMethod.GET)
@@ -144,11 +144,11 @@ public class FrontController {
         if (ApplicationConstant.notNull(member)) {
             HttpSession session = request.getSession();
             session.setAttribute("loginMember", null);
-            Cookie _lock = new Cookie("locked", AESLocker.encrypt(member.getPassword()));
+            Cookie _lock = new Cookie("locked", member.getMemberId());
             _lock.setMaxAge(0);
             response.addCookie(_lock);
         }
-        return "lock";
+        return "front/lock";
     }
 
     @RequestMapping(value = "/unlock", method = RequestMethod.GET)
