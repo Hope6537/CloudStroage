@@ -42,11 +42,11 @@
                         <li class="divider">
                         </li>
                         <li>
-                            <a href="<c:url value="//lock"/>">
+                            <a href="<c:url value='//lock' />">
                                 <i class="icon-lock"></i> 锁屏 </a>
                         </li>
-                        <li>
-                            <a href="<c:url value="//logout"/>">
+                        <li id="listLogout">
+                            <a href="javascript:;">
                                 <i class="icon-logout"></i> 登出 </a>
                         </li>
                     </ul>

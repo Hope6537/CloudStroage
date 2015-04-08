@@ -52,7 +52,7 @@
         <div class="form-actions">
             <div class="pull-left">
                 <label class="rememberme check">
-                    <input type="checkbox" name="remember" value="1"/>记住我(请勿在公共电脑勾选)</label>
+                    <input type="checkbox" name="remember" id="remember" value="1"/>记住我(请勿在公共电脑勾选)</label>
             </div>
             <div class="pull-right forget-password-block">
                 <a href="javascript:;" id="forget-password" class="forget-password">忘记密码？</a>
@@ -127,7 +127,7 @@
     2015 &copy; Lab.JiChuang by Hope6537.
 </div>
 <jsp:include page="../common/template/template_script.jsp"/>
-<script src='<c:url value="/static/front/js/login.min.js"/>' type="text/javascript"></script>
+<script src='<c:url value="/static/front/js/login.js"/>' type="text/javascript"></script>
 <script>
     jQuery(document).ready(function () {
         Login.init();

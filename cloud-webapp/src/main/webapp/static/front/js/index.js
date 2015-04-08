@@ -371,6 +371,12 @@ var Index = function () {
                     }
                 })
             });
+        },
+        logout: function () {
+            toast.info("正在登出");
+            setTimeout(function () {
+                window.location.href = basePath + "/logout";
+            }, 2000);
         }
     };
 
@@ -558,7 +564,6 @@ var Index = function () {
                     }
                 }
             });
-
         }
     };
 
@@ -578,9 +583,10 @@ var Index = function () {
         $("#buttonOpen").on("click", rightClickService.openHander);
         $("#buttonRenameModal").on("click", rightClickService.renameFolder);
         $("#buttonDownload").on("click", rightClickService.showDownload);
+        $("#listLogout").on("click", service.logout);
         $("#buttonCopy").on("click", function () {
             rightClickService.showCopyOrMove("copy");
-        })
+        });
         $("#buttonMove").on("click", function () {
             rightClickService.showCopyOrMove("move");
         });

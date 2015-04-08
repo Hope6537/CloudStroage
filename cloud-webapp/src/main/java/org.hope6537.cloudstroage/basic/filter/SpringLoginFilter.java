@@ -79,6 +79,8 @@ public class SpringLoginFilter extends HandlerInterceptorAdapter {
                 }
             }
         }
+
+
         Cookie clear1 = new Cookie("CloudStroageLoginUsername", null);
         clear1.setMaxAge(0);
         Cookie clear2 = new Cookie("CloudStroageLoginValidate", null);

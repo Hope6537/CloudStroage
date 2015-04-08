@@ -74,15 +74,23 @@ public class HanderController extends BasicController<Hander, HanderDao, HanderS
         return super.addModel(model);
     }
 
+    /**
+     * 更新模型
+     */
     @Override
     public AjaxResponse updateModel(@RequestBody Hander model) {
+        //如果不是文件夹，那么照常更新
         if (!model.checkFolder()) {
             return super.updateModel(model);
         } else {
+            //否则迭代更新
             return AjaxResponse.getInstanceByResult(service.updateFolderName(model));
         }
     }
 
+    /**
+     * 删除模型
+     */
     @Override
     public AjaxResponse deleteModel(@RequestBody Hander model) {
         if (!model.checkFolder()) {
@@ -101,10 +109,14 @@ public class HanderController extends BasicController<Hander, HanderDao, HanderS
         }
     }
 
+    /**
+     * 多重添加文件
+     */
     @RequestMapping(value = "/addMulti", method = RequestMethod.POST)
     @ResponseBody
     public AjaxResponse addMultiModel(@RequestBody HanderItemWrapper handerItemWrapper) {
         if (ApplicationConstant.notNull(handerItemWrapper)) {
+            //根据包装器添加，建立hander和item的关系，同时批量更新item的状态
             boolean res = service.addHander2ItemByWrapper(handerItemWrapper)
                     && itemService.onlyChangeStatusByIds(ApplicationConstant.FILE_STATUS_NORMAL, handerItemWrapper.getItemIds());
             return AjaxResponse.getInstanceByResult(res);
@@ -112,16 +124,23 @@ public class HanderController extends BasicController<Hander, HanderDao, HanderS
         return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN);
     }
 
+    /**
+     * 多重删除
+     */
     @RequestMapping(value = "/deleteMulti", method = RequestMethod.DELETE)
     @ResponseBody
     public AjaxResponse deleteMultiModel(@RequestBody List<Hander> handers) {
         if (ApplicationConstant.notNull(handers)) {
+            //迭代删除
             return AjaxResponse.getInstanceByResult(service.deleteMultiHander(handers).get());
         }
         return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN);
 
     }
 
+    /**
+     * 根据父节点查询下属子文件
+     */
     @RequestMapping(value = "/{parentHanderId}/son", method = RequestMethod.GET)
     @ResponseBody
     public AjaxResponse getSonHanderByParent(@PathVariable String parentHanderId, HttpServletRequest request) {
@@ -140,6 +159,9 @@ public class HanderController extends BasicController<Hander, HanderDao, HanderS
         return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN);
     }
 
+    /**
+     * 根据父节点查询，并包装
+     */
     @RequestMapping(value = "/{parentHanderId}/son/wrapper", method = RequestMethod.GET)
     @ResponseBody
     public AjaxResponse getSonHanderByParentWithWrapper(@PathVariable String parentHanderId, HttpServletRequest request) {

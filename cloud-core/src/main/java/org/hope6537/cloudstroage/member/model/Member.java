@@ -20,6 +20,15 @@ public class Member extends BasicModel {
     private String username;
     private String password;
 
+    private Boolean remember;
+
+    public Boolean getRemember() {
+        return remember;
+    }
+
+    public void setRemember(Boolean remember) {
+        this.remember = remember;
+    }
 
     public String getMemberId() {
         return memberId;
