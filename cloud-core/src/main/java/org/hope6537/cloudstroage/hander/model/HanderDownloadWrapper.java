@@ -7,7 +7,7 @@
 package org.hope6537.cloudstroage.hander.model;
 
 /**
- * Created by Hope6537 on 2015/3/22.
+ * 下载链接的包装器
  */
 public class HanderDownloadWrapper {
 

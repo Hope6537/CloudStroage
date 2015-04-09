@@ -25,6 +25,9 @@ public class HanderItemWrapper {
 
     private Hander hander;
 
+    /**
+     * 补全hander的信息。因为memberId和parentId决定文件位置，itemIdAndName来确定建立的中间表的关系
+     */
     public void wrapper() {
         if (ApplicationConstant.notNull(memberId, parentId, itemIdAndName)) {
             hander = new Hander();
@@ -36,6 +39,9 @@ public class HanderItemWrapper {
         }
     }
 
+    /**
+     * 得到item的主键集合
+     */
     public Set<String> getItemIds() {
         if (ApplicationConstant.notNull(getItemIdAndName())) {
             return getItemIdAndName().keySet();

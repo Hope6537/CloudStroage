@@ -14,7 +14,9 @@ import org.hope6537.context.ApplicationConstant;
  */
 public class Member extends BasicModel {
 
+
     private static final long serialVersionUID = -1176042631816013694L;
+
     private String memberId;
     private String name;
     private String username;
@@ -65,6 +67,11 @@ public class Member extends BasicModel {
     public Member() {
     }
 
+    public Member(String status) {
+        this.status = status;
+    }
+
+
     public Member(String name, String username, String password, String status) {
         this.name = name;
         this.username = username;
@@ -74,6 +81,10 @@ public class Member extends BasicModel {
 
     public static Member getInstanceOfTest() {
         return new Member("_test", "_testUsername", "_testPassword", ApplicationConstant.STATUS_NORMAL);
+    }
+
+    public static Member getQueryNormal() {
+        return new Member(ApplicationConstant.STATUS_NORMAL);
     }
 
     @Override

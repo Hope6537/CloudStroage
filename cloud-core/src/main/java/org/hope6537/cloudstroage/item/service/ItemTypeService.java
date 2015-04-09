@@ -14,5 +14,7 @@ import org.hope6537.cloudstroage.item.model.ItemType;
  * Created by Hope6537 on 2015/3/11.
  */
 public interface ItemTypeService extends BasicService<ItemType, ItemTypeDao> {
+
     ItemType getTypeByName(String name);
+
 }

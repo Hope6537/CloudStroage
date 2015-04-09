@@ -132,7 +132,7 @@ public class HanderController extends BasicController<Hander, HanderDao, HanderS
     public AjaxResponse deleteMultiModel(@RequestBody List<Hander> handers) {
         if (ApplicationConstant.notNull(handers)) {
             //迭代删除
-            return AjaxResponse.getInstanceByResult(service.deleteMultiHander(handers).get());
+            return AjaxResponse.getInstanceByResult(service.deleteMultiHander(handers));
         }
         return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN);
 
@@ -223,8 +223,7 @@ public class HanderController extends BasicController<Hander, HanderDao, HanderS
         if (ApplicationConstant.isNull(parentId)) {
             parentId = "-1";
         }
-        List<ZTreeModel> list = service.getZTreeHander(parentId, getLoginMember(request).getMemberId());
-        return list;
+        return service.getZTreeHander(parentId, getLoginMember(request).getMemberId());
     }
 
     @RequestMapping(value = "/copyOrMove/{type}", method = RequestMethod.PUT)

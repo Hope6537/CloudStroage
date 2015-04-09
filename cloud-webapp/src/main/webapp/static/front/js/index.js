@@ -3,7 +3,6 @@
  * JiLin Province,China
  * JiChuang CloudStroage is a maven webapp using Hadoop Distributed File System for storage ' s Cloud Stroage System
  */
-
 /**
  * Created by Hope6537 on 2015/3/15.
  */
@@ -427,6 +426,7 @@ var Index = function () {
             });
         },
         showDownload: function () {
+            /** @namespace list[i].hdfsPath */
             service.getSelection();
             var $downloadButtonZone = $("#downloadButtonZone");
             $downloadButtonZone.empty();
@@ -438,7 +438,7 @@ var Index = function () {
                     contentType: "application/json",
                     success: function (data) {
                         if (globalFunction.returnResult(data)) {
-                            $("#barBody").attr("class", "note note-success")
+                            $("#barBody").attr("class", "note note-success");
                             $("#barTitle").text('下载链接生成成功，请点击下面的按钮进行操作');
                             $("#bar").attr("style", "width: 100%;");
                             var list = data.returnData.list;

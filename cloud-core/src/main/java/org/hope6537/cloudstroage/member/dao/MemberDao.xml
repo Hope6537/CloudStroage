@@ -11,21 +11,6 @@
     </insert>
 
 
-    <insert id="putItem">
-        INSERT INTO hander (memberId, itemId, status) VALUES
-        <foreach collection="items" item="item" separator=",">
-            (#{memberId}, #{item.itemId}, '未上传')
-        </foreach>
-    </insert>
-
-    <delete id="deleteItem">
-        DELETE FROM hander
-        WHERE memberId = #{memberId} AND
-        <foreach collection="items" item="item" separator=" OR ">
-            itemId = #{item.itemId}
-        </foreach>
-    </delete>
-
     <update id="updateEntry">
         UPDATE member SET username=#{username},name=#{name},status=#{status}
         <if test="password!=null and password!=''">
@@ -53,25 +38,6 @@
         SELECT *
         FROM member
         WHERE memberId = #{memberId}
-    </select>
-
-    <select id="getItemsByMember" resultType="org.hope6537.cloudstroage.item.model.ItemInfo">
-        SELECT i.*
-        FROM member m, iteminfo i, hander mi
-        WHERE m.memberId = mi.memberId AND i.itemId = mi.itemId AND mi.memberId = #{memberId} AND i.status = '正常'
-    </select>
-
-    <select id="getItemsByPath" resultType="org.hope6537.cloudstroage.item.model.ItemInfo">
-        SELECT i.*
-        FROM member m, iteminfo i, hander mi
-        WHERE m.memberId = mi.memberId AND i.itemId = mi.itemId AND mi.memberId = #{memberId}
-        AND i.status = '正常'
-        <if test="items!=null">
-            and i.parentId = #{items.parentId}
-        </if>
-        <if test="items==null">
-            and i.parentId = -1
-        </if>
     </select>
 
     <select id="getEntryListByEntry" resultType="org.hope6537.cloudstroage.member.model.Member">
