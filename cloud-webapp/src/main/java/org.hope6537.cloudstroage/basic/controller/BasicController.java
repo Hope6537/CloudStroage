@@ -32,33 +32,35 @@ import java.util.List;
 public abstract class BasicController<Model extends BasicModel, Dao extends BasicDao<Model>, Service extends BasicService<Model, Dao>> {
 
     /**
-     * 日志记录器
-     */
-    protected Logger logger = LoggerFactory.getLogger(getClass());
-
-    /**
      * 基础路径，供子类调用
      */
     protected static final String BASEPATH = ApplicationConstant.ADMINPATH;
-
-    /**
-     * 功能业务类
-     */
-    protected Service service;
-
-    public void setService(Service service) {
-        this.service = service;
-    }
-
     /**
      * 获取模型泛型
      */
     @SuppressWarnings("unchecked")
     private final Class<Model> typeClass = (Class<Model>)
             ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-
+    /**
+     * 日志记录器
+     */
+    protected Logger logger = LoggerFactory.getLogger(getClass());
+    /**
+     * 功能业务类
+     */
+    protected Service service;
     private Class type;
 
+    /**
+     * 根据session获取当前登录对象
+     */
+    public synchronized static Member getLoginMember(HttpServletRequest request) {
+        return (Member) request.getSession().getAttribute("loginMember");
+    }
+
+    public void setService(Service service) {
+        this.service = service;
+    }
 
     @RequestMapping(value = "/toPage")
     public abstract String toPage();
@@ -147,13 +149,6 @@ public abstract class BasicController<Model extends BasicModel, Dao extends Basi
             return AjaxResponse.getInstanceByResult(service.deleteEntry(model));
         }
         return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN);
-    }
-
-    /**
-     * 根据session获取当前登录对象
-     */
-    public synchronized static Member getLoginMember(HttpServletRequest request) {
-        return (Member) request.getSession().getAttribute("loginMember");
     }
 
 }

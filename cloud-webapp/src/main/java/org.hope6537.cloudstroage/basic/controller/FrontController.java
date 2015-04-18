@@ -36,6 +36,29 @@ public class FrontController {
 
     //private final Map<String, String> cookies = new HashMap<>();
 
+    /**
+     * 设置cookies
+     */
+    private static void setCookies(HttpServletResponse response, String username, String password) {
+        Cookie _username = new Cookie("CloudStroageLoginUsername", username);
+        _username.setMaxAge(60 * 60 * 24 * 7);
+        response.addCookie(_username);
+        Cookie _cookie = new Cookie("CloudStroageLoginValidate", password);
+        _cookie.setMaxAge(60 * 60 * 24 * 7);
+        response.addCookie(_cookie);
+    }
+
+    /**
+     * 清除cookies
+     */
+    private static void clearCookies(HttpServletResponse response) {
+        Cookie _username = new Cookie("CloudStroageLoginUsername", null);
+        _username.setMaxAge(0);
+        Cookie _cookie = new Cookie("CloudStroageLoginValidate", null);
+        _cookie.setMaxAge(0);
+        response.addCookie(_username);
+        response.addCookie(_cookie);
+    }
 
     /**
      * 跳转登陆页面
@@ -72,7 +95,6 @@ public class FrontController {
         return AjaxResponse.getInstanceByResult(true);
     }
 
-
     /**
      * 主页获取信息，用于处理值，便于前台Ajax处理
      */
@@ -104,7 +126,6 @@ public class FrontController {
         return ApplicationConstant.FRONTPATH + "index";
     }
 
-
     /**
      * 注册控制器
      */
@@ -121,7 +142,6 @@ public class FrontController {
         }
         return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.FAILCHN);
     }
-
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
@@ -199,30 +219,6 @@ public class FrontController {
     @ResponseBody
     public AjaxResponse unlock(@RequestBody Member member, HttpServletRequest request, HttpServletResponse response) {
         return login(member, request, response);
-    }
-
-    /**
-     * 设置cookies
-     */
-    private static void setCookies(HttpServletResponse response, String username, String password) {
-        Cookie _username = new Cookie("CloudStroageLoginUsername", username);
-        _username.setMaxAge(60 * 60 * 24 * 7);
-        response.addCookie(_username);
-        Cookie _cookie = new Cookie("CloudStroageLoginValidate", password);
-        _cookie.setMaxAge(60 * 60 * 24 * 7);
-        response.addCookie(_cookie);
-    }
-
-    /**
-     * 清除cookies
-     */
-    private static void clearCookies(HttpServletResponse response) {
-        Cookie _username = new Cookie("CloudStroageLoginUsername", null);
-        _username.setMaxAge(0);
-        Cookie _cookie = new Cookie("CloudStroageLoginValidate", null);
-        _cookie.setMaxAge(0);
-        response.addCookie(_username);
-        response.addCookie(_cookie);
     }
 
 }

@@ -28,12 +28,10 @@ import javax.servlet.http.HttpSession;
 @Component
 public class SpringLoginFilter extends HandlerInterceptorAdapter {
 
+    public String[] allowUrls;//还没发现可以直接配置不拦截的资源，所以在代码里面来排除
     private Logger logger = LoggerFactory.getLogger(getClass());
-
     @Autowired
     private MemberService memberService;
-
-    public String[] allowUrls;//还没发现可以直接配置不拦截的资源，所以在代码里面来排除
 
     public void setAllowUrls(String[] allowUrls) {
         this.allowUrls = allowUrls;

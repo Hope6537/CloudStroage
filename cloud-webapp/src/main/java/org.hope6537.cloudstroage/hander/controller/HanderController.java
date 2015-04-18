@@ -52,6 +52,8 @@ public class HanderController extends BasicController<Hander, HanderDao, HanderS
 
     @Value("${hdfsUrlSuffix}")
     private String hdfsUrlSuffix;
+    @Autowired
+    private ItemService itemService;
 
     @Autowired
     @Qualifier("handerService")
@@ -59,9 +61,6 @@ public class HanderController extends BasicController<Hander, HanderDao, HanderS
     public void setService(HanderService service) {
         super.setService(service);
     }
-
-    @Autowired
-    private ItemService itemService;
 
     @Override
     public String toPage() {
