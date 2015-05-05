@@ -96,7 +96,7 @@ public class UploadController {
 
             }
         } catch (IOException e) {
-            return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN).addAttribute("Exception", e.getMessage());
+            return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERROR_CHN).addAttribute("Exception", e.getMessage());
         }
         return AjaxResponse.getInstanceByResult(ApplicationConstant.notNull(md5))
                 .addAttribute("serverPath", netPath + netURL + "/" + fileName)

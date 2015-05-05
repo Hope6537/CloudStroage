@@ -39,7 +39,7 @@ public class ApplicationConstant extends org.hope6537.context.ApplicationConstan
             }
             return new AjaxResponse(ReturnState.WARNING, "空文件夹").addAttribute("empty", true);
         }
-        return new AjaxResponse(ReturnState.ERROR, FAILCHN);
+        return new AjaxResponse(ReturnState.ERROR, FAIL_CHN);
     }
 }
 

@@ -140,7 +140,7 @@ public class FrontController {
             //更新状态并存储
             return AjaxResponse.getInstanceByResult(memberService.addEntry(member));
         }
-        return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.FAILCHN);
+        return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.FAIL_CHN);
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -169,7 +169,7 @@ public class FrontController {
                 }
             }
         }
-        return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN);
+        return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERROR_CHN);
     }
 
     /**
