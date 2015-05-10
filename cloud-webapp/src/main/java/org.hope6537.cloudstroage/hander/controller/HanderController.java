@@ -229,24 +229,22 @@ public class HanderController extends BasicController<Hander, HanderDao, HanderS
     @ResponseBody
     public AjaxResponse updateCopyOrMoveHander(@PathVariable String type, @RequestBody CopyOrMoveWrapper copyOrMoveWrapper, HttpServletRequest request) {
         Member member = getLoginMember(request);
-        boolean res = true;
         if (ApplicationConstant.notNull(member, copyOrMoveWrapper, type)) {
-            if (type.equals("copy")) {
-                return AjaxResponse.getInstanceByResult(res)
-                        .addReturnMsg("复制" + (res ? ApplicationConstant.SUCCESS_CHN : ApplicationConstant.ERROR_CHN));
-            } else if (type.equals("move")) {
-                List<Hander> list = copyOrMoveWrapper.getSelection();
-                list.forEach(hander -> {
-                    if (!hander.getMemberId().equals(member.getMemberId())) {
-                        return;
-                    }
-                    hander.setParentId(copyOrMoveWrapper.getNewParentId());
-                    service.updateEntry(hander);
-                });
-                return AjaxResponse.getInstanceByResult(res)
-                        .addReturnMsg("移动" + (res ? ApplicationConstant.SUCCESS_CHN : ApplicationConstant.ERROR_CHN));
-            } else {
-                return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERROR_CHN);
+            switch (type) {
+                case "copy":
+                    return AjaxResponse.getInstanceByResult(true).addReturnMsg("复制" + (ApplicationConstant.SUCCESS_CHN));
+                case "move":
+                    List<Hander> list = copyOrMoveWrapper.getSelection();
+                    list.forEach(hander -> {
+                        if (!hander.getMemberId().equals(member.getMemberId())) {
+                            return;
+                        }
+                        hander.setParentId(copyOrMoveWrapper.getNewParentId());
+                        service.updateEntry(hander);
+                    });
+                    return AjaxResponse.getInstanceByResult(true).addReturnMsg("移动" + (ApplicationConstant.SUCCESS_CHN));
+                default:
+                    return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERROR_CHN);
             }
         }
         return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERROR_CHN);

@@ -49,7 +49,6 @@ public abstract class BasicController<Model extends BasicModel, Dao extends Basi
      * 功能业务类
      */
     protected Service service;
-    private Class type;
 
     /**
      * 根据session获取当前登录对象
@@ -73,6 +72,7 @@ public abstract class BasicController<Model extends BasicModel, Dao extends Basi
     protected AjaxResponse getModelList() {
         logger.debug(typeClass.toString());
         Model model = Model.getInstance(typeClass);
+        assert model != null;
         model.setStatus(ApplicationConstant.STATUS_NORMAL);
         List<Model> list = service.getEntryListByEntry(model);
         return AjaxResponse.getInstanceByResult(ApplicationConstant.notNull(list)).addAttribute("list", list);

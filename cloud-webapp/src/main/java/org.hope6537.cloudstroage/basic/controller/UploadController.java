@@ -29,7 +29,7 @@ import java.io.*;
 import java.util.UUID;
 
 /**
- * Created by Hope6537 on 2015/3/14.
+ * ÉÏ´«¿ØÖÆÆ÷
  */
 @Controller
 public class UploadController {
@@ -61,7 +61,7 @@ public class UploadController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/upload")
     @ResponseBody
-    public AjaxResponse uploadImage(@RequestParam("file") MultipartFile multipartFile, HttpServletRequest request) {
+    public AjaxResponse uploadImage(@RequestParam("file") MultipartFile multipartFile) {
         String fileName = getUploadFileName(multipartFile);
         String serverPathFolder = getServerPath(ResourceFile.FILE);
         String hdfsPathFolderNoUrl = getHdfsFolderPath();
@@ -85,7 +85,6 @@ public class UploadController {
                 md5 = FileUtil.copyFileToServerAndHDFS(source, server, hdfs, 4096);
                 closeStream(new Closeable[]{source, server, hdfs});
                 if (ApplicationConstant.notNull(md5)) {
-
                     itemInfo.setAbsolutePath(hdfsPathFolderNoUrl + "/" + fileName);
                     itemInfo.setServerPath(netURL + "/" + fileName);
                     itemInfo.setSize(String.valueOf(multipartFile.getSize()));
