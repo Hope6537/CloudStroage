@@ -73,7 +73,7 @@ public class SpringLoginFilter extends HandlerInterceptorAdapter {
                 boolean result = MD5Util.string2MD5(queryMember.getPassword()).equals(cookiePassword);
                 if (result) {
                     session.setAttribute("loginMember", queryMember);
-                    return result;
+                    return true;
                 }
             }
         }

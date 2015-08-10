@@ -80,7 +80,7 @@ public class HanderServiceImpl extends BasicServiceImpl<Hander, HanderDao> imple
         sonHanderList.forEach((sonHander) -> sonHander.resetHander(hander));
         synchronized (this) {
             //然后子节点进行更新
-            Boolean sonRes = sonHanderList.stream().map(this::updateFolderName).reduce((a, b) -> a && b).get();
+            Boolean sonRes = sonHanderList.parallelStream().map(this::updateFolderName).reduce((a, b) -> a && b).get();
             //最后更新自己
             return this.updateEntry(hander) && sonRes;
         }
@@ -188,7 +188,8 @@ public class HanderServiceImpl extends BasicServiceImpl<Hander, HanderDao> imple
             List<Hander> list = dao.getEntryListByEntry(hander);
             List<ZTreeModel> returnList = new LinkedList<>();
             //将其需要的信息进行包装
-            list.forEach(item -> returnList.add(new ZTreeModel(item.getHanderId(), item.getParentId(), item.getFileName(), "true")));
+            list.forEach(item -> returnList.add
+                    (new ZTreeModel(item.getHanderId(), item.getParentId(), item.getFileName(), "true")));
             return returnList;
         }
         return null;

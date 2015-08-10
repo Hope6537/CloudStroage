@@ -146,7 +146,6 @@ var Index = function () {
             if (selectionCount > 1) {
                 $("#rename").hide();
                 $("#open").hide();
-                $()
             } else {
                 $("#rename").show();
                 $("#open").show();

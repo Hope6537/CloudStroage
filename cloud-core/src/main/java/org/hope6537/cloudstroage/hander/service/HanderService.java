@@ -24,7 +24,7 @@ public interface HanderService extends BasicService<Hander, HanderDao> {
      *
      * @param handerItemWrapper 包装器对象
      */
-    public boolean addHander2ItemByWrapper(HanderItemWrapper handerItemWrapper);
+    boolean addHander2ItemByWrapper(HanderItemWrapper handerItemWrapper);
 
     /**
      * 更新hander文件夹的信息
@@ -32,7 +32,7 @@ public interface HanderService extends BasicService<Hander, HanderDao> {
      * @param hander 目标hander
      *               assert handerId !=null
      */
-    public boolean updateFolderName(Hander hander);
+    boolean updateFolderName(Hander hander);
 
     /**
      * 删除hander文件夹的信息
@@ -40,7 +40,7 @@ public interface HanderService extends BasicService<Hander, HanderDao> {
      * @param hander 目标hander
      *               assert handerId !=null
      */
-    public boolean deleteFolder(Hander hander);
+    boolean deleteFolder(Hander hander);
 
     /**
      * 删除多个hander
@@ -48,7 +48,7 @@ public interface HanderService extends BasicService<Hander, HanderDao> {
      *
      * @param handerList 要删除的hander列表，有文件夹有文件，所以必须要Hander对象包装
      */
-    public Boolean deleteMultiHander(List<Hander> handerList);
+    Boolean deleteMultiHander(List<Hander> handerList);
 
     /**
      * 回收hander，并进行文件夹处理
@@ -56,14 +56,14 @@ public interface HanderService extends BasicService<Hander, HanderDao> {
      * @param hander 目标hander
      *               assert handerId !=null
      */
-    public boolean disableFolder(Hander hander);
+    boolean disableFolder(Hander hander);
 
     /**
      * 将该hander的内部子handerList填满
      *
      * @param hander 要填充的hander
      */
-    public Hander getSonHanderToHander(Hander hander);
+    Hander getSonHanderToHander(Hander hander);
 
     /**
      * 得到当前hander下子节点的id集合，并赋给第二个set对象
@@ -71,14 +71,14 @@ public interface HanderService extends BasicService<Hander, HanderDao> {
      * @param hander 当前父节点
      * @param set    要传递的集合,因为需要递归查找，所以需要外部表
      */
-    public void getSonHanderIds(Hander hander, Set<String> set);
+    void getSonHanderIds(Hander hander, Set<String> set);
 
     /**
      * 根据父节点获取子节点集合
      *
      * @param parentId 父节点Id
      */
-    public List<Hander> getHanderByParentId(String parentId);
+    List<Hander> getHanderByParentId(String parentId);
 
     /**
      * 获得ZTree模型
@@ -86,14 +86,14 @@ public interface HanderService extends BasicService<Hander, HanderDao> {
      * @param memberId 所属用户Id
      * @param parentId 所属父节点
      */
-    public List<ZTreeModel> getZTreeHander(String parentId, String memberId);
+    List<ZTreeModel> getZTreeHander(String parentId, String memberId);
 
     /**
      * 根据用户Id来得到Hander集合
      *
      * @param memberId 所属用户Id
      */
-    public List<Hander> getHanderListByMemberId(String memberId);
+    List<Hander> getHanderListByMemberId(String memberId);
 
     /**
      * 根据路径获取Hander集合
@@ -101,14 +101,14 @@ public interface HanderService extends BasicService<Hander, HanderDao> {
      * @param memberId 所属用户
      * @param fullPath 全路径
      */
-    public List<Hander> getHanderListByPath(String memberId, String fullPath);
+    List<Hander> getHanderListByPath(String memberId, String fullPath);
 
     /**
      * 根据Hander对象来获取子Hander集合
      *
      * @param hander hander对象
      */
-    public List<Hander> getHanderListByParentHander(Hander hander);
+    List<Hander> getHanderListByParentHander(Hander hander);
 
     /**
      * 根据Hander来获取包装器
@@ -116,14 +116,14 @@ public interface HanderService extends BasicService<Hander, HanderDao> {
      * @param hander 查询过滤对象
      *               assert handerId != null
      */
-    public HanderWrapper getWrapperByHanderId(Hander hander);
+    HanderWrapper getWrapperByHanderId(Hander hander);
 
     /**
      * 得到当前节点的祖父节点
      *
      * @param parentId 要获取的id的孙子id
      */
-    public String getGrandParentId(String parentId);
+    String getGrandParentId(String parentId);
 
     /**
      * 得到多重下载链接
@@ -131,6 +131,6 @@ public interface HanderService extends BasicService<Hander, HanderDao> {
      * @param ids      handerId集合
      * @param memberId 所属用户Id，用于校验
      */
-    public List<HanderDownloadWrapper> getMultiDownloadLink(Set<String> ids, String memberId);
+    List<HanderDownloadWrapper> getMultiDownloadLink(Set<String> ids, String memberId);
 
 }

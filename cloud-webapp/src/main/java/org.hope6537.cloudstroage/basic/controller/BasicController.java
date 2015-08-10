@@ -49,7 +49,6 @@ public abstract class BasicController<Model extends BasicModel, Dao extends Basi
      * 功能业务类
      */
     protected Service service;
-    private Class type;
 
     /**
      * 根据session获取当前登录对象
@@ -73,6 +72,7 @@ public abstract class BasicController<Model extends BasicModel, Dao extends Basi
     protected AjaxResponse getModelList() {
         logger.debug(typeClass.toString());
         Model model = Model.getInstance(typeClass);
+        assert model != null;
         model.setStatus(ApplicationConstant.STATUS_NORMAL);
         List<Model> list = service.getEntryListByEntry(model);
         return AjaxResponse.getInstanceByResult(ApplicationConstant.notNull(list)).addAttribute("list", list);
@@ -99,7 +99,7 @@ public abstract class BasicController<Model extends BasicModel, Dao extends Basi
             Model model = service.getEntryById(id);
             return AjaxResponse.getInstanceByResult(ApplicationConstant.notNull(model)).addAttribute("model", model);
         }
-        return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN);
+        return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERROR_CHN);
     }
 
     /**
@@ -111,7 +111,7 @@ public abstract class BasicController<Model extends BasicModel, Dao extends Basi
         if (ApplicationConstant.notNull(model)) {
             return AjaxResponse.getInstanceByResult(service.addEntry(model));
         }
-        return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN);
+        return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERROR_CHN);
     }
 
     /**
@@ -124,7 +124,7 @@ public abstract class BasicController<Model extends BasicModel, Dao extends Basi
         if (ApplicationConstant.notNull(model) && ApplicationConstant.notNull(model.commonId())) {
             return AjaxResponse.getInstanceByResult(service.updateEntry(model));
         }
-        return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN);
+        return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERROR_CHN);
     }
 
     /**
@@ -136,7 +136,7 @@ public abstract class BasicController<Model extends BasicModel, Dao extends Basi
         if (ApplicationConstant.notNull(model) && ApplicationConstant.notNull(model.commonId())) {
             return AjaxResponse.getInstanceByResult(service.disableEntry(model));
         }
-        return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN);
+        return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERROR_CHN);
     }
 
     /**
@@ -148,7 +148,7 @@ public abstract class BasicController<Model extends BasicModel, Dao extends Basi
         if (ApplicationConstant.notNull(model) && ApplicationConstant.notNull(model.commonId())) {
             return AjaxResponse.getInstanceByResult(service.deleteEntry(model));
         }
-        return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN);
+        return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERROR_CHN);
     }
 
 }
