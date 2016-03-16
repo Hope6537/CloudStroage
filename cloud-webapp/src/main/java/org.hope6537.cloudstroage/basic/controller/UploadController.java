@@ -62,8 +62,10 @@ public class UploadController {
     @RequestMapping(method = RequestMethod.POST, value = "/upload")
     @ResponseBody
     public AjaxResponse uploadImage(@RequestParam("file") MultipartFile multipartFile, HttpServletRequest request) {
+
+        String projectPath = System.getProperty("user.dir");
         String fileName = getUploadFileName(multipartFile);
-        String serverPathFolder = getServerPath(ResourceFile.FILE);
+        String serverPathFolder = projectPath + "/" + getServerPath(ResourceFile.FILE);
         String hdfsPathFolderNoUrl = getHdfsFolderPath();
         String hdfsPathFolder = hdfsPath + hdfsPathFolderNoUrl;
         String netURL = getURL(ResourceFile.FILE);
@@ -75,10 +77,10 @@ public class UploadController {
             File hdfsPathDirectory = new File(hdfsPathFolder);
             synchronized (this) {
                 if (!serverPathDirectory.exists()) {
-                    serverPathDirectory.mkdir();
+                    serverPathDirectory.mkdirs();
                 }
                 if (!hdfsPathDirectory.exists()) {
-                    hdfsPathDirectory.mkdir();
+                    hdfsPathDirectory.mkdirs();
                 }
                 OutputStream server = new FileOutputStream(new File(serverPathFolder, fileName));
                 OutputStream hdfs = hdfsUtils.getHdfsOutPutStream(hdfsPathFolder + "/" + fileName);
@@ -97,6 +99,9 @@ public class UploadController {
             }
         } catch (IOException e) {
             return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN).addAttribute("Exception", e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN).addAttribute("Exception", e.getMessage());
         }
         return AjaxResponse.getInstanceByResult(ApplicationConstant.notNull(md5))
                 .addAttribute("serverPath", netPath + netURL + "/" + fileName)
@@ -106,6 +111,9 @@ public class UploadController {
 
     private void closeStream(Closeable[] list) {
         for (Closeable stream : list) {
+            if (stream == null) {
+                continue;
+            }
             try {
                 stream.close();
             } catch (IOException e) {
@@ -131,6 +139,5 @@ public class UploadController {
     public String getURL(String fileType) {
         return netURL + "/" + ResourceFile.FILEUPLOAD + "/" + fileType;
     }
-
 
 }

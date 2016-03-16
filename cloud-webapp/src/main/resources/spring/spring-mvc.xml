@@ -73,6 +73,7 @@
                         <!--&lt;!&ndash; 如果请求中包含以下路径，则不进行拦截 &ndash;&gt;-->
                         <value>static</value>
                         <value>/login</value>
+                        <value>/register</value>
                     </list>
                 </property>
             </bean>

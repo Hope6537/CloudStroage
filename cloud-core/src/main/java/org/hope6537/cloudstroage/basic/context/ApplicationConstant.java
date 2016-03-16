@@ -41,5 +41,22 @@ public class ApplicationConstant extends org.hope6537.context.ApplicationConstan
         }
         return new AjaxResponse(ReturnState.ERROR, FAILCHN);
     }
+
+    public static boolean notNull(Object... objc) {
+        boolean res = objc != null;
+        if (!res) {
+            return false;
+        }
+        for (Object o : objc) {
+            if (o instanceof String) {
+                res = res && !((String) o).isEmpty();
+            }
+            if (o instanceof Collection) {
+                res = res && !((Collection) o).isEmpty();
+            }
+            res = res && o != null;
+        }
+        return res;
+    }
 }
 
