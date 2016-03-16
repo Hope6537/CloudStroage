@@ -120,7 +120,7 @@ public class HanderController extends BasicController<Hander, HanderDao, HanderS
                     && itemService.onlyChangeStatusByIds(ApplicationConstant.FILE_STATUS_NORMAL, handerItemWrapper.getItemIds());
             return AjaxResponse.getInstanceByResult(res);
         }
-        return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERROR_CHN);
+        return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN);
     }
 
     /**
@@ -133,7 +133,7 @@ public class HanderController extends BasicController<Hander, HanderDao, HanderS
             //迭代删除
             return AjaxResponse.getInstanceByResult(service.deleteMultiHander(handers));
         }
-        return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERROR_CHN);
+        return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN);
 
     }
 
@@ -155,7 +155,7 @@ public class HanderController extends BasicController<Hander, HanderDao, HanderS
             List<Hander> list = service.getEntryListByEntry(query);
             return ApplicationConstant.collectionCheck(list);
         }
-        return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERROR_CHN);
+        return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN);
     }
 
     /**
@@ -183,7 +183,7 @@ public class HanderController extends BasicController<Hander, HanderDao, HanderS
                 }
                 return new AjaxResponse(ReturnState.WARNING, "空文件夹");
             }
-            return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERROR_CHN);
+            return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN);
         }
     }
 
@@ -194,7 +194,7 @@ public class HanderController extends BasicController<Hander, HanderDao, HanderS
         if (ApplicationConstant.notNull(fullPath, member)) {
             return ApplicationConstant.collectionCheck(service.getHanderListByPath(member.getMemberId(), fullPath));
         }
-        return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERROR_CHN);
+        return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN);
     }
 
     @RequestMapping(value = "/download", method = RequestMethod.POST)
@@ -212,7 +212,7 @@ public class HanderController extends BasicController<Hander, HanderDao, HanderS
 
             return AjaxResponse.getInstanceByResult(ApplicationConstant.notNull(list)).addAttribute("list", list);
         }
-        return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERROR_CHN);
+        return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN);
     }
 
     @RequestMapping(value = "/zTree", method = RequestMethod.GET)
@@ -232,7 +232,7 @@ public class HanderController extends BasicController<Hander, HanderDao, HanderS
         if (ApplicationConstant.notNull(member, copyOrMoveWrapper, type)) {
             switch (type) {
                 case "copy":
-                    return AjaxResponse.getInstanceByResult(true).addReturnMsg("复制" + (ApplicationConstant.SUCCESS_CHN));
+                    return AjaxResponse.getInstanceByResult(true).addReturnMsg("复制" + (ApplicationConstant.SUCCESSCHN));
                 case "move":
                     List<Hander> list = copyOrMoveWrapper.getSelection();
                     list.forEach(hander -> {
@@ -242,12 +242,12 @@ public class HanderController extends BasicController<Hander, HanderDao, HanderS
                         hander.setParentId(copyOrMoveWrapper.getNewParentId());
                         service.updateEntry(hander);
                     });
-                    return AjaxResponse.getInstanceByResult(true).addReturnMsg("移动" + (ApplicationConstant.SUCCESS_CHN));
+                    return AjaxResponse.getInstanceByResult(true).addReturnMsg("移动" + (ApplicationConstant.SUCCESSCHN));
                 default:
-                    return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERROR_CHN);
+                    return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN);
             }
         }
-        return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERROR_CHN);
+        return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN);
     }
 
     private static class CopyOrMoveWrapper {

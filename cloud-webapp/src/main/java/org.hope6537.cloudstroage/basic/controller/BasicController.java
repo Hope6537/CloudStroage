@@ -99,7 +99,7 @@ public abstract class BasicController<Model extends BasicModel, Dao extends Basi
             Model model = service.getEntryById(id);
             return AjaxResponse.getInstanceByResult(ApplicationConstant.notNull(model)).addAttribute("model", model);
         }
-        return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERROR_CHN);
+        return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN);
     }
 
     /**
@@ -111,7 +111,7 @@ public abstract class BasicController<Model extends BasicModel, Dao extends Basi
         if (ApplicationConstant.notNull(model)) {
             return AjaxResponse.getInstanceByResult(service.addEntry(model));
         }
-        return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERROR_CHN);
+        return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN);
     }
 
     /**
@@ -124,7 +124,7 @@ public abstract class BasicController<Model extends BasicModel, Dao extends Basi
         if (ApplicationConstant.notNull(model) && ApplicationConstant.notNull(model.commonId())) {
             return AjaxResponse.getInstanceByResult(service.updateEntry(model));
         }
-        return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERROR_CHN);
+        return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN);
     }
 
     /**
@@ -136,7 +136,7 @@ public abstract class BasicController<Model extends BasicModel, Dao extends Basi
         if (ApplicationConstant.notNull(model) && ApplicationConstant.notNull(model.commonId())) {
             return AjaxResponse.getInstanceByResult(service.disableEntry(model));
         }
-        return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERROR_CHN);
+        return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN);
     }
 
     /**
@@ -148,7 +148,7 @@ public abstract class BasicController<Model extends BasicModel, Dao extends Basi
         if (ApplicationConstant.notNull(model) && ApplicationConstant.notNull(model.commonId())) {
             return AjaxResponse.getInstanceByResult(service.deleteEntry(model));
         }
-        return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERROR_CHN);
+        return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN);
     }
 
 }
