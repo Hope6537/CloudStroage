@@ -71,6 +71,7 @@ public class UploadController {
         String netURL = getURL(ResourceFile.FILE);
         ItemInfo itemInfo = new ItemInfo();
         String md5;
+        OutputStream server = null;
         try {
             InputStream source = multipartFile.getInputStream();
             File serverPathDirectory = new File(serverPathFolder);
@@ -82,7 +83,7 @@ public class UploadController {
                 if (!hdfsPathDirectory.exists()) {
                     hdfsPathDirectory.mkdirs();
                 }
-                OutputStream server = new FileOutputStream(new File(serverPathFolder, fileName));
+                server = new FileOutputStream(new File(serverPathFolder, fileName));
                 OutputStream hdfs = hdfsUtils.getHdfsOutPutStream(hdfsPathFolder + "/" + fileName);
                 md5 = FileUtil.copyFileToServerAndHDFS(source, server, hdfs, 4096);
                 closeStream(new Closeable[]{source, server, hdfs});
@@ -102,6 +103,13 @@ public class UploadController {
         } catch (Exception e) {
             e.printStackTrace();
             return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN).addAttribute("Exception", e.getMessage());
+        } finally {
+            try {
+                server.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return new AjaxResponse(ReturnState.ERROR, ApplicationConstant.ERRORCHN).addAttribute("Exception", e.getMessage());
+            }
         }
         return AjaxResponse.getInstanceByResult(ApplicationConstant.notNull(md5))
                 .addAttribute("serverPath", netPath + netURL + "/" + fileName)
