@@ -17,9 +17,10 @@
 
     <bean id="hadoopConfiguration" class="org.hope6537.hadoop.ConfigurationFactory"
           factory-method="getConfigurationOfPseudoDistributed"/>
-    <bean id="hdfsUtils" class="org.hope6537.hadoop.hdfs.HdfsUtils" scope="singleton"
-          factory-method="getInstanceOfPseudoDistributed" destroy-method="closeFileSystem">
+    <bean id="hdfsUtils" class="org.hope6537.hadoop.hdfs.HdfsUtils" scope="singleton" destroy-method="closeFileSystem">
+        <constructor-arg type="java.lang.String" value="hdfs://data.hope6537.com:9000"/>
         <constructor-arg type="org.apache.hadoop.conf.Configuration" ref="hadoopConfiguration"/>
+        <constructor-arg type="java.lang.String" value="root"/>
     </bean>
 
 </beans>
